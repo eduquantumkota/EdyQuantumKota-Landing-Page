@@ -498,7 +498,7 @@ const App: React.FC = () => {
               <div className="space-y-4 text-sm text-gray-400">
                 <p className="flex items-start gap-3">
                   <MapPin size={18} className="text-gold shrink-0" />
-                  <span>Jawahar Nagar, District Centre, <span className="notranslate">Kota</span>, Rajasthan</span>
+                  <span>opposite Aacharya Hospital, District Centre, Jawahar Nagar, Kota</span>
                 </p>
                 <p className="flex items-center gap-3">
                   <Phone size={18} className="text-gold" />
