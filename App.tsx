@@ -1,519 +1,444 @@
 
 import React, { useState } from 'react';
+// Added missing Globe and Mail imports from lucide-react
 import { 
   Check, 
   Phone, 
   ArrowRight, 
   Trophy, 
-  Star, 
-  Rocket, 
-  ShieldCheck, 
   MapPin, 
-  Mail,
   CheckCircle2,
-  Briefcase,
   TrendingUp,
-  Smartphone,
-  Crown,
-  Layout,
-  PieChart,
   MessageCircle,
   Languages,
   Quote,
-  TrendingDown,
-  UserCheck,
   Award,
-  Users,
   Coins,
-  Globe
+  ShieldCheck,
+  Zap,
+  Star,
+  Globe,
+  Mail
 } from 'lucide-react';
-
-// Translation Dictionary for localized Hero components
-const translations: Record<string, any> = {
-  en: {
-    heroTag: "Establish Kota Legacy in Your City",
-    heroTitle: "Now Every City Will Become",
-    heroSpan: "Kota!",
-    heroSub: "Join India's most scalable educational network. Transform your School or Coaching with Kota's Premium Results Ecosystem.",
-    ctaBrochure: "Get Brochure",
-    ctaWhatsapp: "WhatsApp Now",
-    formTitle: "Partnership Enquiry",
-    formSub: "Fill details to get detailed quote on WhatsApp",
-    formSubmit: "SUBMIT & WHATSAPP NOW",
-    whyTitle: "Why Start Coaching Business?",
-    whySub: "Education is the only recession-proof industry in India. EduQuantum provides a low-budget entry with high-standard academic deliverables.",
-    founderTitle: "Meet the Founder",
-    tableTitle: "Choose Your Package",
-    supportTitle: "Our Support, Your Success",
-    contactUs: "Chat with Us",
-    investor: "Individual Investor",
-    schoolOwner: "School Owner",
-    coachingOwner: "Institute Owner",
-    labelName: "Full Name",
-    labelCity: "City",
-    labelMobile: "Mobile Number",
-    successTitle: "Proven Success Across India",
-  },
-  hi: {
-    heroTag: "अपने शहर में कोटा की विरासत स्थापित करें",
-    heroTitle: "अब हर शहर बनेगा",
-    heroSpan: "कोटा!",
-    heroSub: "भारत के सबसे स्केलेबल शैक्षिक नेटवर्क से जुड़ें। कोटा के प्रीमियम परिणाम इकोसिस्टम के साथ अपने स्कूल या कोचिंग को बदलें।",
-    ctaBrochure: "ब्रोशर प्राप्त करें",
-    ctaWhatsapp: "व्हाट्सएप अभी",
-    formTitle: "साझेदारी पूछताछ",
-    formSub: "व्हाट्सएप पर विस्तृत उद्धरण प्राप्त करने के लिए विवरण भरें",
-    formSubmit: "सबमिट करें और व्हाट्सएप करें",
-    whyTitle: "कोचिंग बिजनेस क्यों शुरू करें?",
-    whySub: "शिक्षा भारत में एकमात्र मंदी-मुक्त उद्योग है। EduQuantum उच्च-मानक शैक्षणिक परिणामों के साथ कम बजट में प्रवेश प्रदान करता है।",
-    founderTitle: "संस्थापक से मिलें",
-    tableTitle: "अपना पैकेज चुनें",
-    supportTitle: "हमारा समर्थन, आपकी सफलता",
-    contactUs: "हमसे चैट करें",
-    investor: "व्यक्तिगत निवेशक",
-    schoolOwner: "स्कूल मालिक",
-    coachingOwner: "संस्थान मालिक",
-    labelName: "पूरा नाम",
-    labelCity: "शहर",
-    labelMobile: "मोबाइल नंबर",
-    successTitle: "संपूर्ण भारत में प्रमाणित सफलता",
-  },
-  gu: {
-    heroTag: "તમારા શહેરમાં કોટાનો વારસો સ્થાપિત કરો",
-    heroTitle: "હવે દરેક શહેર બનશે",
-    heroSpan: "કોટા!",
-    heroSub: "ભારતના સૌથી સ્કેલેબલ શૈક્ષણિક નેટવર્ક સાથે જોડાઓ. કોટાના પ્રીમિયમ પરિણામ ઇકોસિસ્ટમ સાથે તમારી શાળા અથવા કોચિંગને બદલો.",
-    ctaBrochure: "બ્રોશર મેળવો",
-    ctaWhatsapp: "વોટ્સએપ અત્યારે",
-    formTitle: "ભાગીદારી પૂછપરછ",
-    formSub: "વોટ્સએપ પર વિગતવાર ભાવ મેળવવા માટે વિગતો ભરો",
-    formSubmit: "સબમિટ કરો અને વોટ્સએપ કરો",
-    whyTitle: "કોચિંગ બિઝનેસ કેમ શરૂ કરવો?",
-    whySub: "શિક્ષણ એ ભારતમાં એકમાત્ર મંદી-મુક્ત ઉદ્યોગ છે. EduQuantum ઉચ્ચ-માનક શૈક્ષણિક પરિણામો સાથે ઓછા બજેટમાં પ્રવેશ આપે છે.",
-    founderTitle: "સ્થાપકને મળો",
-    tableTitle: "તમારું પેકેજ પસંદ કરો",
-    supportTitle: "અમારો સપોર્ટ, તમારી સફળતા",
-    contactUs: "અમારી સાથે ચેટ કરો",
-    investor: "વ્યક્તિગત રોકાણકાર",
-    schoolOwner: "શાળા માલિક",
-    coachingOwner: "સંસ્થાન માલિક",
-    labelName: "આખું નામ",
-    labelCity: "શહેર",
-    labelMobile: "મોબાઈલ નંબર",
-    successTitle: "સમગ્ર ભારતમાં સફળતા સાબિત થઈ",
-  },
-  mr: {
-    heroTag: "तुमच्या शहरात कोटाचा वारसा प्रस्थापित करा",
-    heroTitle: "आता प्रत्येक शहर होईल",
-    heroSpan: "'कोटा'!",
-    heroSub: "भारतातील सर्वात वेगाने वाढणाऱ्या शैक्षणिक नेटवर्कमध्ये सामील व्हा. कोटाच्या प्रीमियम रिझल्ट इकोसिस्टमसह तुमची शाळा किंवा कोचिंग बदला.",
-    ctaBrochure: "ब्रोशर मिळवा",
-    ctaWhatsapp: "व्हॉट्सॲपवर माहिती मिळवा",
-    formTitle: "फ्रँचायझीसाठी चौकशी करा",
-    formSub: "व्हॉट्सॲपवर तपशीलवार कोट मिळविण्यासाठी तपशील भरा",
-    formSubmit: "सबमिट करा आणि व्हॉट्सॲप करा",
-    whyTitle: "कोचिंग व्यवसाय का सुरू करावा?",
-    whySub: "शिक्षण हा भारतातील एकमेव मंदी-मुक्त उद्योग आहे. EduQuantum उच्च-दर्जाच्या शैक्षणिक परिणामांसह कमी बजेटमध्ये प्रवेश प्रदान करते.",
-    founderTitle: "संस्थापकांना भेटा",
-    tableTitle: "तुमचे पॅकेज निवडा",
-    supportTitle: "आमचा पाठिंबा, तुमचे यश",
-    contactUs: "आमच्याशी गप्पा मारा",
-    investor: "वैयक्तिक गुंतवणूकदार",
-    schoolOwner: "शाळा मालक",
-    coachingOwner: "संस्था मालक",
-    labelName: "पूर्ण नाव",
-    labelCity: "शहर",
-    labelMobile: "मोबाईल नंबर",
-    successTitle: "संपूर्ण भारतात यशस्वी कथा",
-  }
-};
 
 const languages = [
   { name: "English", code: "en" },
   { name: "हिन्दी", code: "hi" },
-  { name: "ગુજરાતી", code: "gu" },
   { name: "मराठी", code: "mr" },
-  { name: "தமிழ்", code: "ta" },
-  { name: "తెలుగు", code: "te" },
-  { name: "ಕನ್ನಡ", code: "kn" },
-  { name: "മലയാളം", code: "ml" }
+  { name: "ગુજરાતી", code: "gu" }
 ];
-
-const successStories = [
-  {
-    name: "Udgir Center",
-    location: "Maharashtra",
-    featured: true,
-    growth: "25 to 80+ Students",
-    revenue: "80-90 Lakhs Business",
-    profit: "30-40 Lakhs Annual Profit",
-    testimonial: "Joining Quantum Kota was a game-changer. Our student count tripled within a year, and the profit margins are exceptional due to their streamlined system.",
-    tag: "Highest Growth Center"
-  },
-  {
-    name: "Amravati Center",
-    location: "Maharashtra",
-    growth: "Rapid Enrollment",
-    revenue: "Leading Institute in District",
-    testimonial: "The academic material and branding from Kota helped us dominate the local market. The parent trust in Kota brand is phenomenal.",
-    tag: "High Parent Trust"
-  },
-  {
-    name: "Ashok Academy",
-    location: "Mumbai",
-    growth: "Premium SIP Model",
-    revenue: "High-Value Admissions",
-    testimonial: "Integrating the Quantum Method into our academy gave us an edge in the competitive Mumbai market. Exceptional faculty training support.",
-    tag: "Metro Success"
-  }
-];
-
-const otherLocations = ["Tirupati", "Kinwat", "Nandigram"];
 
 const featureList = [
   { name: "Kota Curriculum & Study Material", base: true, advance: true, premium: true },
   { name: "Faculty Recruitment & Training", base: true, advance: true, premium: true },
   { name: "Online Testing Platform (LMS)", base: true, advance: true, premium: true },
   { name: "Mobile App for Parents/Students", base: true, advance: true, premium: true },
-  { name: "Local Marketing Strategy", base: false, baseText: "Basic", advance: true, premium: true },
-  { name: "Faculty Performance Monitoring", base: false, advance: true, premium: true },
-  { name: "Hybrid Classroom Integration", base: false, advance: true, premium: true },
+  { name: "Local Marketing Strategy Support", base: false, advance: true, premium: true },
   { name: "School Integrated Program (SIP)", base: false, advance: false, premium: true },
-  { name: "Dedicated Academic Mentor", base: false, advance: false, premium: true },
-  { name: "Doubt Counter Support from Kota", base: false, advance: false, premium: true }
+  { name: "Dedicated Academic Mentor (Kota)", base: false, advance: false, premium: true },
+  { name: "24/7 Doubt Counter (Online)", base: false, advance: false, premium: true }
 ];
 
 const App: React.FC = () => {
-  const [lang, setLang] = useState('en');
-  const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Investor' });
-  const t = translations[lang] || translations['en'];
+  const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Individual Investor' });
+  const [activeLang, setActiveLang] = useState('en');
 
-  const triggerTranslation = (langCode: string) => {
-    // Dictionary fallback for instant localized UI elements
-    if (translations[langCode]) {
-      setLang(langCode);
-    }
-    // Google engine trigger for the whole page
-    const googleCombo = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-    if (googleCombo) {
-      googleCombo.value = langCode;
-      googleCombo.dispatchEvent(new Event('change'));
+  const handleLanguageChange = (code: string) => {
+    setActiveLang(code);
+    if ((window as any).setLanguage) {
+      (window as any).setLanguage(code);
     }
   };
 
-  const triggerWhatsApp = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     const whatsappNum = "919351099947";
-    const msg = formData.name 
-      ? `Hi, I want to know about the franchise model. My details: Name: ${formData.name}, City: ${formData.city}, Phone: ${formData.phone}, Role: ${formData.role}`
-      : `Hi, I want to know about the franchise model.`;
+    const msg = `*Franchise Enquiry*%0A*Name:* ${formData.name}%0A*City:* ${formData.city}%0A*Phone:* ${formData.phone}%0A*Role:* ${formData.role}%0A*Message:* Hi, I am interested in EduQuantum Kota Franchise. Please share details.`;
     
-    window.open(`https://wa.me/${whatsappNum}?text=${encodeURIComponent(msg)}`, '_blank');
+    // Open WhatsApp in new tab
+    window.open(`https://wa.me/${whatsappNum}?text=${msg}`, '_blank');
     
-    setTimeout(() => {
-      window.location.href = "https://eduquantumkota.com";
+    // Redirect main page after delay
+    setTimeout(() => { 
+        window.location.href = "https://eduquantumkota.com"; 
     }, 2000);
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-poppins selection:bg-gold/30">
-      
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-100 py-3">
+    <div className="min-h-screen">
+      {/* Premium Navbar */}
+      <nav className="sticky top-0 z-50 bg-white shadow-xl py-4 border-b border-gray-100">
         <div className="container mx-auto px-4 flex flex-wrap justify-between items-center gap-4">
           <div className="flex items-center">
             <img 
               src="https://lh3.googleusercontent.com/d/15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" 
               alt="EduQuantum Logo" 
-              className="h-10 md:h-14 object-contain"
+              className="h-10 md:h-12 object-contain"
             />
           </div>
           
-          {/* Custom Language Selector - APPENDED South Indian Languages */}
-          <div className="flex items-center flex-wrap gap-2 md:gap-3 text-[10px] md:text-xs font-bold text-navy uppercase tracking-wider max-w-lg">
-            <Languages size={14} className="text-gold shrink-0" />
-            {languages.map((l, idx) => (
-              <React.Fragment key={l.code}>
+          <div className="flex items-center flex-wrap gap-4 text-xs md:text-sm font-bold text-navy uppercase tracking-wider">
+            <div className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-full">
+              <Languages size={14} className="text-gold" />
+              {languages.map((l) => (
                 <button 
-                  onClick={() => triggerTranslation(l.code)} 
-                  className={`${lang === l.code ? 'text-gold' : 'text-navy'} hover:text-gold transition whitespace-nowrap`}
+                  key={l.code}
+                  onClick={() => handleLanguageChange(l.code)} 
+                  className={`${activeLang === l.code ? 'text-gold underline underline-offset-4' : 'text-navy'} hover:text-gold transition px-1`}
                 >
                   {l.name}
                 </button>
-                {idx !== languages.length - 1 && <span className="text-gray-200">|</span>}
-              </React.Fragment>
-            ))}
+              ))}
+            </div>
           </div>
           
-          <div className="flex items-center gap-3">
-            <a href="tel:+919351099947" className="bg-red-600 text-white px-4 md:px-5 py-2 md:py-2.5 rounded-full font-bold text-xs md:text-sm flex items-center gap-2 hover:bg-red-700 transition shadow-lg animate-pulse hover:animate-none">
-              <Phone size={16} />
-              <span className="notranslate font-bold">+91 9351099947</span>
+          <div className="hidden md:flex items-center gap-4">
+            <a href="tel:+919351099947" className="flex items-center gap-2 text-navy font-bold text-lg hover:text-gold transition">
+              <Phone size={20} className="text-gold" />
+              <span className="notranslate">9351099947</span>
             </a>
+            <button 
+               onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+               className="bg-navy text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-lg hover:bg-slate-800 transition transform hover:scale-105"
+            >
+              Get Franchise
+            </button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <header className="hero-gradient text-white py-12 md:py-24 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+      <header className="hero-gradient text-white pt-16 pb-24 md:py-32 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gold/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
           <div className="text-center lg:text-left">
-            <div className="inline-block bg-gold text-navy px-4 py-1 rounded-full font-bold text-xs uppercase tracking-widest mb-6">
-              {t.heroTag}
-            </div>
-            <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight mb-6">
-              {t.heroTitle} <span className="text-gold notranslate">Kota!</span>
+            <span className="inline-block bg-gold/20 text-gold border border-gold/30 px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest mb-8">
+              Premium Partnership Opportunity 2025
+            </span>
+            <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight mb-8">
+              Ab Har Sheher Banega <span className="text-gold notranslate">Kota!</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
-              {t.heroSub}
+            <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+              Bring the world-class <span className="notranslate font-semibold">EduQuantum Kota</span> academic system to your city. 
+              Partner with India's fastest-growing IIT-JEE & NEET coaching network and earn consistent returns.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button onClick={() => triggerWhatsApp()} className="bg-gold text-navy px-8 py-4 rounded-xl font-bold hover:bg-white transition flex items-center justify-center gap-2 shadow-xl">
-                {t.ctaBrochure} <ArrowRight size={18} />
-              </button>
-              <button onClick={() => triggerWhatsApp()} className="bg-green-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-green-700 transition flex items-center justify-center gap-2 shadow-xl">
-                <MessageCircle size={18} /> {t.ctaWhatsapp}
-              </button>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+              <div className="bg-white/10 p-4 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <Trophy className="text-gold mb-2 mx-auto lg:mx-0" size={24} />
+                <p className="text-xs font-bold uppercase tracking-tighter">Established 2012</p>
+                <p className="text-[10px] text-gray-400">12+ Years Legacy</p>
+              </div>
+              <div className="bg-white/10 p-4 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <ShieldCheck className="text-gold mb-2 mx-auto lg:mx-0" size={24} />
+                <p className="text-xs font-bold uppercase tracking-tighter">Zero Risk Model</p>
+                <p className="text-[10px] text-gray-400">Recession-Proof Biz</p>
+              </div>
+              <div className="bg-white/10 p-4 rounded-2xl border border-white/10 backdrop-blur-sm hidden md:block">
+                <TrendingUp className="text-gold mb-2 mx-auto lg:mx-0" size={24} />
+                <p className="text-xs font-bold uppercase tracking-tighter">High ROI</p>
+                <p className="text-[10px] text-gray-400">Proven Profitability</p>
+              </div>
             </div>
           </div>
 
-          {/* Lead Form */}
-          <div id="lead-form" className="bg-white rounded-3xl p-8 shadow-2xl text-gray-800 border-t-8 border-gold lg:max-w-md ml-auto">
-            <h3 className="text-2xl font-bold mb-2 text-navy">{t.formTitle}</h3>
-            <p className="text-gray-500 mb-6 text-sm">{t.formSub}</p>
-            <form onSubmit={triggerWhatsApp} className="space-y-4">
-              <input 
-                type="text" placeholder={t.labelName}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-navy outline-none" 
-                onChange={(e) => setFormData({...formData, name: e.target.value})} required 
-              />
-              <input 
-                type="text" placeholder={t.labelCity}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-navy outline-none" 
-                onChange={(e) => setFormData({...formData, city: e.target.value})} required 
-              />
-              <input 
-                type="tel" placeholder={t.labelMobile}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-navy outline-none" 
-                onChange={(e) => setFormData({...formData, phone: e.target.value})} required 
-              />
-              <select 
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-navy outline-none"
-                onChange={(e) => setFormData({...formData, role: e.target.value})}
-              >
-                <option value="Investor">{t.investor}</option>
-                <option value="School Owner">{t.schoolOwner}</option>
-                <option value="Coaching Owner">{t.coachingOwner}</option>
-              </select>
-              <button className="w-full bg-navy text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-xl">
-                <span>{t.formSubmit}</span>
+          <div id="lead-form" className="premium-card p-10 text-slate-900 max-w-md mx-auto lg:ml-auto">
+            <h3 className="text-2xl font-bold mb-2 text-navy">Request Franchise Info</h3>
+            <p className="text-gray-500 mb-8 text-sm">Download our detailed brochure on WhatsApp instantly.</p>
+            <form onSubmit={handleFormSubmit} className="space-y-5">
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase ml-1">Full Name</label>
+                <input type="text" placeholder="Your Name" className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition" value={formData.name} onChange={(e)=>setFormData({...formData, name:e.target.value})} required />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase ml-1">City & State</label>
+                <input type="text" placeholder="Your City" className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition" value={formData.city} onChange={(e)=>setFormData({...formData, city:e.target.value})} required />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase ml-1">Mobile Number</label>
+                <input type="tel" placeholder="+91 00000 00000" className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition" value={formData.phone} onChange={(e)=>setFormData({...formData, phone:e.target.value})} required />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase ml-1">Current Role</label>
+                <select className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition appearance-none" value={formData.role} onChange={(e)=>setFormData({...formData, role:e.target.value})}>
+                  <option>Individual Investor</option>
+                  <option>School Owner</option>
+                  <option>Existing Coaching Owner</option>
+                </select>
+              </div>
+              <button className="w-full bg-navy text-white font-bold py-5 rounded-xl hover:bg-slate-800 transition transform hover:scale-[1.02] flex items-center justify-center gap-3 shadow-xl uppercase tracking-widest text-sm">
+                <span>Start Consultation</span>
+                <ArrowRight size={18} />
               </button>
             </form>
           </div>
         </div>
       </header>
 
-      {/* Real-World Success Stories Section */}
-      <section className="py-24 bg-gray-50 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
+      {/* Why Partner with Us */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-4">{t.successTitle}</h2>
-            <div className="w-24 h-1.5 bg-gold mx-auto rounded-full"></div>
-            <p className="mt-6 text-gray-600 max-w-3xl mx-auto italic">Verified growth metrics from our network. See how partners are scaling with the <span className="notranslate font-bold text-navy">EduQuantum</span> method.</p>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy mb-4">Why Invest in Education?</h2>
+            <div className="w-20 h-1.5 bg-gold mx-auto rounded-full"></div>
           </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            {successStories.map((story, i) => (
-              <div key={i} className={`rounded-[2.5rem] p-10 border transition-all duration-500 flex flex-col group h-full shadow-lg ${story.featured ? 'bg-navy text-white border-gold border-2' : 'bg-white text-slate-800 border-gray-100'}`}>
-                <div className="flex justify-between items-start mb-6">
-                  <div className={`px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${story.featured ? 'bg-gold text-navy' : 'bg-navy/10 text-navy'}`}>
-                    {story.tag}
-                  </div>
-                  <Trophy size={24} className={story.featured ? 'text-gold' : 'text-gray-300'} />
+          <div className="grid md:grid-cols-3 gap-10">
+            {[
+              { title: "Recession-Proof", icon: ShieldCheck, text: "Education is a basic need. Even in economic downturns, parents prioritize their children's JEE/NEET preparation." },
+              { title: "Brand Legacy", icon: Award, text: "Benefit from the trusted 'EduQuantum Kota' name and G.G. Sir's 16+ years of academic excellence." },
+              { title: "Quantum Method", icon: Zap, text: "Our proprietary learning method ensures higher student selections, leading to high local demand." }
+            ].map((item, i) => (
+              <div key={i} className="group p-8 rounded-3xl border border-gray-50 hover:border-gold/30 hover:shadow-2xl transition-all duration-500 bg-white">
+                <div className="w-16 h-16 bg-navy/5 text-navy rounded-2xl flex items-center justify-center mb-6 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
+                  <item.icon size={32} />
                 </div>
-                
-                <h4 className={`text-2xl font-bold mb-1 ${story.featured ? 'text-white' : 'text-navy'}`}>{story.name}</h4>
-                <div className="flex items-center gap-2 mb-8 opacity-70">
-                  <MapPin size={14} />
-                  <span className="text-xs font-semibold uppercase">{story.location}</span>
-                </div>
-
-                <div className="space-y-4 mb-8 flex-grow">
-                  <div className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
-                    <TrendingUp size={20} className="text-green-500" />
-                    <div>
-                      <div className={`text-[10px] uppercase font-bold opacity-60`}>Student Growth</div>
-                      <div className="font-bold text-sm">{story.growth}</div>
-                    </div>
-                  </div>
-                  {story.revenue && (
-                    <div className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
-                      <Coins size={20} className="text-gold" />
-                      <div>
-                        <div className={`text-[10px] uppercase font-bold opacity-60`}>Business Scale</div>
-                        <div className="font-bold text-sm">{story.revenue}</div>
-                      </div>
-                    </div>
-                  )}
-                  {story.profit && (
-                    <div className="flex items-center gap-4 p-3 rounded-2xl bg-green-500/10 border border-green-500/20 shadow-inner">
-                      <Award size={20} className="text-green-400" />
-                      <div>
-                        <div className={`text-[10px] uppercase font-bold text-green-400 opacity-80`}>Center Profit</div>
-                        <div className="font-bold text-sm text-green-400">{story.profit}</div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="relative pt-6 border-t border-white/10 mt-auto">
-                  <Quote className={`absolute -top-3 right-0 opacity-20 w-10 h-10 ${story.featured ? 'text-gold' : 'text-navy'}`} />
-                  <p className={`text-sm leading-relaxed italic ${story.featured ? 'text-gray-300' : 'text-gray-500'}`}>
-                    "{story.testimonial}"
-                  </p>
-                </div>
+                <h4 className="text-xl font-bold mb-4 text-navy">{item.title}</h4>
+                <p className="text-gray-500 leading-relaxed text-sm">{item.text}</p>
               </div>
             ))}
-          </div>
-
-          {/* Location Presence Row */}
-          <div className="mt-16 bg-navy rounded-3xl p-8 text-white text-center shadow-xl border-b-4 border-gold">
-            <h5 className="text-gold font-bold uppercase tracking-[0.2em] text-xs mb-6 flex items-center justify-center gap-3">
-              <Globe size={16} /> Expanding Fast Across Regions
-            </h5>
-            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 opacity-80">
-              {otherLocations.map(loc => (
-                <div key={loc} className="flex items-center gap-2 group cursor-default">
-                  <CheckCircle2 size={16} className="text-green-400 group-hover:scale-125 transition" />
-                  <span className="font-bold text-lg">{loc}</span>
-                </div>
-              ))}
-              <div className="flex items-center gap-2 px-6 py-2 bg-white/10 rounded-full border border-white/10 italic text-sm">
-                + New centers in pipeline
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-20 items-center">
-          <div className="order-2 lg:order-1 flex justify-center">
-            <div className="relative">
-              <div className="absolute -top-4 -left-4 w-full h-full border-4 border-gold rounded-3xl"></div>
-              <img 
-                src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" 
-                alt="Founder" 
-                className="relative z-10 rounded-3xl shadow-2xl max-w-sm w-full"
-              />
-            </div>
+      {/* Founder Section - RESTORED */}
+      <section className="py-24 bg-navy text-white relative overflow-hidden">
+        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-20 items-center relative z-10">
+          <div className="relative group max-w-sm mx-auto lg:mx-0">
+             <div className="absolute inset-0 bg-gold rounded-[2rem] translate-x-4 translate-y-4 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform duration-500"></div>
+             <img 
+               src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" 
+               alt="Gorkey Godara (G.G. Sir)" 
+               className="relative z-10 rounded-[2rem] shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000"
+             />
+             <div className="absolute -bottom-6 -right-6 z-20 bg-white p-6 rounded-2xl shadow-xl hidden md:block">
+               <Star className="text-gold fill-gold mb-2" size={24} />
+               <p className="text-navy font-black text-2xl">16+</p>
+               <p className="text-gray-400 text-[10px] uppercase font-bold">Years of Kota Exp</p>
+             </div>
           </div>
-          <div className="order-1 lg:order-2">
-            <h2 className="text-4xl font-display font-bold text-navy mb-4">{t.founderTitle}</h2>
-            <h3 className="text-2xl font-bold text-gold mb-6">
-              <span className="notranslate">Gorkey Godara (G.G. Sir)</span>
+          <div>
+            <h2 className="text-4xl font-display font-bold mb-6">Academic Leadership</h2>
+            <h3 className="text-2xl font-bold text-gold mb-8 italic">
+              Meet <span className="notranslate">Gorkey Godara (G.G. Sir)</span>
             </h3>
-            <p className="text-lg text-gray-600 mb-8 italic border-l-4 border-gold pl-6 leading-relaxed">
-              "Hamara mission hai <span className="notranslate">Kota</span> ki quality education ko har sheher tak pahunchana. Hum aapko sirf brand nahi, balki result-oriented academic system provide karte hain."
-            </p>
-            <div className="flex gap-4">
-              <div className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
-                <span className="block font-bold text-navy text-xl">16+ Years</span>
-                <span className="text-xs text-gray-400">Kota Experience</span>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
-                <span className="block font-bold text-navy text-xl font-bold">Ex-Senior Faculty</span>
-                <span className="text-xs text-gray-400">Top Institutes</span>
+            <div className="space-y-6 text-gray-300">
+              <p className="leading-relaxed border-l-4 border-gold pl-6 italic text-lg">
+                "EduQuantum is not just a coaching center; it's a movement to democratize Kota-level education across India. We provide our partners with the exact blueprint that produces toppers."
+              </p>
+              <div className="grid grid-cols-2 gap-6 pt-6">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="text-gold" size={20} />
+                  <span className="text-sm font-semibold">Ex-Senior Faculty, Top Kota Institutes</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="text-gold" size={20} />
+                  <span className="text-sm font-semibold">Mentor to 1000+ IITians</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="text-gold" size={20} />
+                  <span className="text-sm font-semibold">System Established in 2012</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="text-gold" size={20} />
+                  <span className="text-sm font-semibold">Proven Scalability in 10+ Cities</span>
+                </div>
               </div>
             </div>
-            <button onClick={() => triggerWhatsApp()} className="mt-10 bg-navy text-white px-8 py-4 rounded-full font-bold hover:shadow-xl transition flex items-center gap-2">
-              <MessageCircle size={18} /> Chat with <span className="notranslate">G.G. Sir</span>
+            <button 
+               onClick={handleFormSubmit}
+               className="mt-12 bg-white text-navy px-10 py-4 rounded-full font-bold flex items-center gap-3 hover:bg-gold transition transform hover:scale-105 shadow-2xl"
+            >
+              <MessageCircle size={20} /> Discuss with Experts
             </button>
           </div>
         </div>
       </section>
 
-      {/* Support System Table */}
-      <section id="packages" className="py-24 bg-gray-50">
+      {/* Comparison Table */}
+      <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-4">{t.tableTitle}</h2>
-            <p className="text-gray-500">Pick the model that fits your city and budget.</p>
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-4">Franchise Models</h2>
+            <p className="text-gray-500">Pick the growth plan that aligns with your ambition.</p>
           </div>
-
-          <div className="overflow-x-auto rounded-3xl shadow-2xl border border-gray-100 bg-white">
-            <table className="w-full text-left min-w-[800px]">
+          
+          <div className="overflow-x-auto rounded-[2rem] shadow-2xl border bg-white border-gray-100">
+            <table className="w-full text-left min-w-[800px] border-collapse">
               <thead>
                 <tr className="bg-navy text-white">
                   <th className="p-8 font-bold text-lg">Support & Features</th>
-                  <th className="p-8 text-center bg-slate-800">Base Model</th>
-                  <th className="p-8 text-center bg-slate-900">Advance Model</th>
+                  <th className="p-8 text-center border-r border-white/10">Base Model</th>
+                  <th className="p-8 text-center border-r border-white/10">Advance Model</th>
                   <th className="p-8 text-center bg-gold text-navy relative">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] py-1 px-3 rounded-full font-black uppercase tracking-widest whitespace-nowrap">Recommended</div>
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] py-1.5 px-4 rounded-full font-black uppercase tracking-widest shadow-xl">Most Profitable</div>
                     Premium Model
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {/* Fixed TypeScript error by casting feature to any to allow optional property access */}
-                {featureList.map((feature: any, i) => (
-                  <tr key={feature.name} className="hover:bg-gray-50 transition">
-                    <td className="p-6 font-semibold text-navy">{feature.name}</td>
-                    <td className="p-6 text-center">{feature.base ? <Check className="mx-auto text-green-600" /> : <span className="text-red-400 font-bold">{feature.baseText || "✘"}</span>}</td>
-                    <td className="p-6 text-center">{feature.advance ? <Check className="mx-auto text-green-600" /> : <span className="text-red-400 font-bold">{feature.advanceText || "✘"}</span>}</td>
-                    <td className="p-6 text-center bg-gold/5">{feature.premium ? <Check className="mx-auto text-navy font-bold" /> : "✘"}</td>
+                {featureList.map((f, i) => (
+                  <tr key={i} className="hover:bg-slate-50 transition group">
+                    <td className="p-6 font-semibold text-navy flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-gold/50 group-hover:scale-150 transition"></div>
+                      {f.name}
+                    </td>
+                    <td className="p-6 text-center border-r border-gray-50">
+                      {f.base ? <Check className="mx-auto text-green-500" /> : <span className="text-red-300 font-bold">✘</span>}
+                    </td>
+                    <td className="p-6 text-center border-r border-gray-50">
+                      {f.advance ? <Check className="mx-auto text-green-500" /> : <span className="text-red-300 font-bold">✘</span>}
+                    </td>
+                    <td className="p-6 text-center bg-gold/5">
+                      <Check className="mx-auto text-navy font-black" />
+                    </td>
                   </tr>
                 ))}
+                <tr className="bg-gray-50">
+                   <td className="p-8 font-bold text-navy">Expected ROI</td>
+                   <td className="p-8 text-center text-sm font-bold">12-18 Months</td>
+                   <td className="p-8 text-center text-sm font-bold">10-15 Months</td>
+                   <td className="p-8 text-center text-sm font-bold bg-gold/10 text-navy uppercase tracking-widest">8-12 Months</td>
+                </tr>
               </tbody>
             </table>
-          </div>
-          <div className="mt-12 text-center">
-            <button onClick={() => triggerWhatsApp()} className="bg-navy text-white px-10 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition shadow-navy/20">Ask for Full Quotation</button>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#001a38] text-white py-16">
-        <div className="container mx-auto px-4 grid md:grid-cols-3 gap-12">
-          <div>
-            <div className="bg-white p-2 rounded-lg inline-block mb-6">
-              <img src="https://lh3.googleusercontent.com/d/15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" alt="Logo" className="h-8" />
+      {/* Success Section */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+              <h2 className="text-4xl font-display font-bold text-navy mb-8">Our Impact in Numbers</h2>
+              <div className="grid grid-cols-2 gap-8">
+                <div className="p-8 rounded-[2rem] bg-navy text-white shadow-2xl">
+                  <p className="text-5xl font-black text-gold mb-2">10+</p>
+                  <p className="text-xs font-bold uppercase tracking-widest opacity-70">Active Centers</p>
+                </div>
+                <div className="p-8 rounded-[2rem] bg-gray-50 border border-gray-100 shadow-sm">
+                  <p className="text-5xl font-black text-navy mb-2">5000+</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Students Taught</p>
+                </div>
+                <div className="p-8 rounded-[2rem] bg-gray-50 border border-gray-100 shadow-sm">
+                  <p className="text-5xl font-black text-navy mb-2">90%</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Parent Satisfaction</p>
+                </div>
+                <div className="p-8 rounded-[2rem] bg-gold text-navy shadow-2xl">
+                  <p className="text-5xl font-black mb-2">12Y</p>
+                  <p className="text-xs font-bold uppercase tracking-widest opacity-70">Legacy</p>
+                </div>
+              </div>
             </div>
-            <p className="text-gray-400 text-sm">Empowering education entrepreneurs since 2012. <span className="notranslate">Kota's</span> legacy, your city's growth.</p>
-          </div>
-          <div>
-            <h4 className="font-bold text-gold mb-6 uppercase tracking-widest text-xs font-bold"><span className="notranslate">Kota</span> Corporate Office</h4>
-            <div className="space-y-3 text-sm text-gray-400">
-              <p className="flex items-start gap-2"><MapPin size={16} className="text-gold shrink-0 mt-1" /> Jawahar Nagar, District Centre, <span className="notranslate">Kota</span>, Rajasthan</p>
-              <p className="flex items-center gap-2 font-bold text-white"><Phone size={16} className="text-gold" /> <span className="notranslate font-bold">+91 9351099947</span></p>
-              <p className="flex items-center gap-2"><Mail size={16} className="text-gold" /> franchise@eduquantum.in</p>
+            <div className="relative">
+              <Quote className="absolute -top-10 -left-10 text-gold opacity-10" size={120} />
+              <div className="premium-card p-10 relative z-10">
+                <h4 className="text-2xl font-bold text-navy mb-6">A Message to Investors</h4>
+                <p className="text-gray-600 leading-relaxed italic mb-8">
+                  "Education is the only recession-proof business in India. With our system, you get a business that not only earns you profit but also brings respect in your society. Join us in making Kota-level quality education accessible to every student."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center text-gold font-bold">GG</div>
+                  <div>
+                    <p className="font-bold text-navy notranslate">Gorkey Godara</p>
+                    <p className="text-xs text-gray-400 uppercase font-bold tracking-widest">Founder, EduQuantum Kota</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <h4 className="font-bold text-gold mb-6 uppercase tracking-widest text-xs font-bold">Quick Links</h4>
-            <ul className="text-sm text-gray-400 space-y-2">
-              <li><button onClick={() => triggerWhatsApp()} className="hover:text-gold">Get Franchise Brochure</button></li>
-              <li><a href="https://eduquantumkota.com" className="hover:text-gold">Main Website</a></li>
-              <li><a href="tel:+919351099947" className="hover:text-gold">Call Helpline</a></li>
-            </ul>
           </div>
         </div>
-        <div className="container mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-xs text-gray-500">
-          &copy; 2025 <span className="notranslate">EduQuantum Kota</span> | Innovative Learning Solutions Pvt. Ltd.
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="hero-gradient rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-8 relative z-10">Ready to Start Your Success Story?</h2>
+            <p className="text-xl text-gray-300 mb-12 relative z-10 max-w-2xl mx-auto">
+              Only a limited number of franchises are granted per city. Secure your region today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
+               <button 
+                  onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="bg-gold text-navy px-12 py-5 rounded-full font-bold text-lg hover:bg-white transition shadow-2xl transform hover:scale-105"
+               >
+                 Reserve Your City
+               </button>
+               <button 
+                  onClick={handleFormSubmit}
+                  className="bg-green-600 text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-green-700 transition flex items-center justify-center gap-3 shadow-2xl transform hover:scale-105"
+               >
+                 <MessageCircle size={24} /> WhatsApp Us
+               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Footer */}
+      <footer className="bg-[#001229] text-white py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-16 mb-16">
+            <div className="col-span-2">
+              <img src="https://lh3.googleusercontent.com/d/15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" alt="Logo" className="h-10 mb-8 bg-white p-1.5 rounded" />
+              <p className="text-gray-400 max-w-sm mb-8 leading-relaxed italic">
+                Empowering education entrepreneurs with <span className="notranslate">Kota's</span> academic legacy. Innovative learning solutions for the leaders of tomorrow.
+              </p>
+              <div className="flex gap-4">
+                 <div className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
+                   <Globe size={18} />
+                 </div>
+                 <div className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
+                   <Star size={18} />
+                 </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-gold font-bold uppercase tracking-widest text-xs mb-8">Kota Head Office</h4>
+              <div className="space-y-4 text-sm text-gray-400">
+                <p className="flex items-start gap-3">
+                  <MapPin size={18} className="text-gold shrink-0" />
+                  <span>Jawahar Nagar, District Centre, <span className="notranslate">Kota</span>, Rajasthan</span>
+                </p>
+                <p className="flex items-center gap-3">
+                  <Phone size={18} className="text-gold" />
+                  <span className="notranslate text-white font-bold">9351099947</span>
+                </p>
+                <p className="flex items-center gap-3">
+                  <Mail size={18} className="text-gold" />
+                  <span>franchise@eduquantum.in</span>
+                </p>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-gold font-bold uppercase tracking-widest text-xs mb-8">Support Links</h4>
+              <ul className="space-y-4 text-sm text-gray-400">
+                <li><a href="https://eduquantumkota.com" className="hover:text-gold transition">Main Website</a></li>
+                <li><a href="#" onClick={(e)=>{e.preventDefault(); document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' });}} className="hover:text-gold transition">Investment Quote</a></li>
+                <li><a href="#" className="hover:text-gold transition">Academic Support</a></li>
+                <li><a href="#" className="hover:text-gold transition">Marketing Kit</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-10 border-t border-white/10 flex flex-col md:row justify-between items-center gap-6 text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+            <p>&copy; 2025 <span className="notranslate">EduQuantum Kota</span>. All rights reserved.</p>
+            <div className="flex gap-8">
+              <a href="#" className="hover:text-gold">Privacy Policy</a>
+              <a href="#" className="hover:text-gold">Terms of Partnership</a>
+            </div>
+          </div>
         </div>
       </footer>
 
-      {/* Floating WhatsApp Button */}
+      {/* Fixed WhatsApp Float */}
       <button 
-        onClick={() => triggerWhatsApp()}
-        className="fixed bottom-6 right-6 z-[100] bg-green-500 text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 hover:bg-green-600 transition transform hover:scale-110 active:scale-95 group"
+        onClick={handleFormSubmit}
+        className="fixed bottom-8 right-8 z-[100] bg-green-500 text-white p-4 md:px-6 md:py-4 rounded-full shadow-2xl flex items-center gap-3 hover:bg-green-600 transition transform hover:scale-110 active:scale-95 group"
       >
-        <MessageCircle size={24} className="group-hover:rotate-12 transition" />
-        <span className="font-bold text-sm hidden md:block">{t.contactUs}</span>
+        <MessageCircle size={28} className="group-hover:rotate-12 transition" />
+        <span className="font-bold text-sm hidden md:block">Chat with G.G. Sir</span>
       </button>
-
     </div>
   );
 };
