@@ -1,24 +1,26 @@
 
 import React, { useState } from 'react';
-// Added missing Globe and Mail imports from lucide-react
 import { 
   Check, 
   Phone, 
   ArrowRight, 
   Trophy, 
   MapPin, 
-  CheckCircle2,
-  TrendingUp,
-  MessageCircle,
-  Languages,
-  Quote,
-  Award,
-  Coins,
-  ShieldCheck,
-  Zap,
-  Star,
-  Globe,
-  Mail
+  CheckCircle2, 
+  TrendingUp, 
+  MessageCircle, 
+  Languages, 
+  Quote, 
+  Award, 
+  Coins, 
+  ShieldCheck, 
+  Zap, 
+  Star, 
+  Globe, 
+  Mail, 
+  Users,
+  Instagram,
+  Smartphone
 } from 'lucide-react';
 
 const languages = [
@@ -37,6 +39,36 @@ const featureList = [
   { name: "School Integrated Program (SIP)", base: false, advance: false, premium: true },
   { name: "Dedicated Academic Mentor (Kota)", base: false, advance: false, premium: true },
   { name: "24/7 Doubt Counter (Online)", base: false, advance: false, premium: true }
+];
+
+const successStories = [
+  {
+    center: "Udgir Center",
+    location: "Maharashtra",
+    growth: "25 to 80+ Students",
+    profit: "₹30-40 Lakhs Net Profit",
+    description: "Started as a small local setup, but after implementing the EduQuantum Kota methodology, student intake tripled within 14 months.",
+    owner: "Partner Franchisee",
+    highlight: "3x Growth in 1 Year"
+  },
+  {
+    center: "Amravati Center",
+    location: "Maharashtra",
+    growth: "120+ First Batch Admissions",
+    profit: "Dominant Local Authority",
+    description: "Leveraged the Brand Legacy to establish market dominance quickly. The parent trust in Kota academics worked wonders for the launch.",
+    owner: "Academic Partner",
+    highlight: "Market Leader"
+  },
+  {
+    center: "Mumbai SIP",
+    location: "Maharashtra",
+    growth: "School Integrated Model",
+    profit: "Premium Segment Capture",
+    description: "Successfully integrated Kota coaching within school hours, providing a competitive edge and higher revenue per student.",
+    owner: "School Owner",
+    highlight: "Seamless Integration"
+  }
 ];
 
 const App: React.FC = () => {
@@ -95,7 +127,7 @@ const App: React.FC = () => {
           <div className="hidden md:flex items-center gap-4">
             <a href="tel:+919351099947" className="flex items-center gap-2 text-navy font-bold text-lg hover:text-gold transition">
               <Phone size={20} className="text-gold" />
-              <span className="notranslate">9351099947</span>
+              <span className="notranslate">+91 93510 99947</span>
             </a>
             <button 
                onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
@@ -268,8 +300,9 @@ const App: React.FC = () => {
                   <th className="p-8 font-bold text-lg">Support & Features</th>
                   <th className="p-8 text-center border-r border-white/10">Base Model</th>
                   <th className="p-8 text-center border-r border-white/10">Advance Model</th>
-                  <th className="p-8 text-center bg-gold text-navy relative">
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] py-1.5 px-4 rounded-full font-black uppercase tracking-widest shadow-xl">Most Profitable</div>
+                  {/* Fixed Overlap: Moved badge inside padding and adjusted pt */}
+                  <th className="pt-12 pb-6 px-8 text-center bg-gold text-navy relative">
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[9px] py-1 px-3 rounded-full font-black uppercase tracking-[0.1em] shadow-xl whitespace-nowrap">Most Profitable</div>
                     Premium Model
                   </th>
                 </tr>
@@ -304,8 +337,71 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Partner Success Stories Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy mb-4">Partner Success Stories</h2>
+            <div className="w-20 h-1.5 bg-gold mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-500 max-w-2xl mx-auto">Real journeys of entrepreneurs who transformed their vision into high-yielding educational institutes.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {successStories.map((story, i) => (
+              <div key={i} className="premium-card p-8 flex flex-col h-full group hover:shadow-2xl transition-all duration-300">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center text-gold">
+                    <TrendingUp size={24} />
+                  </div>
+                  <span className="bg-navy text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">{story.highlight}</span>
+                </div>
+                
+                <h4 className="text-xl font-bold text-navy mb-1">{story.center}</h4>
+                <p className="text-xs font-bold text-gold uppercase tracking-widest mb-4 flex items-center gap-1">
+                  <MapPin size={12} /> {story.location}
+                </p>
+                
+                <div className="space-y-3 mb-6 flex-grow">
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <Users size={18} className="text-navy" />
+                    <div>
+                      <p className="text-[10px] text-gray-400 uppercase font-bold">Growth</p>
+                      <p className="text-sm font-bold text-navy">{story.growth}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl">
+                    <Coins size={18} className="text-green-600" />
+                    <div>
+                      <p className="text-[10px] text-green-600 uppercase font-bold">Result</p>
+                      <p className="text-sm font-bold text-green-700">{story.profit}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative pt-6 border-t border-gray-100">
+                  <Quote className="absolute -top-3 right-0 text-gold/20" size={32} />
+                  <p className="text-sm text-gray-600 leading-relaxed italic">
+                    "{story.description}"
+                  </p>
+                  <p className="mt-4 text-xs font-bold text-navy text-right">— {story.owner}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-16 text-center">
+            <button 
+              onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex items-center gap-2 text-navy font-bold hover:text-gold transition group"
+            >
+              Hear More Success Stories <ArrowRight size={18} className="group-hover:translate-x-2 transition" />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Success Section */}
-      <section className="py-24 bg-white overflow-hidden">
+      <section className="py-24 bg-gray-50 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
@@ -315,11 +411,11 @@ const App: React.FC = () => {
                   <p className="text-5xl font-black text-gold mb-2">10+</p>
                   <p className="text-xs font-bold uppercase tracking-widest opacity-70">Active Centers</p>
                 </div>
-                <div className="p-8 rounded-[2rem] bg-gray-50 border border-gray-100 shadow-sm">
+                <div className="p-8 rounded-[2rem] bg-white border border-gray-100 shadow-sm">
                   <p className="text-5xl font-black text-navy mb-2">5000+</p>
                   <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Students Taught</p>
                 </div>
-                <div className="p-8 rounded-[2rem] bg-gray-50 border border-gray-100 shadow-sm">
+                <div className="p-8 rounded-[2rem] bg-white border border-gray-100 shadow-sm">
                   <p className="text-5xl font-black text-navy mb-2">90%</p>
                   <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Parent Satisfaction</p>
                 </div>
@@ -350,7 +446,7 @@ const App: React.FC = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="hero-gradient rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
@@ -386,12 +482,15 @@ const App: React.FC = () => {
                 Empowering education entrepreneurs with <span className="notranslate">Kota's</span> academic legacy. Innovative learning solutions for the leaders of tomorrow.
               </p>
               <div className="flex gap-4">
-                 <div className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
+                 <a href="https://www.instagram.com/quantum_kota/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
+                   <Instagram size={18} />
+                 </a>
+                 <a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
+                   <Smartphone size={18} />
+                 </a>
+                 <a href="https://eduquantumkota.com/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
                    <Globe size={18} />
-                 </div>
-                 <div className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
-                   <Star size={18} />
-                 </div>
+                 </a>
               </div>
             </div>
             <div>
@@ -403,21 +502,22 @@ const App: React.FC = () => {
                 </p>
                 <p className="flex items-center gap-3">
                   <Phone size={18} className="text-gold" />
-                  <span className="notranslate text-white font-bold">9351099947</span>
+                  <span className="notranslate text-white font-bold">+91 93510 99947</span>
                 </p>
                 <p className="flex items-center gap-3">
                   <Mail size={18} className="text-gold" />
-                  <span>franchise@eduquantum.in</span>
+                  <span>eduquantumkota@gmail.com</span>
                 </p>
               </div>
             </div>
             <div>
               <h4 className="text-gold font-bold uppercase tracking-widest text-xs mb-8">Support Links</h4>
               <ul className="space-y-4 text-sm text-gray-400">
-                <li><a href="https://eduquantumkota.com" className="hover:text-gold transition">Main Website</a></li>
-                <li><a href="#" onClick={(e)=>{e.preventDefault(); document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' });}} className="hover:text-gold transition">Investment Quote</a></li>
-                <li><a href="#" className="hover:text-gold transition">Academic Support</a></li>
-                <li><a href="#" className="hover:text-gold transition">Marketing Kit</a></li>
+                <li><a href="https://eduquantumkota.com/" target="_blank" className="hover:text-gold transition">Main Website</a></li>
+                <li><a href="https://share.google/c7M2pm9VhuvBw0t2l" target="_blank" className="hover:text-gold transition">Google Profile & Reviews</a></li>
+                <li><a href="https://www.instagram.com/quantum_kota/" target="_blank" className="hover:text-gold transition">Instagram (Tips & Updates)</a></li>
+                <li><a href="https://www.justdial.com/Kota-Rajasthan/Quantum-Physics-Classes-In-Front-Of-Ratlami-Namkeen-New-Jawahar-Nagar/9999PX744-X744-140731230445-Y5M6_BZDET" target="_blank" className="hover:text-gold transition">JustDial Listing</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" className="hover:text-gold transition font-bold text-white">Download Mobile App</a></li>
               </ul>
             </div>
           </div>
