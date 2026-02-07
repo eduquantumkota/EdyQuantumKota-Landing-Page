@@ -18,10 +18,17 @@ import {
   Layout,
   PieChart,
   MessageCircle,
-  Languages
+  Languages,
+  Quote,
+  TrendingDown,
+  UserCheck,
+  Award,
+  Users,
+  Coins,
+  Globe
 } from 'lucide-react';
 
-// Translation Dictionary for Instant Localized Experience
+// Translation Dictionary for localized Hero components
 const translations: Record<string, any> = {
   en: {
     heroTag: "Establish Kota Legacy in Your City",
@@ -45,6 +52,7 @@ const translations: Record<string, any> = {
     labelName: "Full Name",
     labelCity: "City",
     labelMobile: "Mobile Number",
+    successTitle: "Proven Success Across India",
   },
   hi: {
     heroTag: "अपने शहर में कोटा की विरासत स्थापित करें",
@@ -68,6 +76,7 @@ const translations: Record<string, any> = {
     labelName: "पूरा नाम",
     labelCity: "शहर",
     labelMobile: "मोबाइल नंबर",
+    successTitle: "संपूर्ण भारत में प्रमाणित सफलता",
   },
   gu: {
     heroTag: "તમારા શહેરમાં કોટાનો વારસો સ્થાપિત કરો",
@@ -87,10 +96,11 @@ const translations: Record<string, any> = {
     contactUs: "અમારી સાથે ચેટ કરો",
     investor: "વ્યક્તિગત રોકાણકાર",
     schoolOwner: "શાળા માલિક",
-    coachingOwner: "સંસ્થા માલિક",
+    coachingOwner: "સંસ્થાન માલિક",
     labelName: "આખું નામ",
     labelCity: "શહેર",
     labelMobile: "મોબાઈલ નંબર",
+    successTitle: "સમગ્ર ભારતમાં સફળતા સાબિત થઈ",
   },
   mr: {
     heroTag: "तुमच्या शहरात कोटाचा वारसा प्रस्थापित करा",
@@ -114,13 +124,82 @@ const translations: Record<string, any> = {
     labelName: "पूर्ण नाव",
     labelCity: "शहर",
     labelMobile: "मोबाईल नंबर",
+    successTitle: "संपूर्ण भारतात यशस्वी कथा",
   }
 };
+
+const languages = [
+  { name: "English", code: "en" },
+  { name: "हिन्दी", code: "hi" },
+  { name: "ગુજરાતી", code: "gu" },
+  { name: "मराठी", code: "mr" },
+  { name: "தமிழ்", code: "ta" },
+  { name: "తెలుగు", code: "te" },
+  { name: "ಕನ್ನಡ", code: "kn" },
+  { name: "മലയാളം", code: "ml" }
+];
+
+const successStories = [
+  {
+    name: "Udgir Center",
+    location: "Maharashtra",
+    featured: true,
+    growth: "25 to 80+ Students",
+    revenue: "80-90 Lakhs Business",
+    profit: "30-40 Lakhs Annual Profit",
+    testimonial: "Joining Quantum Kota was a game-changer. Our student count tripled within a year, and the profit margins are exceptional due to their streamlined system.",
+    tag: "Highest Growth Center"
+  },
+  {
+    name: "Amravati Center",
+    location: "Maharashtra",
+    growth: "Rapid Enrollment",
+    revenue: "Leading Institute in District",
+    testimonial: "The academic material and branding from Kota helped us dominate the local market. The parent trust in Kota brand is phenomenal.",
+    tag: "High Parent Trust"
+  },
+  {
+    name: "Ashok Academy",
+    location: "Mumbai",
+    growth: "Premium SIP Model",
+    revenue: "High-Value Admissions",
+    testimonial: "Integrating the Quantum Method into our academy gave us an edge in the competitive Mumbai market. Exceptional faculty training support.",
+    tag: "Metro Success"
+  }
+];
+
+const otherLocations = ["Tirupati", "Kinwat", "Nandigram"];
+
+const featureList = [
+  { name: "Kota Curriculum & Study Material", base: true, advance: true, premium: true },
+  { name: "Faculty Recruitment & Training", base: true, advance: true, premium: true },
+  { name: "Online Testing Platform (LMS)", base: true, advance: true, premium: true },
+  { name: "Mobile App for Parents/Students", base: true, advance: true, premium: true },
+  { name: "Local Marketing Strategy", base: false, baseText: "Basic", advance: true, premium: true },
+  { name: "Faculty Performance Monitoring", base: false, advance: true, premium: true },
+  { name: "Hybrid Classroom Integration", base: false, advance: true, premium: true },
+  { name: "School Integrated Program (SIP)", base: false, advance: false, premium: true },
+  { name: "Dedicated Academic Mentor", base: false, advance: false, premium: true },
+  { name: "Doubt Counter Support from Kota", base: false, advance: false, premium: true }
+];
 
 const App: React.FC = () => {
   const [lang, setLang] = useState('en');
   const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Investor' });
   const t = translations[lang] || translations['en'];
+
+  const triggerTranslation = (langCode: string) => {
+    // Dictionary fallback for instant localized UI elements
+    if (translations[langCode]) {
+      setLang(langCode);
+    }
+    // Google engine trigger for the whole page
+    const googleCombo = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+    if (googleCombo) {
+      googleCombo.value = langCode;
+      googleCombo.dispatchEvent(new Event('change'));
+    }
+  };
 
   const triggerWhatsApp = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -129,30 +208,17 @@ const App: React.FC = () => {
       ? `Hi, I want to know about the franchise model. My details: Name: ${formData.name}, City: ${formData.city}, Phone: ${formData.phone}, Role: ${formData.role}`
       : `Hi, I want to know about the franchise model.`;
     
-    // Open WhatsApp in a new tab
     window.open(`https://wa.me/${whatsappNum}?text=${encodeURIComponent(msg)}`, '_blank');
     
-    // Redirect current tab to main site after 2 seconds
     setTimeout(() => {
       window.location.href = "https://eduquantumkota.com";
     }, 2000);
   };
 
-  const featureList = [
-    { name: "Brand Recognition & Logo", base: false, advance: true, premium: true },
-    { name: "Kota Faculty Recruitment", base: false, advance: true, premium: true },
-    { name: "Faculty Replacement Guarantee", base: false, baseText: "✘", advance: false, advanceText: "✘", premium: true },
-    { name: "Kota Hard Copy Material", base: true, advance: true, premium: true },
-    { name: "Digital Leads Support", base: true, advance: true, premium: true },
-    { name: "Personalized Center App", base: true, advance: true, premium: true },
-    { name: "Test Paper Generator", base: false, advance: false, premium: true },
-    { name: "Social Media Management", base: false, advance: false, premium: true },
-  ];
-
   return (
     <div className="min-h-screen bg-white text-slate-900 font-poppins selection:bg-gold/30">
       
-      {/* Custom Header with Language Selector */}
+      {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-100 py-3">
         <div className="container mx-auto px-4 flex flex-wrap justify-between items-center gap-4">
           <div className="flex items-center">
@@ -163,22 +229,26 @@ const App: React.FC = () => {
             />
           </div>
           
-          {/* Custom Logic Switcher */}
-          <div className="flex items-center gap-2 md:gap-4 text-[10px] md:text-xs font-bold text-navy uppercase tracking-wider">
-            <Languages size={14} className="text-gold" />
-            <button onClick={() => setLang('en')} className={`${lang === 'en' ? 'text-gold' : 'text-navy'} hover:text-gold transition`}>English</button>
-            <span className="text-gray-300">|</span>
-            <button onClick={() => setLang('hi')} className={`${lang === 'hi' ? 'text-gold' : 'text-navy'} hover:text-gold transition`}>हिन्दी</button>
-            <span className="text-gray-300">|</span>
-            <button onClick={() => setLang('gu')} className={`${lang === 'gu' ? 'text-gold' : 'text-navy'} hover:text-gold transition`}>ગુજરાતી</button>
-            <span className="text-gray-300">|</span>
-            <button onClick={() => setLang('mr')} className={`${lang === 'mr' ? 'text-gold' : 'text-navy'} hover:text-gold transition`}>मराठी</button>
+          {/* Custom Language Selector - APPENDED South Indian Languages */}
+          <div className="flex items-center flex-wrap gap-2 md:gap-3 text-[10px] md:text-xs font-bold text-navy uppercase tracking-wider max-w-lg">
+            <Languages size={14} className="text-gold shrink-0" />
+            {languages.map((l, idx) => (
+              <React.Fragment key={l.code}>
+                <button 
+                  onClick={() => triggerTranslation(l.code)} 
+                  className={`${lang === l.code ? 'text-gold' : 'text-navy'} hover:text-gold transition whitespace-nowrap`}
+                >
+                  {l.name}
+                </button>
+                {idx !== languages.length - 1 && <span className="text-gray-200">|</span>}
+              </React.Fragment>
+            ))}
           </div>
           
           <div className="flex items-center gap-3">
             <a href="tel:+919351099947" className="bg-red-600 text-white px-4 md:px-5 py-2 md:py-2.5 rounded-full font-bold text-xs md:text-sm flex items-center gap-2 hover:bg-red-700 transition shadow-lg animate-pulse hover:animate-none">
               <Phone size={16} />
-              <span className="notranslate">+91 9351099947</span>
+              <span className="notranslate font-bold">+91 9351099947</span>
             </a>
           </div>
         </div>
@@ -192,7 +262,7 @@ const App: React.FC = () => {
               {t.heroTag}
             </div>
             <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight mb-6">
-              {t.heroTitle} <span className="text-gold notranslate">{t.heroSpan}</span>
+              {t.heroTitle} <span className="text-gold notranslate">Kota!</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
               {t.heroSub}
@@ -243,72 +313,136 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Business Case Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-6">{t.whyTitle}</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">{t.whySub}</p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: <TrendingUp />, title: "Low Budget Entry", desc: "No need for massive capital. Start small and scale as the brand grows in your city." },
-              { icon: <ShieldCheck />, title: "Recession Proof", desc: "Education is a basic necessity. Parents prioritize learning even during tough times." },
-              { icon: <Layout />, title: "SIP Advantage", desc: "Our School Integrated Program allows you to tap into existing students within school premises." },
-              { icon: <PieChart />, title: "High Scalability", desc: "With our tech and faculty support, managing 100 or 1000 students is equally simple." }
-            ].map((item, i) => (
-              <div key={i} className="p-8 bg-gray-50 rounded-2xl border-b-4 border-transparent hover:border-gold transition shadow-sm">
-                <div className="text-gold mb-4 flex justify-center">{item.icon}</div>
-                <h4 className="text-xl font-bold mb-3 text-navy">{item.title}</h4>
-                <p className="text-gray-500 text-sm">{item.desc}</p>
+      {/* Real-World Success Stories Section */}
+      <section className="py-24 bg-gray-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-4">{t.successTitle}</h2>
+            <div className="w-24 h-1.5 bg-gold mx-auto rounded-full"></div>
+            <p className="mt-6 text-gray-600 max-w-3xl mx-auto italic">Verified growth metrics from our network. See how partners are scaling with the <span className="notranslate font-bold text-navy">EduQuantum</span> method.</p>
+          </div>
+          
+          <div className="grid lg:grid-cols-3 gap-8">
+            {successStories.map((story, i) => (
+              <div key={i} className={`rounded-[2.5rem] p-10 border transition-all duration-500 flex flex-col group h-full shadow-lg ${story.featured ? 'bg-navy text-white border-gold border-2' : 'bg-white text-slate-800 border-gray-100'}`}>
+                <div className="flex justify-between items-start mb-6">
+                  <div className={`px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${story.featured ? 'bg-gold text-navy' : 'bg-navy/10 text-navy'}`}>
+                    {story.tag}
+                  </div>
+                  <Trophy size={24} className={story.featured ? 'text-gold' : 'text-gray-300'} />
+                </div>
+                
+                <h4 className={`text-2xl font-bold mb-1 ${story.featured ? 'text-white' : 'text-navy'}`}>{story.name}</h4>
+                <div className="flex items-center gap-2 mb-8 opacity-70">
+                  <MapPin size={14} />
+                  <span className="text-xs font-semibold uppercase">{story.location}</span>
+                </div>
+
+                <div className="space-y-4 mb-8 flex-grow">
+                  <div className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
+                    <TrendingUp size={20} className="text-green-500" />
+                    <div>
+                      <div className={`text-[10px] uppercase font-bold opacity-60`}>Student Growth</div>
+                      <div className="font-bold text-sm">{story.growth}</div>
+                    </div>
+                  </div>
+                  {story.revenue && (
+                    <div className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
+                      <Coins size={20} className="text-gold" />
+                      <div>
+                        <div className={`text-[10px] uppercase font-bold opacity-60`}>Business Scale</div>
+                        <div className="font-bold text-sm">{story.revenue}</div>
+                      </div>
+                    </div>
+                  )}
+                  {story.profit && (
+                    <div className="flex items-center gap-4 p-3 rounded-2xl bg-green-500/10 border border-green-500/20 shadow-inner">
+                      <Award size={20} className="text-green-400" />
+                      <div>
+                        <div className={`text-[10px] uppercase font-bold text-green-400 opacity-80`}>Center Profit</div>
+                        <div className="font-bold text-sm text-green-400">{story.profit}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative pt-6 border-t border-white/10 mt-auto">
+                  <Quote className={`absolute -top-3 right-0 opacity-20 w-10 h-10 ${story.featured ? 'text-gold' : 'text-navy'}`} />
+                  <p className={`text-sm leading-relaxed italic ${story.featured ? 'text-gray-300' : 'text-gray-500'}`}>
+                    "{story.testimonial}"
+                  </p>
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* Location Presence Row */}
+          <div className="mt-16 bg-navy rounded-3xl p-8 text-white text-center shadow-xl border-b-4 border-gold">
+            <h5 className="text-gold font-bold uppercase tracking-[0.2em] text-xs mb-6 flex items-center justify-center gap-3">
+              <Globe size={16} /> Expanding Fast Across Regions
+            </h5>
+            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 opacity-80">
+              {otherLocations.map(loc => (
+                <div key={loc} className="flex items-center gap-2 group cursor-default">
+                  <CheckCircle2 size={16} className="text-green-400 group-hover:scale-125 transition" />
+                  <span className="font-bold text-lg">{loc}</span>
+                </div>
+              ))}
+              <div className="flex items-center gap-2 px-6 py-2 bg-white/10 rounded-full border border-white/10 italic text-sm">
+                + New centers in pipeline
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Founder Spotlight */}
-      <section className="py-20 bg-gray-50">
+      {/* Founder Section */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-20 items-center">
           <div className="order-2 lg:order-1 flex justify-center">
             <div className="relative">
               <div className="absolute -top-4 -left-4 w-full h-full border-4 border-gold rounded-3xl"></div>
               <img 
                 src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" 
-                alt="Gorkey Godara Sir" 
+                alt="Founder" 
                 className="relative z-10 rounded-3xl shadow-2xl max-w-sm w-full"
               />
             </div>
           </div>
           <div className="order-1 lg:order-2">
             <h2 className="text-4xl font-display font-bold text-navy mb-4">{t.founderTitle}</h2>
-            <h3 className="text-2xl font-bold text-gold mb-6">Gorkey Godara (G.G. Sir)</h3>
-            <p className="text-lg text-gray-600 mb-8 italic border-l-4 border-gold pl-6">
-              "Hamara mission hai Kota ki quality education ko har sheher tak pahunchana. Hum aapko sirf brand nahi, balki result-oriented academic system provide karte hain."
+            <h3 className="text-2xl font-bold text-gold mb-6">
+              <span className="notranslate">Gorkey Godara (G.G. Sir)</span>
+            </h3>
+            <p className="text-lg text-gray-600 mb-8 italic border-l-4 border-gold pl-6 leading-relaxed">
+              "Hamara mission hai <span className="notranslate">Kota</span> ki quality education ko har sheher tak pahunchana. Hum aapko sirf brand nahi, balki result-oriented academic system provide karte hain."
             </p>
             <div className="flex gap-4">
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
+              <div className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
                 <span className="block font-bold text-navy text-xl">16+ Years</span>
                 <span className="text-xs text-gray-400">Kota Experience</span>
               </div>
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
-                <span className="block font-bold text-navy text-xl">Ex-Senior Faculty</span>
+              <div className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
+                <span className="block font-bold text-navy text-xl font-bold">Ex-Senior Faculty</span>
                 <span className="text-xs text-gray-400">Top Institutes</span>
               </div>
             </div>
             <button onClick={() => triggerWhatsApp()} className="mt-10 bg-navy text-white px-8 py-4 rounded-full font-bold hover:shadow-xl transition flex items-center gap-2">
-              <MessageCircle size={18} /> Chat with G.G. Sir
+              <MessageCircle size={18} /> Chat with <span className="notranslate">G.G. Sir</span>
             </button>
           </div>
         </div>
       </section>
 
-      {/* Packages Section */}
-      <section id="packages" className="py-24 bg-white">
+      {/* Support System Table */}
+      <section id="packages" className="py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-4">{t.tableTitle}</h2>
+            <p className="text-gray-500">Pick the model that fits your city and budget.</p>
           </div>
 
-          <div className="overflow-x-auto rounded-3xl shadow-2xl border border-gray-100">
+          <div className="overflow-x-auto rounded-3xl shadow-2xl border border-gray-100 bg-white">
             <table className="w-full text-left min-w-[800px]">
               <thead>
                 <tr className="bg-navy text-white">
@@ -316,13 +450,14 @@ const App: React.FC = () => {
                   <th className="p-8 text-center bg-slate-800">Base Model</th>
                   <th className="p-8 text-center bg-slate-900">Advance Model</th>
                   <th className="p-8 text-center bg-gold text-navy relative">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] py-1 px-3 rounded-full font-black uppercase tracking-widest whitespace-nowrap">Most Recommended</div>
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] py-1 px-3 rounded-full font-black uppercase tracking-widest whitespace-nowrap">Recommended</div>
                     Premium Model
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {featureList.map((feature, i) => (
+                {/* Fixed TypeScript error by casting feature to any to allow optional property access */}
+                {featureList.map((feature: any, i) => (
                   <tr key={feature.name} className="hover:bg-gray-50 transition">
                     <td className="p-6 font-semibold text-navy">{feature.name}</td>
                     <td className="p-6 text-center">{feature.base ? <Check className="mx-auto text-green-600" /> : <span className="text-red-400 font-bold">{feature.baseText || "✘"}</span>}</td>
@@ -334,38 +469,7 @@ const App: React.FC = () => {
             </table>
           </div>
           <div className="mt-12 text-center">
-            <button onClick={() => triggerWhatsApp()} className="bg-navy text-white px-10 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition shadow-navy/20">Get Specific Quote</button>
-          </div>
-        </div>
-      </section>
-
-      {/* Support Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-8 leading-tight">{t.supportTitle}</h2>
-            <div className="space-y-6">
-              {[
-                { icon: <Rocket />, title: "Academic Support", desc: "Access to 12 years of curated Kota test series and materials." },
-                { icon: <Smartphone />, title: "Technology Suite", desc: "Branded apps, ERPs, and automated test generators." },
-                { icon: <Crown />, title: "Marketing Kits", desc: "Complete social media and physical marketing templates." }
-              ].map((s, idx) => (
-                <div key={idx} className="flex gap-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-100">
-                  <div className="text-gold shrink-0">{s.icon}</div>
-                  <div>
-                    <h5 className="font-bold text-navy">{s.title}</h5>
-                    <p className="text-sm text-gray-500">{s.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-navy rounded-[3rem] p-10 text-white relative overflow-hidden shadow-2xl border-b-8 border-gold">
-             <h3 className="text-2xl font-bold mb-6 text-gold">Ready to Start?</h3>
-             <p className="text-gray-300 mb-8">Join the EduQuantum family and bring Kota’s standard education to your local school premises or independent center.</p>
-             <button onClick={() => triggerWhatsApp()} className="w-full bg-gold text-navy font-black py-4 rounded-xl hover:bg-white transition flex items-center justify-center gap-2">
-               WHATSAPP NOW <ArrowRight size={18} />
-             </button>
+            <button onClick={() => triggerWhatsApp()} className="bg-navy text-white px-10 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition shadow-navy/20">Ask for Full Quotation</button>
           </div>
         </div>
       </section>
@@ -377,18 +481,18 @@ const App: React.FC = () => {
             <div className="bg-white p-2 rounded-lg inline-block mb-6">
               <img src="https://lh3.googleusercontent.com/d/15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" alt="Logo" className="h-8" />
             </div>
-            <p className="text-gray-400 text-sm">Empowering education entrepreneurs since 2012. Kota's legacy, your city's growth.</p>
+            <p className="text-gray-400 text-sm">Empowering education entrepreneurs since 2012. <span className="notranslate">Kota's</span> legacy, your city's growth.</p>
           </div>
           <div>
-            <h4 className="font-bold text-gold mb-6 uppercase">Corporate Office</h4>
+            <h4 className="font-bold text-gold mb-6 uppercase tracking-widest text-xs font-bold"><span className="notranslate">Kota</span> Corporate Office</h4>
             <div className="space-y-3 text-sm text-gray-400">
-              <p className="flex items-start gap-2"><MapPin size={16} className="text-gold shrink-0 mt-1" /> Jawahar Nagar, District Centre, Kota, Rajasthan</p>
-              <p className="flex items-center gap-2 font-bold text-white"><Phone size={16} className="text-gold" /> +91 9351099947</p>
+              <p className="flex items-start gap-2"><MapPin size={16} className="text-gold shrink-0 mt-1" /> Jawahar Nagar, District Centre, <span className="notranslate">Kota</span>, Rajasthan</p>
+              <p className="flex items-center gap-2 font-bold text-white"><Phone size={16} className="text-gold" /> <span className="notranslate font-bold">+91 9351099947</span></p>
               <p className="flex items-center gap-2"><Mail size={16} className="text-gold" /> franchise@eduquantum.in</p>
             </div>
           </div>
           <div>
-            <h4 className="font-bold text-gold mb-6 uppercase">Quick Links</h4>
+            <h4 className="font-bold text-gold mb-6 uppercase tracking-widest text-xs font-bold">Quick Links</h4>
             <ul className="text-sm text-gray-400 space-y-2">
               <li><button onClick={() => triggerWhatsApp()} className="hover:text-gold">Get Franchise Brochure</button></li>
               <li><a href="https://eduquantumkota.com" className="hover:text-gold">Main Website</a></li>
@@ -397,7 +501,7 @@ const App: React.FC = () => {
           </div>
         </div>
         <div className="container mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-xs text-gray-500">
-          &copy; 2025 EduQuantum Kota | Innovative Learning Solutions Pvt. Ltd.
+          &copy; 2025 <span className="notranslate">EduQuantum Kota</span> | Innovative Learning Solutions Pvt. Ltd.
         </div>
       </footer>
 
