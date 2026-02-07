@@ -92,7 +92,7 @@ const App: React.FC = () => {
     
     // Redirect main page after delay
     setTimeout(() => { 
-        window.location.href = "https://eduquantumkota.com"; 
+        window.location.href = "https://quantumkota.com"; 
     }, 2000);
   };
 
@@ -231,7 +231,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Founder Section - RESTORED */}
+      {/* Founder Section */}
       <section className="py-24 bg-navy text-white relative overflow-hidden">
         <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-20 items-center relative z-10">
           <div className="relative group max-w-sm mx-auto lg:mx-0">
@@ -300,7 +300,6 @@ const App: React.FC = () => {
                   <th className="p-8 font-bold text-lg">Support & Features</th>
                   <th className="p-8 text-center border-r border-white/10">Base Model</th>
                   <th className="p-8 text-center border-r border-white/10">Advance Model</th>
-                  {/* Fixed Overlap: Moved badge inside padding and adjusted pt */}
                   <th className="pt-12 pb-6 px-8 text-center bg-gold text-navy relative">
                     <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[9px] py-1 px-3 rounded-full font-black uppercase tracking-[0.1em] shadow-xl whitespace-nowrap">Most Profitable</div>
                     Premium Model
@@ -488,7 +487,7 @@ const App: React.FC = () => {
                  <a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
                    <Smartphone size={18} />
                  </a>
-                 <a href="https://eduquantumkota.com/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
+                 <a href="https://quantumkota.com/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
                    <Globe size={18} />
                  </a>
               </div>
@@ -513,7 +512,7 @@ const App: React.FC = () => {
             <div>
               <h4 className="text-gold font-bold uppercase tracking-widest text-xs mb-8">Support Links</h4>
               <ul className="space-y-4 text-sm text-gray-400">
-                <li><a href="https://eduquantumkota.com/" target="_blank" className="hover:text-gold transition">Main Website</a></li>
+                <li><a href="https://quantumkota.com/" target="_blank" className="hover:text-gold transition">Main Website</a></li>
                 <li><a href="https://share.google/c7M2pm9VhuvBw0t2l" target="_blank" className="hover:text-gold transition">Google Profile & Reviews</a></li>
                 <li><a href="https://www.instagram.com/quantum_kota/" target="_blank" className="hover:text-gold transition">Instagram (Tips & Updates)</a></li>
                 <li><a href="https://www.justdial.com/Kota-Rajasthan/Quantum-Physics-Classes-In-Front-Of-Ratlami-Namkeen-New-Jawahar-Nagar/9999PX744-X744-140731230445-Y5M6_BZDET" target="_blank" className="hover:text-gold transition">JustDial Listing</a></li>
