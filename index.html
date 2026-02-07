@@ -1,67 +1,182 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduQuantum Kota | Franchise & Partnership Opportunity</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --navy: #002D62;
-      --gold: #D4AF37;
-    }
-    body { font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; }
-    .font-display { font-family: 'Playfair Display', serif; }
-    .bg-navy { background-color: var(--navy); }
-    .text-gold { color: var(--gold); }
-    .bg-gold { background-color: var(--gold); }
-    .border-gold { border-color: var(--gold); }
-    .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #F9E29C 50%, #B8860B 100%); }
-    .hero-gradient { background: linear-gradient(180deg, #002D62 0%, #001a38 100%); }
-    html { scroll-behavior: smooth; }
-    
-    /* Completely hide Google Translate Widget but keep it in DOM for script interaction */
-    #google_translate_element, 
-    .goog-te-banner-frame,
-    .goog-te-gadget-icon,
-    .goog-logo-link,
-    .skiptranslate {
-      display: none !important;
-    }
-    body {
-      top: 0px !important;
-    }
-    
-    .notranslate {
-      font-weight: inherit;
-    }
-  </style>
-<script type="importmap">
-{
-  "imports": {
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4"
-  }
-}
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuantum Kota | Franchise Partnership</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; top: 0 !important; }
+        .bg-navy { background-color: #002D62; }
+        .text-gold { color: #D4AF37; }
+        .bg-gold { background-color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        /* Google Translate Hide Logic */
+        .skiptranslate, .goog-te-banner-frame { display: none !important; }
+        #google_translate_element { display: none; }
+        .logo-img { mix-blend-mode: multiply; }
+    </style>
 </head>
-<body class="bg-gray-50 antialiased">
-  <div id="root"></div>
-  <div id="google_translate_element"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,mr,gu,ta,te,kn,ml',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="https://eduquantumkota.com">
+                <img src="https://drive.google.com/uc?export=view&id=15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" alt="Logo" class="h-12 md:h-14 logo-img">
+            </a>
+            
+            <!-- Working Language Switcher -->
+            <div class="flex items-center gap-3 md:gap-6">
+                <div class="flex gap-2 text-xs md:text-sm font-bold border-r pr-4 border-gray-200">
+                    <button onclick="triggerTranslate('en')" class="hover:text-gold">EN</button>
+                    <button onclick="triggerTranslate('hi')" class="hover:text-gold">हिन्दी</button>
+                    <button onclick="triggerTranslate('mr')" class="hover:text-gold">मराठी</button>
+                    <button onclick="triggerTranslate('gu')" class="hover:text-gold">ગુજરાતી</button>
+                </div>
+                <div class="hidden md:block">
+                    <a href="tel:+919351099947" class="text-navy font-bold">9351099947</a>
+                </div>
+                <a href="https://wa.me/919351099947?text=Hi, I want to know about the franchise model" class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-xs hover:bg-green-700">WhatsApp</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-navy text-white py-16 px-4 border-b-8 border-gold">
+        <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="notranslate">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+                    Ab Har Sheher Banega <span class="text-gold">Kota!</span>
+                </h1>
+                <p class="mt-6 text-xl text-gray-300">
+                    Partner with <span class="text-white">EduQuantum Kota</span>. Bring 12 Years of Kota's Academic Excellence to your city.
+                </p>
+                <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+                    <a href="#lead-form" class="bg-gold text-navy px-8 py-4 rounded-lg font-bold text-center">Apply Now</a>
+                    <a href="tel:+919351099947" class="border border-white px-8 py-4 rounded-lg font-bold text-center">Call: 9351099947</a>
+                </div>
+            </div>
+
+            <!-- Lead Form -->
+            <div id="lead-form" class="bg-white text-gray-800 p-8 rounded-2xl shadow-2xl">
+                <h3 class="text-2xl font-bold mb-2 text-center text-navy">Partnership Enquiry</h3>
+                <p class="text-sm text-gray-500 text-center mb-6">Receive details on WhatsApp</p>
+                
+                <form id="franchiseForm" class="space-y-4">
+                    <input type="text" id="userName" placeholder="Full Name" class="w-full p-3 border border-gray-300 rounded-lg outline-none" required>
+                    <input type="text" id="userCity" placeholder="City" class="w-full p-3 border border-gray-300 rounded-lg outline-none" required>
+                    <input type="tel" id="userPhone" placeholder="Mobile Number" class="w-full p-3 border border-gray-300 rounded-lg outline-none" required>
+                    <select id="userRole" class="w-full p-3 border border-gray-300 rounded-lg outline-none">
+                        <option value="School Owner">School Owner</option>
+                        <option value="Institute Owner">Institute Owner</option>
+                        <option value="Investor">Individual Investor</option>
+                    </select>
+                    <button type="submit" class="w-full bg-navy text-white font-bold py-4 rounded-lg hover:bg-blue-900 transition uppercase">
+                        Submit & Chat on WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+            <img src="https://drive.google.com/uc?export=view&id=1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" alt="G.G. Sir" class="rounded-2xl shadow-xl border-b-4 border-gold mx-auto w-full max-w-sm">
+            <div>
+                <h2 class="text-4xl font-bold text-navy mb-4 notranslate">Gorkey Godara (G.G. Sir)</h2>
+                <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                    Founder & Academic Director with 16+ years of experience in Kota. Join our mission to bring quality education to every doorstep.
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-50 border-l-4 border-gold font-bold">12+ Years Excellence</div>
+                    <div class="p-4 bg-gray-50 border-l-4 border-gold font-bold">Kota Academic Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-navy mb-12 uppercase">Our Partnership Models</h2>
+            <div class="overflow-x-auto rounded-xl shadow-lg">
+                <table class="w-full bg-white text-left min-w-[600px]">
+                    <thead class="bg-navy text-white">
+                        <tr>
+                            <th class="p-6">Features</th>
+                            <th class="p-6 text-center">Base</th>
+                            <th class="p-6 text-center">Advance</th>
+                            <th class="p-6 text-center bg-gold text-navy font-bold">Premium</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr><td class="p-6 font-semibold">Brand Recognition</td><td class="p-6 text-center">✘</td><td class="p-6 text-center text-green-600">✔</td><td class="p-6 text-center text-green-600">✔</td></tr>
+                        <tr><td class="p-6 font-semibold">Faculty Recruitment (Kota)</td><td class="p-6 text-center">✘</td><td class="p-6 text-center text-green-600">✔</td><td class="p-6 text-center text-green-600">✔</td></tr>
+                        <tr><td class="p-6 font-semibold">Faculty Replacement</td><td class="p-6 text-center">✘</td><td class="p-6 text-center">✘</td><td class="p-6 text-center text-green-600">✔</td></tr>
+                        <tr><td class="p-6 font-semibold">Digital Leads Support</td><td class="p-6 text-center text-green-600">✔</td><td class="p-6 text-center text-green-600">✔</td><td class="p-6 text-center text-green-600">✔</td></tr>
+                        <tr><td class="p-6 font-semibold">Study Material (Hard Copy)</td><td class="p-6 text-center text-green-600">✔</td><td class="p-6 text-center text-green-600">✔</td><td class="p-6 text-center text-green-600">✔</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-white py-12 px-4 border-t-8 border-gold">
+        <div class="container mx-auto text-center md:text-left grid md:grid-cols-3 gap-10">
+            <div>
+                <img src="https://drive.google.com/uc?export=view&id=15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" class="h-16 mx-auto md:mx-0 mb-4 bg-white p-2 rounded">
+                <p class="notranslate text-gray-400">EduQuantum Innovative Learning Solutions Pvt. Ltd.</p>
+            </div>
+            <div>
+                <h4 class="text-gold font-bold mb-4 uppercase">Head Office</h4>
+                <p class="text-gray-400">District Centre - Jawahar Nagar, Kota, Rajasthan - 324005</p>
+            </div>
+            <div>
+                <h4 class="text-gold font-bold mb-4 uppercase">Helpline</h4>
+                <a href="tel:+919351099947" class="text-2xl font-bold notranslate">9351099947</a>
+                <p class="mt-4"><a href="https://eduquantumkota.com" class="underline">eduquantumkota.com</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Hidden Google Widget -->
+    <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'hi,mr,gu,en',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function triggerTranslate(langCode) {
+            var select = document.querySelector('select.goog-te-combo');
+            if (select) {
+                select.value = langCode;
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+
+        document.getElementById('franchiseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('userName').value;
+            const city = document.getElementById('userCity').value;
+            const phone = document.getElementById('userPhone').value;
+            const role = document.getElementById('userRole').value;
+            const whatsappNum = "919351099947";
+            const msg = `*Franchise Enquiry*%0A*Name:* ${name}%0A*City:* ${city}%0A*Phone:* ${phone}%0A*Role:* ${role}%0A*Message:* Hi, I want to know about the franchise model.`;
+            window.open(`https://wa.me/${whatsappNum}?text=${msg}`, '_blank');
+            setTimeout(() => { window.location.href = "https://eduquantumkota.com"; }, 2000);
+        });
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
