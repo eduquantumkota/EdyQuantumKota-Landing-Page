@@ -3,87 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduQuantum Kota | Franchise Partnership</title>
+    <title>EduQuantum Kota | India's Leading Franchise Opportunity</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Professional fonts for English and Devanagari (Marathi/Hindi/Gujarati) -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #002D62;
-            --gold: #D4AF37;
+            --edu-navy: #002D62;
+            --edu-gold: #D4AF37;
+            --edu-white: #FFFFFF;
         }
         html { scroll-behavior: smooth; }
         body { 
-            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; 
+            font-family: 'Outfit', 'Noto Sans Devanagari', 'Noto Sans Gujarati', sans-serif; 
             margin: 0;
             padding: 0;
-            background-color: #f8fafc;
+            background-color: #fafafa;
+            top: 0px !important;
         }
-        .font-display { font-family: 'Playfair Display', serif; }
-        .bg-navy { background-color: var(--navy); }
-        .text-navy { color: var(--navy); }
-        .text-gold { color: var(--gold); }
-        .bg-gold { background-color: var(--gold); }
-        .border-gold { border-color: var(--gold); }
-        .hero-gradient { background: linear-gradient(180deg, #002D62 0%, #001a38 100%); }
+        .font-brand { font-family: 'Playfair Display', serif; }
+        .bg-luxury { 
+            background: linear-gradient(135deg, #002D62 0%, #001a38 100%); 
+            position: relative;
+        }
+        .bg-luxury::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Premium Shadows and Borders */
-        .premium-card {
-            background: white;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-            border-top: 4px solid var(--gold);
-        }
-
-        /* Google Translate UI Cleanup - Trigger based logic */
-        .skiptranslate, .goog-te-banner-frame, #goog-gt-tt, .goog-te-balloon-frame { 
+        /* Hidden Google Translate UI to maintain custom aesthetics */
+        #google_translate_element, .skiptranslate.goog-te-banner-frame, .goog-te-balloon-frame, #goog-gt-tt { 
             display: none !important; 
+            visibility: hidden !important; 
+            height: 0 !important; 
+            width: 0 !important; 
         }
-        body { top: 0 !important; }
-        #google_translate_element { display: none !important; }
+        body { top: 0px !important; position: static !important; }
+        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
+        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
         
-        .notranslate {
-            font-weight: inherit;
+        /* Font prioritization for specific scripts */
+        [lang="hi"], [lang="mr"], .devanagari-text {
+            font-family: 'Noto Sans Devanagari', sans-serif !important;
+        }
+        [lang="gu"] {
+            font-family: 'Noto Sans Gujarati', sans-serif !important;
         }
     </style>
     <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/client": "https://esm.sh/react-dom@^19.2.4/client",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3"
   }
 }
 </script>
 </head>
-<body class="bg-gray-50 text-slate-800">
-    <div id="root"></div>
-    
-    <!-- Hidden Google Translate Element -->
-    <div id="google_translate_element"></div>
-
+<body>
+    <div id="google_translate_element" style="display:none"></div>
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
                 includedLanguages: 'en,hi,mr,gu',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                 autoDisplay: false
             }, 'google_translate_element');
         }
 
-        // Trigger logic to avoid reloads and blank pages
-        window.setLanguage = function(langCode) {
-            const select = document.querySelector('select.goog-te-combo');
-            if (select) {
-                select.value = langCode;
-                select.dispatchEvent(new Event('change'));
+        (function() {
+            const googtrans = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
+            if (googtrans) {
+                const lang = googtrans.split('/').pop();
+                window.initialLang = lang;
             } else {
-                // If the widget isn't ready yet, try again briefly
-                setTimeout(() => window.setLanguage(langCode), 500);
+                window.initialLang = 'en';
             }
-        };
+        })();
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
 </body>
 </html>

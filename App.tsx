@@ -1,543 +1,561 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { 
-  Check, 
   Phone, 
   ArrowRight, 
   Trophy, 
   MapPin, 
   CheckCircle2, 
-  TrendingUp, 
   MessageCircle, 
-  Languages, 
-  Quote, 
-  Award, 
-  Coins, 
-  ShieldCheck, 
-  Zap, 
-  Star, 
-  Globe, 
-  Mail, 
-  Users,
+  Smartphone,
+  Star,
+  Languages,
+  Globe,
   Instagram,
-  Smartphone
+  Mail,
+  ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
+  Layers,
+  Rocket,
+  Crown,
+  Zap,
+  Target,
+  GraduationCap,
+  Users,
+  Image as ImageIcon,
+  Award,
+  BookOpen,
+  ExternalLink,
+  Search,
+  Map
 } from 'lucide-react';
 
 const languages = [
-  { name: "English", code: "en" },
-  { name: "हिन्दी", code: "hi" },
-  { name: "मराठी", code: "mr" },
-  { name: "ગુજરાતી", code: "gu" }
+  { name: 'English', code: 'en' },
+  { name: 'हिन्दी', code: 'hi' },
+  { name: 'मराઠી', code: 'mr' },
+  { name: 'ગુજરાતી', code: 'gu' }
 ];
 
-const featureList = [
-  { name: "Kota Curriculum & Study Material", base: true, advance: true, premium: true },
-  { name: "Faculty Recruitment & Training", base: true, advance: true, premium: true },
-  { name: "Online Testing Platform (LMS)", base: true, advance: true, premium: true },
-  { name: "Mobile App for Parents/Students", base: true, advance: true, premium: true },
-  { name: "Local Marketing Strategy Support", base: false, advance: true, premium: true },
-  { name: "School Integrated Program (SIP)", base: false, advance: false, premium: true },
-  { name: "Dedicated Academic Mentor (Kota)", base: false, advance: false, premium: true },
-  { name: "24/7 Doubt Counter (Online)", base: false, advance: false, premium: true }
+const PHONE_NUMBER = "+91 93510 99947";
+const WHATSAPP_RAW = "919351099947";
+const BRAND_NAME = "EduQuantum Kota";
+const FOUNDER_NAME = "Gorkey Godara";
+const FOUNDER_NICKNAME = "G.G. Sir";
+const LOGO_URL = "https://lh3.googleusercontent.com/d/1lv6QVksAjYZdSTpcTX6mxkCmOKZl85T_";
+
+const faculties = [
+  {
+    name: "Gorkey Godara",
+    subject: "Physics",
+    role: "Founder",
+    experience: "16+ Years",
+    qualification: "IIT Guwahati Alumni • Specialist in JEE Advanced Physics",
+    image: "https://lh3.googleusercontent.com/d/1luFFC0j_NJ1YOoyvtQV-el09soK4t_gf"
+  },
+  {
+    name: "A. Vyas Sir",
+    subject: "Chemistry",
+    role: "Senior Faculty",
+    experience: "14+ Years",
+    qualification: "BSc • MSc (Chemistry) • MSc (Botany) • B.Ed",
+    image: "https://lh3.googleusercontent.com/d/16nwRLzBrMGb8R1FRD9pZzFqyJZyshPb9"
+  },
+  {
+    name: "Alok Agrawal",
+    subject: "Mathematics",
+    role: "Senior Faculty",
+    experience: "10+ Years",
+    qualification: "B.Tech in Mechanical from RTU, Kota (Raj.)",
+    image: "https://lh3.googleusercontent.com/d/16mhfEFnK5EyO2YBB6x97m946OFsoyGNO"
+  },
+  {
+    name: "Megha Ma'am",
+    subject: "Biology",
+    role: "Senior Faculty",
+    experience: "10+ Years",
+    qualification: "BSc • MSc (Botany) • B.Ed (Biology) • GATE Qualify 2019",
+    image: "https://lh3.googleusercontent.com/d/1ur9mXf023Unx4mWI2QD_Gs37QBIfJ4Du"
+  }
 ];
 
-const successStories = [
+const galleryImages = [
+  "https://lh3.googleusercontent.com/d/15_g06RoKEjDkn-yFAVUmOFT0hJlebYzv",
+  "https://lh3.googleusercontent.com/d/1AwyA6Ybs4DaB20IxzbRttPWjG6U4WMF1",
+  "https://lh3.googleusercontent.com/d/1Sgk9No6AHV1lLGPsYLiwCcAzeOYt4jhA",
+  "https://lh3.googleusercontent.com/d/1RmD51O3oQecwir7dikBaqwX_WRtM9G_x"
+];
+
+const franchiseModels = [
   {
-    center: "Udgir Center",
-    location: "Maharashtra",
-    growth: "25 to 80+ Students",
-    profit: "₹30-40 Lakhs Net Profit",
-    description: "Started as a small local setup, but after implementing the EduQuantum Kota methodology, student intake tripled within 14 months.",
-    owner: "Partner Franchisee",
-    highlight: "3x Growth in 1 Year"
+    name: "Base Model",
+    tier: "Foundation",
+    icon: <Layers className="text-[#002D62]" size={32} />,
+    desc: "Ideal for established schools looking to start a specialized IIT-JEE wing.",
+    features: [
+      "Standard Kota Modules",
+      "Online Test Platform",
+      "Basic Marketing Kit",
+      "Teacher Orientation",
+      "Centralized ERP Access"
+    ],
+    highlight: false
   },
   {
-    center: "Amravati Center",
-    location: "Maharashtra",
-    growth: "120+ First Batch Admissions",
-    profit: "Dominant Local Authority",
-    description: "Leveraged the Brand Legacy to establish market dominance quickly. The parent trust in Kota academics worked wonders for the launch.",
-    owner: "Academic Partner",
-    highlight: "Market Leader"
+    name: "Advance Model",
+    tier: "Growth",
+    icon: <Rocket className="text-[#002D62]" size={32} />,
+    desc: "Comprehensive digital ecosystem with enhanced academic support.",
+    features: [
+      "Branded Student App",
+      "Intensive Teacher Training",
+      "Video Lecture Library",
+      "Local Brand Usage",
+      "Monthly Academic Audits",
+      "DLP Support"
+    ],
+    highlight: false
   },
   {
-    center: "Mumbai SIP",
-    location: "Maharashtra",
-    growth: "School Integrated Model",
-    profit: "Premium Segment Capture",
-    description: "Successfully integrated Kota coaching within school hours, providing a competitive edge and higher revenue per student.",
-    owner: "School Owner",
-    highlight: "Seamless Integration"
+    name: "Premium Model",
+    tier: "Full Partnership",
+    icon: <Crown className="text-[#D4AF37]" size={32} />,
+    desc: "Our most successful full-scale coaching model with dedicated onsite support.",
+    features: [
+      "White-Label Mobile App",
+      "On-site Launch Support",
+      "Exclusive Territory Rights",
+      "Premium Design Setup",
+      "24/7 Priority Support",
+      "Direct Founder Interaction",
+      "Full Recruitment Support"
+    ],
+    highlight: true
+  }
+];
+
+const centers = [
+  {
+    name: "Udgir, Maharashtra",
+    franchisee: "EduQuantum Udgir",
+    metric1: "25 to 80+ Students",
+    metric2: "30-40 Lakhs Profit",
+    desc: "Achieved massive student growth and financial success in just one academic session in Udgir city.",
+    image: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    name: "Amravati, Maharashtra",
+    franchisee: "EduQuantum Amravati",
+    metric1: "120+ Admissions Day-1",
+    metric2: "Dominant Market Share",
+    desc: "Unprecedented launch success fueled by brand trust and Kota's academic ecosystem in Amravati.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop"
   }
 ];
 
 const App: React.FC = () => {
-  const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Individual Investor' });
-  const [activeLang, setActiveLang] = useState('en');
+  const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Investor' });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [currentLang, setCurrentLang] = useState((window as any).initialLang || 'en');
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const handleLanguageChange = (code: string) => {
-    setActiveLang(code);
-    if ((window as any).setLanguage) {
-      (window as any).setLanguage(code);
-    }
+  const errors = useMemo(() => {
+    const e: Record<string, string> = {};
+    if (formData.name && formData.name.length < 3) e.name = "Enter full name";
+    if (formData.city && formData.city.length < 2) e.city = "Enter city";
+    if (formData.phone && !/^\d{10}$/.test(formData.phone)) e.phone = "Enter 10-digit number";
+    return e;
+  }, [formData]);
+
+  const isValid = (field: string) => {
+    if (!touched[field]) return null;
+    return !errors[field] && formData[field as keyof typeof formData].length > 0;
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const openWhatsApp = (msg: string) => {
+    const encodedMsg = encodeURIComponent(msg);
+    window.open(`https://wa.me/${WHATSAPP_RAW}?text=${encodedMsg}`, '_blank');
+  };
+
+  const changeLang = useCallback((code: string) => {
+    if (code === currentLang) return;
+    setCurrentLang(code);
+    const select = document.querySelector('select.goog-te-combo') as HTMLSelectElement;
+    if (select) {
+      select.value = code;
+      select.dispatchEvent(new Event('change'));
+      document.cookie = `googtrans=/en/${code}; path=/`;
+    }
+  }, [currentLang]);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % centers.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + centers.length) % centers.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 8000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
+
+  const handleWhatsAppForm = (e: React.FormEvent) => {
     e.preventDefault();
-    const whatsappNum = "919351099947";
-    const msg = `*Franchise Enquiry*%0A*Name:* ${formData.name}%0A*City:* ${formData.city}%0A*Phone:* ${formData.phone}%0A*Role:* ${formData.role}%0A*Message:* Hi, I am interested in EduQuantum Kota Franchise. Please share details.`;
-    
-    // Open WhatsApp in new tab
-    window.open(`https://wa.me/${whatsappNum}?text=${msg}`, '_blank');
-    
-    // Redirect main page after delay
-    setTimeout(() => { 
-        window.location.href = "https://quantumkota.com"; 
-    }, 2000);
+    if (Object.keys(errors).length > 0) {
+      setTouched({ name: true, city: true, phone: true });
+      return;
+    }
+    const text = `*New Franchise Inquiry*\n*Name:* ${formData.name}\n*City:* ${formData.city}\n*Role:* ${formData.role}\n*Phone:* ${formData.phone}\nI am interested in the ${BRAND_NAME} partnership. Please send business details.`;
+    openWhatsApp(text);
+  };
+
+  const getInputBorderClass = (field: string) => {
+    if (!touched[field]) return 'border-slate-100 focus:border-[#D4AF37]';
+    return errors[field] ? 'border-red-500 bg-red-50/10' : 'border-green-500 bg-green-50/10';
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Premium Navbar */}
-      <nav className="sticky top-0 z-50 bg-white shadow-xl py-4 border-b border-gray-100">
-        <div className="container mx-auto px-4 flex flex-wrap justify-between items-center gap-4">
-          <div className="flex items-center">
-            <img 
-              src="https://lh3.googleusercontent.com/d/15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" 
-              alt="EduQuantum Logo" 
-              className="h-10 md:h-12 object-contain"
-            />
+    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 selection:bg-[#D4AF37] selection:text-white">
+      
+      {/* Announcement */}
+      <div className="bg-[#002D62] text-white py-2 px-4 border-b border-white/10 overflow-hidden">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs font-bold uppercase tracking-widest gap-2">
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-2 text-[#D4AF37]"><Star size={14} fill="currentColor"/> India's Most Result-Oriented Team</span>
+            <span className="hidden md:inline-block opacity-30">|</span>
+            <span className="flex items-center gap-2">Since 2012</span>
           </div>
-          
-          <div className="flex items-center flex-wrap gap-4 text-xs md:text-sm font-bold text-navy uppercase tracking-wider">
-            <div className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-full">
-              <Languages size={14} className="text-gold" />
-              {languages.map((l) => (
+          <div className="flex items-center gap-4">
+             <button onClick={() => openWhatsApp(`Hi ${FOUNDER_NICKNAME}, I'm calling about the franchise opportunity.`)} className="hover:text-[#D4AF37] transition notranslate font-bold">{PHONE_NUMBER}</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="glass-header sticky top-0 z-50 border-b border-slate-100 py-3 shadow-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-between items-center">
+              <img src={LOGO_URL} alt={BRAND_NAME} className="h-10 md:h-14 hover:scale-105 transition duration-300 cursor-pointer object-contain notranslate" />
+              <div className="flex items-center gap-4">
                 <button 
-                  key={l.code}
-                  onClick={() => handleLanguageChange(l.code)} 
-                  className={`${activeLang === l.code ? 'text-gold underline underline-offset-4' : 'text-navy'} hover:text-gold transition px-1`}
+                  onClick={() => openWhatsApp(`Hi ${FOUNDER_NICKNAME}, I want to start an EduQuantum center. Please share details.`)}
+                  className="bg-[#002D62] text-white px-8 py-3 rounded-full font-black text-sm hover:shadow-xl hover:-translate-y-0.5 transition active:scale-95 shadow-lg shadow-blue-900/20"
                 >
-                  {l.name}
+                  Apply Now
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
-          
-          <div className="hidden md:flex items-center gap-4">
-            <a href="tel:+919351099947" className="flex items-center gap-2 text-navy font-bold text-lg hover:text-gold transition">
-              <Phone size={20} className="text-gold" />
-              <span className="notranslate">+91 93510 99947</span>
-            </a>
-            <button 
-               onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
-               className="bg-navy text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-lg hover:bg-slate-800 transition transform hover:scale-105"
-            >
-              Get Franchise
-            </button>
+
+            {/* Language Switcher */}
+            <div className="flex items-center gap-4 overflow-x-auto hide-scroll py-1 notranslate">
+              <div className="flex items-center gap-2 shrink-0 bg-slate-100 px-4 py-1.5 rounded-full">
+                <Languages size={14} className="text-[#D4AF37]" />
+                <span className="text-[10px] font-black uppercase text-slate-500">Language</span>
+              </div>
+              <div className="flex gap-2">
+                {languages.map((l) => (
+                  <button 
+                    key={l.code}
+                    onClick={() => changeLang(l.code)}
+                    className={`whitespace-nowrap px-4 py-2 rounded-full text-[11px] font-bold transition-all border ${
+                      currentLang === l.code ? 'bg-[#D4AF37] text-white border-[#D4AF37]' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                    }`}
+                  >
+                    {l.name}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <header className="hero-gradient text-white pt-16 pb-24 md:py-32 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gold/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
-          <div className="text-center lg:text-left">
-            <span className="inline-block bg-gold/20 text-gold border border-gold/30 px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest mb-8">
-              Premium Partnership Opportunity 2025
-            </span>
-            <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight mb-8">
-              Ab Har Sheher Banega <span className="text-gold notranslate">Kota!</span>
+      <section className="bg-luxury text-white pt-20 pb-28 lg:pt-32 lg:pb-40 overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-12 gap-16 items-center">
+          <div className="lg:col-span-7 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-lg px-6 py-2 rounded-full mb-8 border border-white/20">
+              <Trophy size={16} className="text-[#D4AF37]" />
+              <span className="text-[11px] font-black uppercase tracking-widest">Academic Excellence Partner 2025</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-brand font-black leading-[1.05] mb-8">
+              Launch Your <span className="notranslate">{BRAND_NAME}</span> <br/> <span className="text-[#D4AF37] italic underline decoration-white/20">Franchise Center</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
-              Bring the world-class <span className="notranslate font-semibold">EduQuantum Kota</span> academic system to your city. 
-              Partner with India's fastest-growing IIT-JEE & NEET coaching network and earn consistent returns.
+            <p className="text-xl md:text-2xl text-slate-300 max-w-2xl font-light leading-relaxed mb-12">
+              Empower your city with <span className="notranslate">Kota's</span> top-tier coaching system. Get expert materials, modules, and training led by <span className="text-[#D4AF37] font-bold notranslate">{FOUNDER_NICKNAME}</span>.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white/10 p-4 rounded-2xl border border-white/10 backdrop-blur-sm">
-                <Trophy className="text-gold mb-2 mx-auto lg:mx-0" size={24} />
-                <p className="text-xs font-bold uppercase tracking-tighter">Established 2012</p>
-                <p className="text-[10px] text-gray-400">12+ Years Legacy</p>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+              <div className="space-y-1">
+                <div className="text-4xl font-black text-[#D4AF37]">16+</div>
+                <div className="text-[10px] uppercase font-bold text-slate-400">Years Exp</div>
               </div>
-              <div className="bg-white/10 p-4 rounded-2xl border border-white/10 backdrop-blur-sm">
-                <ShieldCheck className="text-gold mb-2 mx-auto lg:mx-0" size={24} />
-                <p className="text-xs font-bold uppercase tracking-tighter">Zero Risk Model</p>
-                <p className="text-[10px] text-gray-400">Recession-Proof Biz</p>
+              <div className="space-y-1">
+                <div className="text-4xl font-black text-[#D4AF37]">5K+</div>
+                <div className="text-[10px] uppercase font-bold text-slate-400">Top Results</div>
               </div>
-              <div className="bg-white/10 p-4 rounded-2xl border border-white/10 backdrop-blur-sm hidden md:block">
-                <TrendingUp className="text-gold mb-2 mx-auto lg:mx-0" size={24} />
-                <p className="text-xs font-bold uppercase tracking-tighter">High ROI</p>
-                <p className="text-[10px] text-gray-400">Proven Profitability</p>
+              <div className="space-y-1">
+                <div className="text-4xl font-black text-[#D4AF37] notranslate">IIT-G</div>
+                <div className="text-[10px] uppercase font-bold text-slate-400">Founder Pedigree</div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-4xl font-black text-[#D4AF37]">High</div>
+                <div className="text-[10px] uppercase font-bold text-slate-400">Growth ROI</div>
               </div>
             </div>
           </div>
 
-          <div id="lead-form" className="premium-card p-10 text-slate-900 max-w-md mx-auto lg:ml-auto">
-            <h3 className="text-2xl font-bold mb-2 text-navy">Request Franchise Info</h3>
-            <p className="text-gray-500 mb-8 text-sm">Download our detailed brochure on WhatsApp instantly.</p>
-            <form onSubmit={handleFormSubmit} className="space-y-5">
-              <div>
-                <label className="text-xs font-bold text-gray-400 uppercase ml-1">Full Name</label>
-                <input type="text" placeholder="Your Name" className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition" value={formData.name} onChange={(e)=>setFormData({...formData, name:e.target.value})} required />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-gray-400 uppercase ml-1">City & State</label>
-                <input type="text" placeholder="Your City" className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition" value={formData.city} onChange={(e)=>setFormData({...formData, city:e.target.value})} required />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-gray-400 uppercase ml-1">Mobile Number</label>
-                <input type="tel" placeholder="+91 00000 00000" className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition" value={formData.phone} onChange={(e)=>setFormData({...formData, phone:e.target.value})} required />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-gray-400 uppercase ml-1">Current Role</label>
-                <select className="w-full px-4 py-3.5 rounded-xl border border-gray-100 bg-gray-50 outline-none focus:ring-2 focus:ring-navy transition appearance-none" value={formData.role} onChange={(e)=>setFormData({...formData, role:e.target.value})}>
-                  <option>Individual Investor</option>
-                  <option>School Owner</option>
-                  <option>Existing Coaching Owner</option>
-                </select>
-              </div>
-              <button className="w-full bg-navy text-white font-bold py-5 rounded-xl hover:bg-slate-800 transition transform hover:scale-[1.02] flex items-center justify-center gap-3 shadow-xl uppercase tracking-widest text-sm">
-                <span>Start Consultation</span>
-                <ArrowRight size={18} />
-              </button>
-            </form>
+          <div className="lg:col-span-5 w-full">
+            <div className="bg-white rounded-[3rem] p-10 lg:p-14 shadow-2xl border-t-[10px] border-[#D4AF37] text-slate-900">
+              <h3 className="text-3xl font-brand font-black mb-2 text-[#002D62]">Enquiry Form</h3>
+              <p className="text-slate-500 text-sm mb-10 italic">"Get complete business plan on <span className="notranslate">WhatsApp</span>."</p>
+              
+              <form onSubmit={handleWhatsAppForm} className="space-y-6">
+                <div className="group relative">
+                  <input type="text" placeholder="Full Name" required className={`w-full p-5 bg-slate-50 border rounded-2xl outline-none transition-all ${getInputBorderClass('name')}`} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                </div>
+                <div className="group relative">
+                  <input type="text" placeholder="City" required className={`w-full p-5 bg-slate-50 border rounded-2xl outline-none transition-all ${getInputBorderClass('city')}`} onChange={(e) => setFormData({...formData, city: e.target.value})} />
+                </div>
+                <div className="group relative">
+                  <input type="tel" placeholder="WhatsApp Number" required className={`w-full p-5 bg-slate-50 border rounded-2xl outline-none transition-all notranslate ${getInputBorderClass('phone')}`} onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10)})} value={formData.phone} />
+                </div>
+                <div className="group relative">
+                  <select className="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none font-bold text-[#002D62] appearance-none" onChange={(e) => setFormData({...formData, role: e.target.value})}>
+                    <option>School Owner</option>
+                    <option>Coaching Owner</option>
+                    <option>Investor</option>
+                    <option>Teacher</option>
+                  </select>
+                </div>
+                <button className="w-full bg-[#002D62] text-white font-black py-5 rounded-2xl shadow-xl transition-all hover:bg-blue-800 active:scale-95 flex items-center justify-center gap-3">
+                  Get Partnership Kit <ArrowRight size={20} />
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* Why Partner with Us */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy mb-4">Why Invest in Education?</h2>
-            <div className="w-20 h-1.5 bg-gold mx-auto rounded-full"></div>
-          </div>
-          <div className="grid md:grid-cols-3 gap-10">
-            {[
-              { title: "Recession-Proof", icon: ShieldCheck, text: "Education is a basic need. Even in economic downturns, parents prioritize their children's JEE/NEET preparation." },
-              { title: "Brand Legacy", icon: Award, text: "Benefit from the trusted 'EduQuantum Kota' name and G.G. Sir's 16+ years of academic excellence." },
-              { title: "Quantum Method", icon: Zap, text: "Our proprietary learning method ensures higher student selections, leading to high local demand." }
-            ].map((item, i) => (
-              <div key={i} className="group p-8 rounded-3xl border border-gray-50 hover:border-gold/30 hover:shadow-2xl transition-all duration-500 bg-white">
-                <div className="w-16 h-16 bg-navy/5 text-navy rounded-2xl flex items-center justify-center mb-6 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
-                  <item.icon size={32} />
+      {/* Proof Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center mb-16">
+          <h2 className="text-4xl md:text-6xl font-brand font-black text-[#002D62] mb-6">Partner Success Stories</h2>
+          <div className="w-24 h-2 bg-[#D4AF37] mx-auto rounded-full"></div>
+        </div>
+        
+        <div className="relative max-w-5xl mx-auto px-4">
+          <div className="overflow-hidden rounded-[3rem] shadow-2xl bg-slate-50 border border-slate-100">
+            <div className="flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+              {centers.map((c, i) => (
+                <div key={i} className="min-w-full p-8 md:p-16 flex flex-col lg:flex-row gap-12 items-center">
+                  <div className="w-full lg:w-1/2 aspect-video rounded-[2rem] overflow-hidden shadow-xl shrink-0">
+                    <img src={c.image} alt={c.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="w-full lg:w-1/2 text-left">
+                    <div className="text-sm font-black uppercase text-[#D4AF37] mb-2">{c.franchisee}</div>
+                    <div className="text-3xl font-black text-[#002D62] mb-6">{c.name}</div>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3"><Zap className="text-[#D4AF37]" size={18} /><span className="font-bold">{c.metric1}</span></div>
+                      <div className="flex items-center gap-3"><Target className="text-[#D4AF37]" size={18} /><span className="font-bold">{c.metric2}</span></div>
+                    </div>
+                    <p className="mt-8 text-slate-600 italic leading-relaxed font-light">"{c.desc}"</p>
+                  </div>
                 </div>
-                <h4 className="text-xl font-bold mb-4 text-navy">{item.title}</h4>
-                <p className="text-gray-500 leading-relaxed text-sm">{item.text}</p>
+              ))}
+            </div>
+          </div>
+          <button onClick={prevSlide} className="absolute left-0 lg:-left-12 top-1/2 -translate-y-1/2 bg-white text-[#002D62] p-4 rounded-full shadow-2xl hover:bg-[#D4AF37] transition-all z-20">
+            <ChevronLeft size={24} />
+          </button>
+          <button onClick={nextSlide} className="absolute right-0 lg:-right-12 top-1/2 -translate-y-1/2 bg-white text-[#002D62] p-4 rounded-full shadow-2xl hover:bg-[#D4AF37] transition-all z-20">
+            <ChevronRight size={24} />
+          </button>
+        </div>
+      </section>
+
+      {/* Models Section */}
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-6xl font-brand font-black text-[#002D62] mb-16">Franchise Partnership Models</h2>
+          <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {franchiseModels.map((model, idx) => (
+              <div key={idx} className={`relative p-10 rounded-[3.5rem] transition-all duration-500 bg-white border flex flex-col h-full ${model.highlight ? 'border-[#D4AF37] shadow-2xl scale-105 z-10' : 'border-slate-100 shadow-xl'}`}>
+                {model.highlight && <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-[#002D62] px-8 py-2 rounded-full font-black text-[10px] uppercase tracking-widest shadow-lg">Most Recommended</div>}
+                <div className="mb-8">
+                  <div className="w-20 h-20 rounded-3xl bg-slate-50 flex items-center justify-center mb-6 mx-auto">{model.icon}</div>
+                  <h3 className={`text-3xl font-brand font-black mb-4 ${model.highlight ? 'text-[#D4AF37]' : 'text-[#002D62]'}`}>{model.name}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{model.desc}</p>
+                </div>
+                <div className="grow space-y-4 mb-10 text-left">
+                  {model.features.map((feature, fIdx) => (
+                    <div key={fIdx} className="flex items-start gap-4">
+                      <CheckCircle2 size={18} className={model.highlight ? 'text-[#D4AF37]' : 'text-[#002D62]'} />
+                      <span className="text-sm font-bold text-slate-600">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={() => openWhatsApp(`I am interested in the ${model.name} (${model.tier}) model.`)} className={`w-full py-5 rounded-[2rem] font-black text-sm transition-all ${model.highlight ? 'bg-[#002D62] text-white shadow-xl hover:bg-blue-800' : 'bg-slate-50 text-[#002D62] hover:bg-slate-100'}`}>Select Model</button>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section className="py-24 bg-navy text-white relative overflow-hidden">
-        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-20 items-center relative z-10">
-          <div className="relative group max-w-sm mx-auto lg:mx-0">
-             <div className="absolute inset-0 bg-gold rounded-[2rem] translate-x-4 translate-y-4 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform duration-500"></div>
-             <img 
-               src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" 
-               alt="Gorkey Godara (G.G. Sir)" 
-               className="relative z-10 rounded-[2rem] shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000"
-             />
-             <div className="absolute -bottom-6 -right-6 z-20 bg-white p-6 rounded-2xl shadow-xl hidden md:block">
-               <Star className="text-gold fill-gold mb-2" size={24} />
-               <p className="text-navy font-black text-2xl">16+</p>
-               <p className="text-gray-400 text-[10px] uppercase font-bold">Years of Kota Exp</p>
+      {/* Founder Profile */}
+      <section className="py-24 bg-[#002D62] text-white overflow-hidden relative">
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-24">
+          <div className="lg:w-1/2 relative">
+             <div className="absolute inset-0 bg-[#D4AF37]/40 rounded-[4rem] rotate-6 transform scale-105 blur-2xl"></div>
+             <img src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" alt={FOUNDER_NAME} className="relative z-10 rounded-[4rem] shadow-2xl border-2 border-white/10 grayscale-[0.2] notranslate" />
+             <div className="absolute -bottom-10 -right-10 bg-white text-[#002D62] p-12 rounded-[3.5rem] shadow-2xl z-20 hidden md:block border-4 border-[#D4AF37]">
+                <div className="text-5xl font-black mb-1">16+</div>
+                <div className="text-[10px] uppercase font-black text-slate-400">Years Proof</div>
              </div>
           </div>
-          <div>
-            <h2 className="text-4xl font-display font-bold mb-6">Academic Leadership</h2>
-            <h3 className="text-2xl font-bold text-gold mb-8 italic">
-              Meet <span className="notranslate">Gorkey Godara (G.G. Sir)</span>
-            </h3>
-            <div className="space-y-6 text-gray-300">
-              <p className="leading-relaxed border-l-4 border-gold pl-6 italic text-lg">
-                "EduQuantum is not just a coaching center; it's a movement to democratize Kota-level education across India. We provide our partners with the exact blueprint that produces toppers."
-              </p>
-              <div className="grid grid-cols-2 gap-6 pt-6">
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="text-gold" size={20} />
-                  <span className="text-sm font-semibold">Ex-Senior Faculty, Top Kota Institutes</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="text-gold" size={20} />
-                  <span className="text-sm font-semibold">Mentor to 1000+ IITians</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="text-gold" size={20} />
-                  <span className="text-sm font-semibold">System Established in 2012</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="text-gold" size={20} />
-                  <span className="text-sm font-semibold">Proven Scalability in 10+ Cities</span>
-                </div>
-              </div>
+          <div className="lg:w-1/2">
+            <div className="bg-[#D4AF37] text-[#002D62] px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest w-fit mb-8">About the Founder</div>
+            <h2 className="text-5xl md:text-6xl font-brand font-black mb-8 leading-tight">Elite Academic System <br/>for Your City</h2>
+            <h3 className="text-3xl font-bold text-[#D4AF37] mb-12 italic"><span className="notranslate">{FOUNDER_NAME}</span> <span className="text-xl opacity-60 notranslate">(IIT Guwahati)</span></h3>
+            <p className="text-xl text-slate-300 italic mb-12 border-l-8 border-[#D4AF37] pl-10 leading-relaxed font-light text-justify">
+              "Our mission is to democratize <span className="notranslate">Kota-grade</span> education. We empower school owners and investors with proven modules and teacher training to produce national toppers locally."
+            </p>
+            <div className="flex items-center gap-10">
+              <div><div className="text-4xl font-black text-[#D4AF37] notranslate">IIT-G</div><div className="text-[10px] uppercase font-black text-slate-400 mt-2">Quality Standards</div></div>
+              <div><div className="text-4xl font-black text-[#D4AF37]">5,000+</div><div className="text-[10px] uppercase font-black text-slate-400 mt-2">Results Built</div></div>
             </div>
-            <button 
-               onClick={handleFormSubmit}
-               className="mt-12 bg-white text-navy px-10 py-4 rounded-full font-bold flex items-center gap-3 hover:bg-gold transition transform hover:scale-105 shadow-2xl"
-            >
-              <MessageCircle size={20} /> Discuss with Experts
-            </button>
           </div>
         </div>
       </section>
 
-      {/* Comparison Table */}
-      <section className="py-24 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold text-navy mb-4">Franchise Models</h2>
-            <p className="text-gray-500">Pick the growth plan that aligns with your ambition.</p>
-          </div>
-          
-          <div className="overflow-x-auto rounded-[2rem] shadow-2xl border bg-white border-gray-100">
-            <table className="w-full text-left min-w-[800px] border-collapse">
-              <thead>
-                <tr className="bg-navy text-white">
-                  <th className="p-8 font-bold text-lg">Support & Features</th>
-                  <th className="p-8 text-center border-r border-white/10">Base Model</th>
-                  <th className="p-8 text-center border-r border-white/10">Advance Model</th>
-                  <th className="pt-12 pb-6 px-8 text-center bg-gold text-navy relative">
-                    <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[9px] py-1 px-3 rounded-full font-black uppercase tracking-[0.1em] shadow-xl whitespace-nowrap">Most Profitable</div>
-                    Premium Model
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {featureList.map((f, i) => (
-                  <tr key={i} className="hover:bg-slate-50 transition group">
-                    <td className="p-6 font-semibold text-navy flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-gold/50 group-hover:scale-150 transition"></div>
-                      {f.name}
-                    </td>
-                    <td className="p-6 text-center border-r border-gray-50">
-                      {f.base ? <Check className="mx-auto text-green-500" /> : <span className="text-red-300 font-bold">✘</span>}
-                    </td>
-                    <td className="p-6 text-center border-r border-gray-50">
-                      {f.advance ? <Check className="mx-auto text-green-500" /> : <span className="text-red-300 font-bold">✘</span>}
-                    </td>
-                    <td className="p-6 text-center bg-gold/5">
-                      <Check className="mx-auto text-navy font-black" />
-                    </td>
-                  </tr>
-                ))}
-                <tr className="bg-gray-50">
-                   <td className="p-8 font-bold text-navy">Expected ROI</td>
-                   <td className="p-8 text-center text-sm font-bold">12-18 Months</td>
-                   <td className="p-8 text-center text-sm font-bold">10-15 Months</td>
-                   <td className="p-8 text-center text-sm font-bold bg-gold/10 text-navy uppercase tracking-widest">8-12 Months</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* Partner Success Stories Section */}
+      {/* Team & Faculties Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy mb-4">Partner Success Stories</h2>
-            <div className="w-20 h-1.5 bg-gold mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-500 max-w-2xl mx-auto">Real journeys of entrepreneurs who transformed their vision into high-yielding educational institutes.</p>
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 bg-[#D4AF37]/10 px-6 py-2 rounded-full mb-6 text-[#002D62]">
+              <Users size={18} className="text-[#D4AF37]" />
+              <span className="text-[11px] font-black uppercase tracking-[0.3em]">The Kota Experts</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-brand font-black text-[#002D62] mb-6">Our Elite Faculty Team</h2>
+            <p className="text-slate-500 text-lg max-w-2xl mx-auto italic">"We provide you with the same team that makes Kota the coaching capital of India."</p>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {successStories.map((story, i) => (
-              <div key={i} className="premium-card p-8 flex flex-col h-full group hover:shadow-2xl transition-all duration-300">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center text-gold">
-                    <TrendingUp size={24} />
-                  </div>
-                  <span className="bg-navy text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">{story.highlight}</span>
-                </div>
-                
-                <h4 className="text-xl font-bold text-navy mb-1">{story.center}</h4>
-                <p className="text-xs font-bold text-gold uppercase tracking-widest mb-4 flex items-center gap-1">
-                  <MapPin size={12} /> {story.location}
-                </p>
-                
-                <div className="space-y-3 mb-6 flex-grow">
-                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                    <Users size={18} className="text-navy" />
-                    <div>
-                      <p className="text-[10px] text-gray-400 uppercase font-bold">Growth</p>
-                      <p className="text-sm font-bold text-navy">{story.growth}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl">
-                    <Coins size={18} className="text-green-600" />
-                    <div>
-                      <p className="text-[10px] text-green-600 uppercase font-bold">Result</p>
-                      <p className="text-sm font-bold text-green-700">{story.profit}</p>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="relative pt-6 border-t border-gray-100">
-                  <Quote className="absolute -top-3 right-0 text-gold/20" size={32} />
-                  <p className="text-sm text-gray-600 leading-relaxed italic">
-                    "{story.description}"
-                  </p>
-                  <p className="mt-4 text-xs font-bold text-navy text-right">— {story.owner}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {faculties.map((f, idx) => (
+              <div key={idx} className="group bg-white border border-slate-100 rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col h-full">
+                <div className="relative aspect-[4/5] overflow-hidden notranslate shrink-0">
+                  <img src={f.image} alt={f.name} className="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale-[0.3] group-hover:grayscale-0" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#002D62] via-transparent to-transparent opacity-70"></div>
+                  <div className="absolute bottom-6 left-6 right-6 text-white">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] mb-1">{f.role}</div>
+                    <div className="text-xl font-black drop-shadow-md">{f.name}</div>
+                  </div>
+                </div>
+                <div className="p-8 space-y-4 grow flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between border-b border-slate-50 pb-4 mb-4">
+                      <div className="flex items-center gap-2"><BookOpen size={16} className="text-[#D4AF37]" /><span className="font-black text-[#002D62]">{f.subject}</span></div>
+                      <div className="bg-[#D4AF37]/10 px-3 py-1 rounded-full text-[10px] font-black text-[#002D62] uppercase tracking-tighter shrink-0">{f.experience}</div>
+                    </div>
+                    <div className="flex items-start gap-2"><Award size={14} className="text-[#D4AF37] mt-1 shrink-0" /><p className="text-xs font-bold text-slate-600 leading-relaxed italic">{f.qualification}</p></div>
+                  </div>
+                  <button onClick={() => openWhatsApp(`Tell me more about the academic support from ${f.name}.`)} className="w-full py-3 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-400 rounded-2xl group-hover:bg-[#002D62] group-hover:text-white transition-all">Academic Info</button>
                 </div>
               </div>
             ))}
           </div>
-          
-          <div className="mt-16 text-center">
-            <button 
-              onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 text-navy font-bold hover:text-gold transition group"
-            >
-              Hear More Success Stories <ArrowRight size={18} className="group-hover:translate-x-2 transition" />
-            </button>
+        </div>
+      </section>
+
+      {/* 16:9 Gallery Section */}
+      <section className="py-24 bg-slate-50 border-y border-slate-200">
+        <div className="container mx-auto px-4 text-center">
+          <div className="mb-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-brand font-black text-[#002D62] mb-4">Campus Experience Gallery</h2>
+            <p className="text-slate-500 italic max-w-lg mx-auto">High-tech classrooms and focus-driven infrastructure we provide to our partners.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {galleryImages.map((img, i) => (
+              <div key={i} className="aspect-video rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white hover:border-[#D4AF37] transition-all duration-500 group">
+                <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Success Section */}
-      <section className="py-24 bg-gray-50 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <div>
-              <h2 className="text-4xl font-display font-bold text-navy mb-8">Our Impact in Numbers</h2>
-              <div className="grid grid-cols-2 gap-8">
-                <div className="p-8 rounded-[2rem] bg-navy text-white shadow-2xl">
-                  <p className="text-5xl font-black text-gold mb-2">10+</p>
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-70">Active Centers</p>
-                </div>
-                <div className="p-8 rounded-[2rem] bg-white border border-gray-100 shadow-sm">
-                  <p className="text-5xl font-black text-navy mb-2">5000+</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Students Taught</p>
-                </div>
-                <div className="p-8 rounded-[2rem] bg-white border border-gray-100 shadow-sm">
-                  <p className="text-5xl font-black text-navy mb-2">90%</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Parent Satisfaction</p>
-                </div>
-                <div className="p-8 rounded-[2rem] bg-gold text-navy shadow-2xl">
-                  <p className="text-5xl font-black mb-2">12Y</p>
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-70">Legacy</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <Quote className="absolute -top-10 -left-10 text-gold opacity-10" size={120} />
-              <div className="premium-card p-10 relative z-10">
-                <h4 className="text-2xl font-bold text-navy mb-6">A Message to Investors</h4>
-                <p className="text-gray-600 leading-relaxed italic mb-8">
-                  "Education is the only recession-proof business in India. With our system, you get a business that not only earns you profit but also brings respect in your society. Join us in making Kota-level quality education accessible to every student."
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center text-gold font-bold">GG</div>
-                  <div>
-                    <p className="font-bold text-navy notranslate">Gorkey Godara</p>
-                    <p className="text-xs text-gray-400 uppercase font-bold tracking-widest">Founder, EduQuantum Kota</p>
+      {/* Improved Footer with all requested links and address */}
+      <footer className="bg-slate-950 text-slate-500 pt-32 pb-12 overflow-hidden relative">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid md:grid-cols-4 gap-16 border-b border-white/5 pb-20 mb-12">
+            <div className="col-span-1 md:col-span-2">
+              <img src={LOGO_URL} className="h-16 mb-8 filter brightness-0 invert notranslate" alt="EduQuantum Logo" />
+              <p className="text-xl italic leading-relaxed text-slate-400 max-w-sm mb-10">"Bringing <span className="notranslate">Kota's</span> academic power to every school and city across India."</p>
+              
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <MapPin className="text-[#D4AF37] mt-1 shrink-0" size={24} />
+                  <div className="text-sm text-slate-300 leading-relaxed">
+                    <span className="font-black text-white block mb-1">📍 Visit Us:</span>
+                    Opposite Ratlami Namkeen, <br/>New Jawahar Nagar, Kota, Rajasthan - 324005
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="hero-gradient rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-8 relative z-10">Ready to Start Your Success Story?</h2>
-            <p className="text-xl text-gray-300 mb-12 relative z-10 max-w-2xl mx-auto">
-              Only a limited number of franchises are granted per city. Secure your region today.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
-               <button 
-                  onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="bg-gold text-navy px-12 py-5 rounded-full font-bold text-lg hover:bg-white transition shadow-2xl transform hover:scale-105"
-               >
-                 Reserve Your City
-               </button>
-               <button 
-                  onClick={handleFormSubmit}
-                  className="bg-green-600 text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-green-700 transition flex items-center justify-center gap-3 shadow-2xl transform hover:scale-105"
-               >
-                 <MessageCircle size={24} /> WhatsApp Us
-               </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Premium Footer */}
-      <footer className="bg-[#001229] text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-16 mb-16">
-            <div className="col-span-2">
-              <img src="https://lh3.googleusercontent.com/d/15jC1v2sZ7mZcGh-ij7ZPZyDL8Co-zqgX" alt="Logo" className="h-10 mb-8 bg-white p-1.5 rounded" />
-              <p className="text-gray-400 max-w-sm mb-8 leading-relaxed italic">
-                Empowering education entrepreneurs with <span className="notranslate">Kota's</span> academic legacy. Innovative learning solutions for the leaders of tomorrow.
-              </p>
-              <div className="flex gap-4">
-                 <a href="https://www.instagram.com/quantum_kota/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
-                   <Instagram size={18} />
-                 </a>
-                 <a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
-                   <Smartphone size={18} />
-                 </a>
-                 <a href="https://quantumkota.com/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-gold cursor-pointer hover:bg-gold hover:text-navy transition">
-                   <Globe size={18} />
-                 </a>
-              </div>
-            </div>
             <div>
-              <h4 className="text-gold font-bold uppercase tracking-widest text-xs mb-8">Kota Head Office</h4>
-              <div className="space-y-4 text-sm text-gray-400">
-                <p className="flex items-start gap-3">
-                  <MapPin size={18} className="text-gold shrink-0" />
-                  <span>opposite Aacharya Hospital, District Centre, Jawahar Nagar, Kota</span>
-                </p>
-                <p className="flex items-center gap-3">
-                  <Phone size={18} className="text-gold" />
-                  <span className="notranslate text-white font-bold">+91 93510 99947</span>
-                </p>
-                <p className="flex items-center gap-3">
-                  <Mail size={18} className="text-gold" />
-                  <span>eduquantumkota@gmail.com</span>
-                </p>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-gold font-bold uppercase tracking-widest text-xs mb-8">Support Links</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li><a href="https://quantumkota.com/" target="_blank" className="hover:text-gold transition">Main Website</a></li>
-                <li><a href="https://share.google/c7M2pm9VhuvBw0t2l" target="_blank" className="hover:text-gold transition">Google Profile & Reviews</a></li>
-                <li><a href="https://www.instagram.com/quantum_kota/" target="_blank" className="hover:text-gold transition">Instagram (Tips & Updates)</a></li>
-                <li><a href="https://www.justdial.com/Kota-Rajasthan/Quantum-Physics-Classes-In-Front-Of-Ratlami-Namkeen-New-Jawahar-Nagar/9999PX744-X744-140731230445-Y5M6_BZDET" target="_blank" className="hover:text-gold transition">JustDial Listing</a></li>
-                <li><a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" className="hover:text-gold transition font-bold text-white">Download Mobile App</a></li>
+              <h4 className="text-white font-black text-xs uppercase tracking-[0.4em] mb-10 border-l-2 border-[#D4AF37] pl-4">Connect Online</h4>
+              <ul className="space-y-6 text-sm font-bold">
+                <li><a href="https://eduquantumkota.com/" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Globe size={18} className="text-[#D4AF37]"/> 🏠 Website</a></li>
+                <li><a href="https://share.google/c7M2pm9VhuvBw0t2l" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><MapPin size={18} className="text-[#D4AF37]"/> 📍 Google Profile & Reviews</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Smartphone size={18} className="text-[#D4AF37]"/> 📱 Mobile App</a></li>
+                <li><a href="https://www.justdial.com/Kota-Rajasthan/Quantum-Physics-Classes-In-Front-Of-Ratlami-Namkeen-New-Jawahar-Nagar/9999PX744-X744-140731230445-Y5M6_BZDET" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Search size={18} className="text-[#D4AF37]"/> 📞 JustDial Profile</a></li>
+                <li><a href="https://www.instagram.com/quantum_kota/" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Instagram size={18} className="text-[#D4AF37]"/> 📸 Instagram (Updates)</a></li>
               </ul>
             </div>
-          </div>
-          <div className="pt-10 border-t border-white/10 flex flex-col md:row justify-between items-center gap-6 text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-            <p>&copy; 2025 <span className="notranslate">EduQuantum Kota</span>. All rights reserved.</p>
-            <div className="flex gap-8">
-              <a href="#" className="hover:text-gold">Privacy Policy</a>
-              <a href="#" className="hover:text-gold">Terms of Partnership</a>
+
+            <div>
+              <h4 className="text-white font-black text-xs uppercase tracking-[0.4em] mb-10 border-l-2 border-[#D4AF37] pl-4">Head Office</h4>
+              <div className="space-y-8">
+                <div>
+                   <button onClick={() => openWhatsApp('Contact via Footer Link')} className="text-2xl font-black text-white hover:text-[#D4AF37] transition notranslate">{PHONE_NUMBER}</button>
+                   <p className="text-xs mt-2 uppercase tracking-widest font-black opacity-40">Direct Helpline</p>
+                </div>
+                <div className="flex gap-4">
+                   <a href="https://www.instagram.com/quantum_kota/" target="_blank" className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all"><Instagram size={22}/></a>
+                   <button onClick={() => openWhatsApp('Email Inquiry via Footer')} className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all"><Mail size={22}/></button>
+                </div>
+              </div>
             </div>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30 leading-relaxed max-w-2xl mx-auto">
+              © 2025 <span className="notranslate">{BRAND_NAME}</span>. PREMIUM ACADEMIC ALLIANCE. YOUR JOURNEY TO ACADEMIC EXCELLENCE STARTS HERE!
+            </p>
           </div>
         </div>
       </footer>
 
-      {/* Fixed WhatsApp Float */}
+      {/* Floating WhatsApp */}
       <button 
-        onClick={handleFormSubmit}
-        className="fixed bottom-8 right-8 z-[100] bg-green-500 text-white p-4 md:px-6 md:py-4 rounded-full shadow-2xl flex items-center gap-3 hover:bg-green-600 transition transform hover:scale-110 active:scale-95 group"
+        onClick={() => openWhatsApp(`Hi ${FOUNDER_NICKNAME}, I am interested in starting an EduQuantum center. Please share the details.`)}
+        className="fixed bottom-10 right-10 z-[100] bg-green-500 text-white p-6 rounded-full shadow-2xl hover:scale-110 transition-all group animate-bounce"
       >
-        <MessageCircle size={28} className="group-hover:rotate-12 transition" />
-        <span className="font-bold text-sm hidden md:block">Chat with G.G. Sir</span>
+        <MessageCircle size={32} fill="white" />
+        <span className="absolute right-full mr-6 bg-white text-[#002D62] px-6 py-3 rounded-2xl text-[10px] font-black shadow-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap border-2 border-[#D4AF37]">
+          Connect with Founder
+        </span>
       </button>
+
+      <style>{`
+        .goog-te-banner-frame.skiptranslate, .goog-te-balloon-frame, #goog-gt-tt, .goog-te-gadget-icon { display: none !important; }
+        body { top: 0px !important; position: static !important; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+      `}</style>
     </div>
   );
 };
