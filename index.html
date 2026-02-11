@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduQuantum Kota | India's Leading Franchise Opportunity</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Professional fonts for English and Devanagari (Marathi/Hindi/Gujarati) -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,11 +14,10 @@
         }
         html { scroll-behavior: smooth; }
         body { 
-            font-family: 'Outfit', 'Noto Sans Devanagari', 'Noto Sans Gujarati', sans-serif; 
+            font-family: 'Outfit', 'Noto+Sans+Devanagari', 'Noto+Sans+Gujarati', sans-serif; 
             margin: 0;
             padding: 0;
             background-color: #fafafa;
-            top: 0px !important;
         }
         .font-brand { font-family: 'Playfair Display', serif; }
         .bg-luxury { 
@@ -42,24 +40,9 @@
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Hidden Google Translate UI to maintain custom aesthetics */
-        #google_translate_element, .skiptranslate.goog-te-banner-frame, .goog-te-balloon-frame, #goog-gt-tt { 
-            display: none !important; 
-            visibility: hidden !important; 
-            height: 0 !important; 
-            width: 0 !important; 
-        }
-        body { top: 0px !important; position: static !important; }
-        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
-        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
-        
-        /* Font prioritization for specific scripts */
-        [lang="hi"], [lang="mr"], .devanagari-text {
-            font-family: 'Noto Sans Devanagari', sans-serif !important;
-        }
-        [lang="gu"] {
-            font-family: 'Noto Sans Gujarati', sans-serif !important;
-        }
+        /* Language specific font adjustments */
+        [lang="hi"] body, [lang="mr"] body { font-family: 'Noto Sans Devanagari', sans-serif !important; }
+        [lang="gu"] body { font-family: 'Noto Sans Gujarati', sans-serif !important; }
     </style>
     <script type="importmap">
 {
@@ -75,29 +58,6 @@
 </script>
 </head>
 <body>
-    <div id="google_translate_element" style="display:none"></div>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,hi,mr,gu',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-
-        (function() {
-            const googtrans = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
-            if (googtrans) {
-                const lang = googtrans.split('/').pop();
-                window.initialLang = lang;
-            } else {
-                window.initialLang = 'en';
-            }
-        })();
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>
