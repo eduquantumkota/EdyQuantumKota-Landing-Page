@@ -57,8 +57,8 @@ const TRANSLATIONS: Record<string, any> = {
     form_role_teacher: "Teacher",
     form_submit: "Get Partnership Kit",
     success_title: "Partner Success Stories",
-    models_title: "Franchise Partnership Details",
-    models_subtitle: "Compare our School Integrated Program (SIP) Models",
+    models_title: "Partnership Details",
+    models_subtitle: "Compare our SIP Models",
     model_recommended: "Most Popular",
     model_base_name: "Base Model",
     model_advance_name: "Advance Model",
@@ -124,8 +124,8 @@ const TRANSLATIONS: Record<string, any> = {
     form_role_teacher: "शिक्षक",
     form_submit: "पार्टनरशिप किट प्राप्त करें",
     success_title: "पार्टनर की सफलता की कहानियां",
-    models_title: "फ्रैंचाइज़ी पार्टनरशिप विवरण",
-    models_subtitle: "हमारे स्कूल इंटीग्रेटेड प्रोग्राम (SIP) मॉडल्स की तुलना करें",
+    models_title: "पार्टनरशिप विवरण",
+    models_subtitle: "SIP मॉडल्स की तुलना करें",
     model_recommended: "सबसे लोकप्रिय",
     model_base_name: "बेस मॉडल",
     model_advance_name: "एडवांस मॉडल",
@@ -191,8 +191,8 @@ const TRANSLATIONS: Record<string, any> = {
     form_role_teacher: "शिक्षक",
     form_submit: "पार्टनरशिप किट मिळवा",
     success_title: "भागीदारांच्या यशोगाथा",
-    models_title: "फ्रँचायझी पार्टनरशिप तपशील",
-    models_subtitle: "आमच्या स्कूल इंटीग्रेटेड प्रोग्राम (SIP) मॉडेल्सची तुलना करा",
+    models_title: "पार्टनरशिप तपशील",
+    models_subtitle: "SIP मॉडेल्सची तुलना करा",
     model_recommended: "सर्वात लोकप्रिय",
     model_base_name: "बेस मॉडेल",
     model_advance_name: "एडवांस मॉडेल",
@@ -258,8 +258,8 @@ const TRANSLATIONS: Record<string, any> = {
     form_role_teacher: "શિક્ષક",
     form_submit: "પાર્ટનરશિપ કીટ મેળવો",
     success_title: "ભાગીદારોની સફળતાની વાર્તાઓ",
-    models_title: "ફ્રેન્ચાઇઝી પાર્ટનરશિપ વિગતો",
-    models_subtitle: "અમારા સ્કૂલ ઇન્ટિગ્રેટેડ પ્રોગ્રામ (SIP) મોડલ્સની સરખામણી કરો",
+    models_title: "પાર્ટનરશિપ વિગતો",
+    models_subtitle: "SIP મોડલ્સની સરખામણી કરો",
     model_recommended: "સૌથી લોકપ્રિય",
     model_base_name: "બેઝ મોડલ",
     model_advance_name: "એડવાન્સ મોડલ",
@@ -307,7 +307,7 @@ const TRANSLATIONS: Record<string, any> = {
 const languages = [
   { name: 'English', code: 'en' },
   { name: 'हिन्दी', code: 'hi' },
-  { name: 'मराઠી', code: 'mr' },
+  { name: 'मराठी', code: 'mr' },
   { name: 'ગુજરાતી', code: 'gu' }
 ];
 
@@ -365,8 +365,8 @@ const App: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Investor' });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [activeModelTab, setActiveModelTab] = useState<'premium' | 'advance' | 'base'>('premium');
 
-  // Sync document lang for font handling in index.html
   useEffect(() => {
     document.documentElement.lang = currentLang;
   }, [currentLang]);
@@ -392,7 +392,6 @@ const App: React.FC = () => {
     }
   ], [t]);
 
-  // Comprehensive feature list based on the user's "Quantum School Integrated Program (SIP)" image
   const sipFeatures = useMemo(() => [
     { label: t.feat_brand, premium: true, advance: true, base: false },
     { label: t.feat_fac_rec, premium: true, advance: true, base: false },
@@ -458,113 +457,111 @@ const App: React.FC = () => {
 
   const StatusIcon = ({ check }: { check: boolean }) => (
     check 
-      ? <CheckCircle2 size={18} className="text-green-500 mx-auto" /> 
-      : <XCircle size={18} className="text-red-400 mx-auto" />
+      ? <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center mx-auto"><CheckCircle2 size={16} className="text-green-500" /></div>
+      : <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center mx-auto"><XCircle size={16} className="text-red-400" /></div>
   );
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 selection:bg-[#D4AF37] selection:text-white" lang={currentLang}>
       
       {/* Announcement */}
-      <div className="bg-[#002D62] text-white py-2 px-4 border-b border-white/10 overflow-hidden">
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs font-bold uppercase tracking-widest gap-2">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-2 text-[#D4AF37]"><Star size={14} fill="currentColor"/> {t.nav_announcement}</span>
-            <span className="hidden md:inline-block opacity-30">|</span>
-            <span className="flex items-center gap-2">{t.nav_estd}</span>
-          </div>
+      <div className="bg-[#002D62] text-white py-1.5 px-4 border-b border-white/10 overflow-hidden">
+        <div className="container mx-auto flex justify-between items-center text-[9px] md:text-xs font-bold uppercase tracking-widest">
           <div className="flex items-center gap-4">
-             <button onClick={() => openWhatsApp(`Hi ${FOUNDER_NICKNAME}`)} className="hover:text-[#D4AF37] transition font-bold">{PHONE_NUMBER}</button>
+            <span className="flex items-center gap-1.5 text-[#D4AF37]"><Star size={12} fill="currentColor"/> {t.nav_announcement}</span>
+            <span className="hidden sm:inline-block opacity-20">|</span>
+            <span className="hidden sm:inline-block">{t.nav_estd}</span>
           </div>
+          <button onClick={() => openWhatsApp(`Hi ${FOUNDER_NICKNAME}`)} className="hover:text-[#D4AF37] transition shrink-0">{PHONE_NUMBER}</button>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="glass-header sticky top-0 z-50 border-b border-slate-100 py-3 shadow-sm">
+      <nav className="glass-header sticky top-0 z-50 border-b border-slate-100 py-3 md:py-4 shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-between items-center">
-              <img src={LOGO_URL} alt={BRAND_NAME} className="h-10 md:h-14 hover:scale-105 transition duration-300 cursor-pointer object-contain" />
-              <div className="flex items-center gap-4">
-                <button onClick={() => openWhatsApp(`Hi`)} className="bg-[#002D62] text-white px-8 py-3 rounded-full font-black text-sm hover:shadow-xl hover:-translate-y-0.5 transition active:scale-95 shadow-lg shadow-blue-900/20">
-                  {t.nav_apply}
-                </button>
-              </div>
+          <div className="flex items-center justify-between gap-4">
+            <img src={LOGO_URL} alt={BRAND_NAME} className="h-8 md:h-14 hover:scale-105 transition duration-300 cursor-pointer object-contain" />
+            
+            {/* Action Group */}
+            <div className="flex items-center gap-2 md:gap-4 shrink-0">
+               <button onClick={() => openWhatsApp(`Apply`)} className="bg-[#002D62] text-white px-5 md:px-8 py-2 md:py-3 rounded-full font-black text-[11px] md:text-sm hover:shadow-xl hover:-translate-y-0.5 transition active:scale-95 shadow-lg shadow-blue-900/20 whitespace-nowrap">
+                 {t.nav_apply}
+               </button>
             </div>
+          </div>
 
-            {/* Language Switcher */}
-            <div className="flex items-center gap-4 overflow-x-auto hide-scroll py-1">
-              <div className="flex items-center gap-2 shrink-0 bg-slate-100 px-4 py-1.5 rounded-full">
-                <Languages size={14} className="text-[#D4AF37]" />
-                <span className="text-[10px] font-black uppercase text-slate-500">Language</span>
-              </div>
-              <div className="flex gap-2">
+          {/* Compact Language Switcher */}
+          <div className="flex items-center gap-3 mt-4 overflow-x-auto hide-scroll pb-1">
+             <div className="shrink-0 bg-slate-100 p-1.5 rounded-full flex items-center gap-2">
+                <div className="bg-white p-1 rounded-full shadow-sm"><Globe size={12} className="text-[#002D62]" /></div>
+                <span className="text-[9px] font-black uppercase text-slate-500 pr-2">Lang</span>
+             </div>
+             <div className="flex gap-1.5">
                 {languages.map((l) => (
                   <button key={l.code} onClick={() => changeLang(l.code)}
-                    className={`whitespace-nowrap px-4 py-2 rounded-full text-[11px] font-bold transition-all border ${
-                      currentLang === l.code ? 'bg-[#D4AF37] text-white border-[#D4AF37]' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                    className={`whitespace-nowrap px-4 py-1.5 rounded-full text-[10px] md:text-[11px] font-bold transition-all border ${
+                      currentLang === l.code ? 'bg-[#D4AF37] text-white border-[#D4AF37] shadow-md shadow-amber-500/20' : 'bg-white text-slate-600 border-slate-100 hover:bg-slate-50'
                     }`}>
                     {l.name}
                   </button>
                 ))}
-              </div>
-            </div>
+             </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-luxury text-white pt-20 pb-28 lg:pt-32 lg:pb-40 overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-12 gap-16 items-center">
+      <section className="bg-luxury text-white pt-16 pb-20 lg:pt-32 lg:pb-40 overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-7 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-lg px-6 py-2 rounded-full mb-8 border border-white/20">
-              <Trophy size={16} className="text-[#D4AF37]" />
-              <span className="text-[11px] font-black uppercase tracking-widest">{t.hero_badge}</span>
+              <Trophy size={14} className="text-[#D4AF37]" />
+              <span className="text-[10px] font-black uppercase tracking-widest">{t.hero_badge}</span>
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-brand font-black leading-[1.05] mb-8">
+            <h1 className="text-4xl md:text-7xl lg:text-8xl font-brand font-black leading-[1.1] mb-6 md:mb-8">
               {t.hero_title_p1} <span className="text-[#D4AF37]">{BRAND_NAME}</span> {t.hero_title_p2}
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 max-w-2xl font-light leading-relaxed mb-12">
+            <p className="text-lg md:text-2xl text-slate-300 max-w-2xl font-light leading-relaxed mb-10 md:mb-12">
               {t.hero_desc}
             </p>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
               <div className="space-y-1">
-                <div className="text-4xl font-black text-[#D4AF37]">16+</div>
-                <div className="text-[10px] uppercase font-bold text-slate-400">{t.stat_exp}</div>
+                <div className="text-3xl md:text-4xl font-black text-[#D4AF37]">16+</div>
+                <div className="text-[9px] uppercase font-bold text-slate-400">{t.stat_exp}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-4xl font-black text-[#D4AF37]">5K+</div>
-                <div className="text-[10px] uppercase font-bold text-slate-400">{t.stat_results}</div>
+                <div className="text-3xl md:text-4xl font-black text-[#D4AF37]">5K+</div>
+                <div className="text-[9px] uppercase font-bold text-slate-400">{t.stat_results}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-4xl font-black text-[#D4AF37]">IIT-G</div>
-                <div className="text-[10px] uppercase font-bold text-slate-400">{t.stat_pedigree}</div>
+                <div className="text-3xl md:text-4xl font-black text-[#D4AF37]">IIT-G</div>
+                <div className="text-[9px] uppercase font-bold text-slate-400">{t.stat_pedigree}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-4xl font-black text-[#D4AF37]">High</div>
-                <div className="text-[10px] uppercase font-bold text-slate-400">{t.stat_roi}</div>
+                <div className="text-3xl md:text-4xl font-black text-[#D4AF37]">High</div>
+                <div className="text-[9px] uppercase font-bold text-slate-400">{t.stat_roi}</div>
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-5 w-full">
-            <div className="bg-white rounded-[3rem] p-10 lg:p-14 shadow-2xl border-t-[10px] border-[#D4AF37] text-slate-900">
-              <h3 className="text-3xl font-brand font-black mb-2 text-[#002D62]">{t.form_title}</h3>
-              <p className="text-slate-500 text-sm mb-10 italic">"{t.form_subtitle}"</p>
+            <div className="bg-white rounded-[2.5rem] p-8 md:p-14 shadow-2xl border-t-[8px] border-[#D4AF37] text-slate-900">
+              <h3 className="text-2xl md:text-3xl font-brand font-black mb-2 text-[#002D62]">{t.form_title}</h3>
+              <p className="text-slate-500 text-xs md:text-sm mb-8 italic">"{t.form_subtitle}"</p>
               
-              <form onSubmit={handleWhatsAppForm} className="space-y-6">
-                <input type="text" placeholder={t.form_placeholder_name} required className={`w-full p-5 bg-slate-50 border rounded-2xl outline-none transition-all ${getInputBorderClass('name')}`} onChange={(e) => setFormData({...formData, name: e.target.value})} />
-                <input type="text" placeholder={t.form_placeholder_city} required className={`w-full p-5 bg-slate-50 border rounded-2xl outline-none transition-all ${getInputBorderClass('city')}`} onChange={(e) => setFormData({...formData, city: e.target.value})} />
-                <input type="tel" placeholder={t.form_placeholder_phone} required className={`w-full p-5 bg-slate-50 border rounded-2xl outline-none transition-all ${getInputBorderClass('phone')}`} onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10)})} value={formData.phone} />
-                <select className="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none font-bold text-[#002D62] appearance-none" onChange={(e) => setFormData({...formData, role: e.target.value})}>
+              <form onSubmit={handleWhatsAppForm} className="space-y-4 md:space-y-6">
+                <input type="text" placeholder={t.form_placeholder_name} required className={`w-full p-4 md:p-5 bg-slate-50 border rounded-2xl outline-none transition-all text-sm ${getInputBorderClass('name')}`} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                <input type="text" placeholder={t.form_placeholder_city} required className={`w-full p-4 md:p-5 bg-slate-50 border rounded-2xl outline-none transition-all text-sm ${getInputBorderClass('city')}`} onChange={(e) => setFormData({...formData, city: e.target.value})} />
+                <input type="tel" placeholder={t.form_placeholder_phone} required className={`w-full p-4 md:p-5 bg-slate-50 border rounded-2xl outline-none transition-all text-sm ${getInputBorderClass('phone')}`} onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10)})} value={formData.phone} />
+                <select className="w-full p-4 md:p-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none font-bold text-[#002D62] appearance-none text-sm" onChange={(e) => setFormData({...formData, role: e.target.value})}>
                   <option value="School Owner">{t.form_role_school}</option>
                   <option value="Coaching Owner">{t.form_role_coaching}</option>
                   <option value="Investor">{t.form_role_investor}</option>
                   <option value="Teacher">{t.form_role_teacher}</option>
                 </select>
-                <button className="w-full bg-[#002D62] text-white font-black py-5 rounded-2xl shadow-xl transition-all hover:bg-blue-800 active:scale-95 flex items-center justify-center gap-3">
-                  {t.form_submit} <ArrowRight size={20} />
+                <button className="w-full bg-[#002D62] text-white font-black py-4 md:py-5 rounded-2xl shadow-xl transition-all hover:bg-blue-800 active:scale-95 flex items-center justify-center gap-3">
+                  {t.form_submit} <ArrowRight size={18} />
                 </button>
               </form>
             </div>
@@ -572,16 +569,23 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Models Comparison Table - Updated according to SIP Image */}
-      <section className="py-24 bg-slate-50 relative overflow-hidden" id="models">
+      {/* Models Comparison Section */}
+      <section className="py-20 md:py-24 bg-slate-50 relative overflow-hidden" id="models">
         <div className="container mx-auto px-4 text-center">
-          <div className="mb-16">
-            <h2 className="text-4xl md:text-6xl font-brand font-black text-[#002D62] mb-4">{t.models_title}</h2>
-            <p className="text-slate-500 text-lg italic max-w-2xl mx-auto">{t.models_subtitle}</p>
+          <div className="mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-3">{t.models_title}</h2>
+            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">{t.models_subtitle}</p>
+          </div>
+
+          {/* Tab Selection for Mobile/Desktop Control */}
+          <div className="lg:hidden flex bg-white p-2 rounded-3xl shadow-lg max-w-sm mx-auto mb-10 border border-slate-100">
+             <button onClick={() => setActiveModelTab('premium')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-tighter transition-all ${activeModelTab === 'premium' ? 'bg-[#002D62] text-white shadow-lg' : 'text-slate-400'}`}>Premium</button>
+             <button onClick={() => setActiveModelTab('advance')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-tighter transition-all ${activeModelTab === 'advance' ? 'bg-[#002D62] text-white shadow-lg' : 'text-slate-400'}`}>Advance</button>
+             <button onClick={() => setActiveModelTab('base')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-tighter transition-all ${activeModelTab === 'base' ? 'bg-[#002D62] text-white shadow-lg' : 'text-slate-400'}`}>Base</button>
           </div>
 
           <div className="max-w-7xl mx-auto">
-            {/* Desktop Table View */}
+            {/* Desktop Full Table */}
             <div className="hidden lg:block overflow-hidden rounded-[3.5rem] bg-white shadow-2xl border border-slate-100">
               <table className="w-full text-left border-collapse">
                 <thead>
@@ -611,68 +615,43 @@ const App: React.FC = () => {
                 <tbody className="divide-y divide-slate-50">
                   {sipFeatures.map((feat, idx) => (
                     <tr key={idx} className={`hover:bg-slate-50/50 transition ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/20'}`}>
-                      <td className="p-6 pl-10 font-bold text-slate-700 text-sm">
-                        <div className="flex items-center gap-4">
-                          <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
-                          {feat.label}
-                        </div>
-                      </td>
+                      <td className="p-6 pl-10 font-bold text-slate-700 text-sm">{feat.label}</td>
                       <td className="p-6 text-center bg-[#D4AF37]/5"><StatusIcon check={feat.premium} /></td>
                       <td className="p-6 text-center"><StatusIcon check={feat.advance} /></td>
                       <td className="p-6 text-center"><StatusIcon check={feat.base} /></td>
                     </tr>
                   ))}
-                  <tr>
-                    <td className="p-10"></td>
-                    <td className="p-10 text-center bg-[#D4AF37]/5">
-                      <button onClick={() => openWhatsApp(`Premium Model Details`)} className="bg-[#002D62] text-white px-8 py-3 rounded-full text-xs font-black hover:bg-[#D4AF37] transition-all">Get Kit</button>
-                    </td>
-                    <td className="p-10 text-center">
-                      <button onClick={() => openWhatsApp(`Advance Model Details`)} className="bg-slate-100 text-[#002D62] px-8 py-3 rounded-full text-xs font-black hover:bg-slate-200 transition-all">Enquire</button>
-                    </td>
-                    <td className="p-10 text-center">
-                      <button onClick={() => openWhatsApp(`Base Model Details`)} className="bg-slate-100 text-[#002D62] px-8 py-3 rounded-full text-xs font-black hover:bg-slate-200 transition-all">Enquire</button>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
             </div>
 
-            {/* Mobile Cards View */}
-            <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-8">
-               {/* Premium Card Mobile */}
-               <div className="bg-white rounded-[2.5rem] shadow-xl border-t-8 border-[#D4AF37] overflow-hidden">
-                  <div className="p-8 bg-[#002D62] text-white">
-                    <Crown className="text-[#D4AF37] mb-2" size={32} />
-                    <h3 className="text-2xl font-black">{t.model_premium_name}</h3>
-                    <p className="text-[10px] text-[#D4AF37] uppercase font-black tracking-widest">{t.model_recommended}</p>
+            {/* Mobile Tabbed Feature List - Fixed layout from screenshot */}
+            <div className="lg:hidden bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden text-left">
+               <div className="p-6 bg-[#002D62] text-white flex justify-between items-center">
+                  <div>
+                    <h3 className="text-xl font-black uppercase tracking-tight">
+                      {activeModelTab === 'premium' ? t.model_premium_name : activeModelTab === 'advance' ? t.model_advance_name : t.model_base_name}
+                    </h3>
+                    {activeModelTab === 'premium' && <span className="text-[10px] text-[#D4AF37] font-black uppercase">{t.model_recommended}</span>}
                   </div>
-                  <div className="p-6 space-y-4 text-left">
-                    {sipFeatures.map((feat, i) => (
-                      <div key={i} className="flex items-center justify-between text-xs border-b border-slate-50 pb-2">
-                        <span className="font-bold text-slate-600">{feat.label}</span>
-                        <StatusIcon check={feat.premium} />
-                      </div>
-                    ))}
-                    <button onClick={() => openWhatsApp(`Premium Model Details`)} className="w-full py-5 bg-[#002D62] text-white rounded-2xl font-black mt-4">Get Kit</button>
+                  <div className="bg-white/10 p-2 rounded-xl">
+                    {activeModelTab === 'premium' ? <Crown className="text-[#D4AF37]" /> : activeModelTab === 'advance' ? <Rocket className="text-slate-300" /> : <Layers className="text-slate-300" />}
                   </div>
                </div>
-
-               {/* Advance Card Mobile */}
-               <div className="bg-white rounded-[2.5rem] shadow-xl border-t-8 border-slate-300 overflow-hidden">
-                  <div className="p-8 bg-slate-900 text-white">
-                    <Rocket className="text-slate-400 mb-2" size={32} />
-                    <h3 className="text-2xl font-black">{t.model_advance_name}</h3>
-                  </div>
-                  <div className="p-6 space-y-4 text-left">
-                    {sipFeatures.map((feat, i) => (
-                      <div key={i} className="flex items-center justify-between text-xs border-b border-slate-50 pb-2">
-                        <span className="font-bold text-slate-600">{feat.label}</span>
-                        <StatusIcon check={feat.advance} />
-                      </div>
-                    ))}
-                    <button onClick={() => openWhatsApp(`Advance Model Details`)} className="w-full py-5 bg-slate-100 text-[#002D62] rounded-2xl font-black mt-4">Get Kit</button>
-                  </div>
+               <div className="p-4 space-y-3">
+                  {sipFeatures.map((feat, i) => (
+                    <div key={i} className="flex items-center justify-between p-3 border-b border-slate-50 last:border-0 group transition-all">
+                       <span className="text-xs font-bold text-slate-600 group-hover:text-[#002D62]">{feat.label}</span>
+                       <div className="shrink-0 scale-90">
+                         <StatusIcon check={feat[activeModelTab]} />
+                       </div>
+                    </div>
+                  ))}
+               </div>
+               <div className="p-6 bg-slate-50">
+                 <button onClick={() => openWhatsApp(`${activeModelTab} Model Inquiry`)} className="w-full py-4 bg-[#002D62] text-white rounded-2xl font-black shadow-lg shadow-blue-900/10 active:scale-95 transition">
+                   Get Complete Kit
+                 </button>
                </div>
             </div>
           </div>
@@ -682,56 +661,56 @@ const App: React.FC = () => {
       {/* Success Stories */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-brand font-black text-[#002D62] mb-6">{t.success_title}</h2>
-          <div className="w-24 h-2 bg-[#D4AF37] mx-auto rounded-full"></div>
+          <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-4 md:mb-6">{t.success_title}</h2>
+          <div className="w-16 md:w-24 h-2 bg-[#D4AF37] mx-auto rounded-full"></div>
         </div>
         
         <div className="relative max-w-5xl mx-auto px-4">
-          <div className="overflow-hidden rounded-[3rem] shadow-2xl bg-slate-50 border border-slate-100">
+          <div className="overflow-hidden rounded-[2.5rem] md:rounded-[3rem] shadow-2xl bg-slate-50 border border-slate-100">
             <div className="flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
               {centers.map((c, i) => (
-                <div key={i} className="min-w-full p-8 md:p-16 flex flex-col lg:flex-row gap-12 items-center">
-                  <div className="w-full lg:w-1/2 aspect-video rounded-[2rem] overflow-hidden shadow-xl shrink-0">
+                <div key={i} className="min-w-full p-6 md:p-16 flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                  <div className="w-full lg:w-1/2 aspect-video rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-xl shrink-0 border-4 border-white">
                     <img src={c.image} alt={c.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="w-full lg:w-1/2 text-left">
-                    <div className="text-sm font-black uppercase text-[#D4AF37] mb-2">{c.franchisee}</div>
-                    <div className="text-3xl font-black text-[#002D62] mb-6">{c.name}</div>
+                    <div className="text-[10px] md:text-sm font-black uppercase text-[#D4AF37] mb-2">{c.franchisee}</div>
+                    <div className="text-2xl md:text-3xl font-black text-[#002D62] mb-6">{c.name}</div>
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3"><Zap className="text-[#D4AF37]" size={18} /><span className="font-bold">{c.metric1}</span></div>
-                      <div className="flex items-center gap-3"><Target className="text-[#D4AF37]" size={18} /><span className="font-bold">{c.metric2}</span></div>
+                      <div className="flex items-center gap-3"><Zap className="text-[#D4AF37]" size={16} /><span className="text-sm font-bold">{c.metric1}</span></div>
+                      <div className="flex items-center gap-3"><Target className="text-[#D4AF37]" size={16} /><span className="text-sm font-bold">{c.metric2}</span></div>
                     </div>
-                    <p className="mt-8 text-slate-600 italic leading-relaxed font-light">"{c.desc}"</p>
+                    <p className="mt-8 text-slate-500 italic text-sm md:text-base leading-relaxed font-light">"{c.desc}"</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <button onClick={prevSlide} className="absolute left-0 lg:-left-12 top-1/2 -translate-y-1/2 bg-white text-[#002D62] p-4 rounded-full shadow-2xl hover:bg-[#D4AF37] transition-all z-20">
-            <ChevronLeft size={24} />
+          <button onClick={prevSlide} className="absolute left-1 md:-left-12 top-1/2 -translate-y-1/2 bg-white text-[#002D62] p-3 md:p-4 rounded-full shadow-xl hover:bg-[#D4AF37] transition-all z-20">
+            <ChevronLeft size={20} />
           </button>
-          <button onClick={nextSlide} className="absolute right-0 lg:-right-12 top-1/2 -translate-y-1/2 bg-white text-[#002D62] p-4 rounded-full shadow-2xl hover:bg-[#D4AF37] transition-all z-20">
-            <ChevronRight size={24} />
+          <button onClick={nextSlide} className="absolute right-1 md:-right-12 top-1/2 -translate-y-1/2 bg-white text-[#002D62] p-3 md:p-4 rounded-full shadow-xl hover:bg-[#D4AF37] transition-all z-20">
+            <ChevronRight size={20} />
           </button>
         </div>
       </section>
 
       {/* Founder Profile */}
       <section className="py-24 bg-[#002D62] text-white overflow-hidden relative">
-        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-24">
-          <div className="lg:w-1/2 relative">
-             <div className="absolute inset-0 bg-[#D4AF37]/40 rounded-[4rem] rotate-6 transform scale-105 blur-2xl"></div>
-             <img src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" alt={FOUNDER_NAME} className="relative z-10 rounded-[4rem] shadow-2xl border-2 border-white/10 grayscale-[0.2]" />
-             <div className="absolute -bottom-10 -right-10 bg-white text-[#002D62] p-12 rounded-[3.5rem] shadow-2xl z-20 hidden md:block border-4 border-[#D4AF37]">
-                <div className="text-5xl font-black mb-1">16+</div>
-                <div className="text-[10px] uppercase font-black text-slate-400">{t.exp_text}</div>
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16 md:gap-24">
+          <div className="lg:w-1/2 relative w-full max-w-lg mx-auto lg:max-w-none">
+             <div className="absolute inset-0 bg-[#D4AF37]/40 rounded-[2.5rem] md:rounded-[4rem] rotate-6 transform scale-105 blur-2xl"></div>
+             <img src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" alt={FOUNDER_NAME} className="relative z-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl border-2 border-white/10 grayscale-[0.2]" />
+             <div className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-white text-[#002D62] p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] shadow-2xl z-20 border-4 border-[#D4AF37]">
+                <div className="text-3xl md:text-5xl font-black mb-1">16+</div>
+                <div className="text-[8px] md:text-[10px] uppercase font-black text-slate-400">{t.exp_text}</div>
              </div>
           </div>
-          <div className="lg:w-1/2">
-            <div className="bg-[#D4AF37] text-[#002D62] px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest w-fit mb-8">{t.founder_badge}</div>
-            <h2 className="text-5xl md:text-6xl font-brand font-black mb-8 leading-tight">{t.founder_title}</h2>
-            <h3 className="text-3xl font-bold text-[#D4AF37] mb-12 italic"><span>{FOUNDER_NAME}</span> <span className="text-xl opacity-60">(IIT Guwahati)</span></h3>
-            <p className="text-xl text-slate-300 italic mb-12 border-l-8 border-[#D4AF37] pl-10 leading-relaxed font-light text-justify">
+          <div className="lg:w-1/2 text-center lg:text-left mt-10 lg:mt-0">
+            <div className="bg-[#D4AF37] text-[#002D62] px-6 py-2 rounded-full font-black text-[10px] uppercase tracking-widest w-fit mb-6 mx-auto lg:mx-0">{t.founder_badge}</div>
+            <h2 className="text-3xl md:text-6xl font-brand font-black mb-6 leading-tight">{t.founder_title}</h2>
+            <h3 className="text-xl md:text-3xl font-bold text-[#D4AF37] mb-8 italic"><span>{FOUNDER_NAME}</span> <span className="text-base md:text-xl opacity-60 ml-2">(IIT Guwahati)</span></h3>
+            <p className="text-base md:text-xl text-slate-300 italic mb-8 border-l-4 md:border-l-8 border-[#D4AF37] pl-6 md:pl-10 leading-relaxed font-light text-justify">
               "{t.founder_quote}"
             </p>
           </div>
@@ -741,33 +720,33 @@ const App: React.FC = () => {
       {/* Team Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
+          <div className="text-center mb-16 md:20">
             <div className="inline-flex items-center gap-2 bg-[#D4AF37]/10 px-6 py-2 rounded-full mb-6 text-[#002D62]">
-              <Users size={18} className="text-[#D4AF37]" />
-              <span className="text-[11px] font-black uppercase tracking-[0.3em]">{t.faculty_badge}</span>
+              <Users size={16} className="text-[#D4AF37]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">{t.faculty_badge}</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-brand font-black text-[#002D62] mb-6">{t.faculty_title}</h2>
-            <p className="text-slate-500 text-lg max-w-2xl mx-auto italic">"{t.faculty_desc}"</p>
+            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-6">{t.faculty_title}</h2>
+            <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto italic">"{t.faculty_desc}"</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {faculties.map((f, idx) => (
-              <div key={idx} className="group bg-white border border-slate-100 rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col h-full">
+              <div key={idx} className="group bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
                 <div className="relative aspect-[4/5] overflow-hidden shrink-0">
                   <img src={f.image} alt={f.name} className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#002D62] via-transparent to-transparent opacity-70"></div>
                   <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] mb-1">{f.role_key}</div>
-                    <div className="text-xl font-black">{f.name}</div>
+                    <div className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] mb-1">{f.role_key}</div>
+                    <div className="text-lg md:text-xl font-black">{f.name}</div>
                   </div>
                 </div>
-                <div className="p-8 space-y-4 grow flex flex-col justify-between text-left">
+                <div className="p-6 md:p-8 space-y-4 grow flex flex-col justify-between text-left">
                   <div>
                     <div className="flex items-center justify-between border-b border-slate-50 pb-4 mb-4">
-                      <div className="flex items-center gap-2"><BookOpen size={16} className="text-[#D4AF37]" /><span className="font-black text-[#002D62]">{f.subject_key}</span></div>
-                      <div className="bg-[#D4AF37]/10 px-3 py-1 rounded-full text-[10px] font-black text-[#002D62] uppercase tracking-tighter shrink-0">{f.exp_val} {t.exp_text}</div>
+                      <div className="flex items-center gap-2"><BookOpen size={14} className="text-[#D4AF37]" /><span className="text-sm font-black text-[#002D62]">{f.subject_key}</span></div>
+                      <div className="bg-[#D4AF37]/10 px-3 py-1 rounded-full text-[9px] font-black text-[#002D62] uppercase shrink-0">{f.exp_val} {t.exp_text}</div>
                     </div>
-                    <div className="flex items-start gap-2"><Award size={14} className="text-[#D4AF37] mt-1 shrink-0" /><p className="text-xs font-bold text-slate-600 leading-relaxed italic">{f.qualification_key}</p></div>
+                    <div className="flex items-start gap-2"><Award size={12} className="text-[#D4AF37] mt-1 shrink-0" /><p className="text-[11px] font-bold text-slate-600 leading-relaxed italic">{f.qualification_key}</p></div>
                   </div>
                 </div>
               </div>
@@ -777,15 +756,15 @@ const App: React.FC = () => {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-24 bg-slate-50 border-y border-slate-200">
+      <section className="py-20 bg-slate-50 border-y border-slate-200">
         <div className="container mx-auto px-4 text-center">
-          <div className="mb-16 text-center">
-            <h2 className="text-4xl md:text-5xl font-brand font-black text-[#002D62] mb-4">{t.gallery_title}</h2>
-            <p className="text-slate-500 italic max-w-lg mx-auto">{t.gallery_desc}</p>
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl md:text-5xl font-brand font-black text-[#002D62] mb-4">{t.gallery_title}</h2>
+            <p className="text-slate-500 italic max-w-lg mx-auto text-sm">{t.gallery_desc}</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
             {galleryImages.map((img, i) => (
-              <div key={i} className="aspect-video rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white hover:border-[#D4AF37] transition-all duration-500 group">
+              <div key={i} className="aspect-video rounded-[2rem] overflow-hidden shadow-xl border-4 border-white hover:border-[#D4AF37] transition-all duration-500 group">
                 <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
               </div>
             ))}
@@ -794,17 +773,17 @@ const App: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 text-slate-500 pt-32 pb-12 overflow-hidden relative text-left">
+      <footer className="bg-slate-950 text-slate-500 pt-24 md:pt-32 pb-12 overflow-hidden relative text-left">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-4 gap-16 border-b border-white/5 pb-20 mb-12">
+          <div className="grid md:grid-cols-4 gap-12 border-b border-white/5 pb-16 mb-12">
             <div className="col-span-1 md:col-span-2">
-              <img src={LOGO_URL} className="h-16 mb-8 filter brightness-0 invert" alt="Logo" />
-              <p className="text-xl italic leading-relaxed text-slate-400 max-w-sm mb-10">"{t.footer_quote}"</p>
+              <img src={LOGO_URL} className="h-12 md:h-16 mb-8 filter brightness-0 invert" alt="Logo" />
+              <p className="text-lg italic leading-relaxed text-slate-400 max-w-sm mb-10">"{t.footer_quote}"</p>
               
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <MapPin className="text-[#D4AF37] mt-1 shrink-0" size={24} />
-                  <div className="text-sm text-slate-300 leading-relaxed">
+                  <MapPin className="text-[#D4AF37] mt-1 shrink-0" size={20} />
+                  <div className="text-xs md:text-sm text-slate-300 leading-relaxed">
                     <span className="font-black text-white block mb-1">📍 {t.footer_visit}:</span>
                     Opposite Ratlami Namkeen, <br/>New Jawahar Nagar, Kota, Rajasthan - 324005
                   </div>
@@ -813,41 +792,42 @@ const App: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="text-white font-black text-xs uppercase tracking-[0.4em] mb-10 border-l-2 border-[#D4AF37] pl-4">{t.footer_connect}</h4>
-              <ul className="space-y-6 text-sm font-bold">
-                <li><a href="https://eduquantumkota.com/" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Globe size={18} className="text-[#D4AF37]"/> Website</a></li>
-                <li><a href="https://share.google/c7M2pm9VhuvBw0t2l" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><MapPin size={18} className="text-[#D4AF37]"/> Google Profile</a></li>
-                <li><a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Smartphone size={18} className="text-[#D4AF37]"/> Mobile App</a></li>
-                <li><a href="https://www.instagram.com/quantum_kota/" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Instagram size={18} className="text-[#D4AF37]"/> Instagram</a></li>
+              <h4 className="text-white font-black text-[10px] uppercase tracking-[0.3em] mb-8 border-l-2 border-[#D4AF37] pl-4">{t.footer_connect}</h4>
+              <ul className="space-y-4 md:space-y-6 text-xs md:text-sm font-bold">
+                <li><a href="https://eduquantumkota.com/" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Globe size={16} className="text-[#D4AF37]"/> Website</a></li>
+                <li><a href="https://share.google/c7M2pm9VhuvBw0t2l" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><MapPin size={16} className="text-[#D4AF37]"/> Google Profile</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=co.april2019.qtm" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Smartphone size={16} className="text-[#D4AF37]"/> Mobile App</a></li>
+                <li><a href="https://www.instagram.com/quantum_kota/" target="_blank" className="flex items-center gap-3 hover:text-[#D4AF37] transition-all"><Instagram size={16} className="text-[#D4AF37]"/> Instagram</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-white font-black text-xs uppercase tracking-[0.4em] mb-10 border-l-2 border-[#D4AF37] pl-4">{t.footer_helpline}</h4>
-              <button onClick={() => openWhatsApp('Help')} className="text-2xl font-black text-white hover:text-[#D4AF37] transition">{PHONE_NUMBER}</button>
+              <h4 className="text-white font-black text-[10px] uppercase tracking-[0.3em] mb-8 border-l-2 border-[#D4AF37] pl-4">{t.footer_helpline}</h4>
+              <button onClick={() => openWhatsApp('Help')} className="text-xl md:text-2xl font-black text-white hover:text-[#D4AF37] transition">{PHONE_NUMBER}</button>
             </div>
           </div>
           <div className="text-center">
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] opacity-30 leading-relaxed max-w-2xl mx-auto">
               © 2025 {BRAND_NAME}. {t.footer_copyright}
             </p>
           </div>
         </div>
       </footer>
 
-      {/* Floating WhatsApp CTA */}
+      {/* Floating WhatsApp CTA - Improved for mobile */}
       <button 
         onClick={() => openWhatsApp(`Hi ${FOUNDER_NICKNAME}, I am interested in opening an EduQuantum center in my city. Please share business details.`)}
-        className="fixed bottom-10 right-10 z-[100] bg-green-500 text-white p-6 rounded-full shadow-2xl hover:scale-110 transition-all group animate-bounce"
+        className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] bg-green-500 text-white p-4 md:p-6 rounded-full shadow-2xl hover:scale-110 transition-all group animate-bounce"
       >
-        <MessageCircle size={32} fill="white" />
-        <span className="absolute right-full mr-6 bg-white text-[#002D62] px-6 py-3 rounded-2xl text-[10px] font-black shadow-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap border-2 border-[#D4AF37]">
+        <MessageCircle size={24} md:size={32} fill="white" />
+        <span className="hidden md:block absolute right-full mr-6 bg-white text-[#002D62] px-6 py-3 rounded-2xl text-[10px] font-black shadow-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap border-2 border-[#D4AF37]">
           {t.cta_floating}
         </span>
       </button>
 
       <style>{`
         .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         body { top: 0px !important; position: static !important; }
       `}</style>
     </div>
