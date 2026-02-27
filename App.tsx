@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Phone, 
   ArrowRight, 
@@ -26,11 +27,21 @@ import {
   ExternalLink,
   Search,
   Map,
-  X
+  X,
+  Download,
+  TrendingUp,
+  Clock,
+  Check,
+  Minus,
+  AlertCircle,
+  Sparkles
 } from 'lucide-react';
 
 import { FacultyList } from './src/components/FacultyList';
 import { faculties, galleryImages, BRAND_NAME, FOUNDER_NAME, FOUNDER_NICKNAME, LOGO_URL, FOUNDER_IMAGE } from './src/constants/faculties';
+import { ProfitEstimator } from './src/components/ProfitEstimator';
+import { SocialProofToast } from './src/components/SocialProofToast';
+import { LeadMagnetModal } from './src/components/LeadMagnetModal';
 
 // Professional Translation Dictionary
 const TRANSLATIONS: Record<string, any> = {
@@ -91,6 +102,23 @@ const TRANSLATIONS: Record<string, any> = {
     footer_helpline: "Direct Helpline",
     footer_copyright: "PREMIUM ACADEMIC ALLIANCE. YOUR JOURNEY TO ACADEMIC EXCELLENCE STARTS HERE!",
     cta_floating: "Speak with Head Office",
+    cta_download_kit: "Download Business Plan",
+    urgency_bar: "Limited Partnership Slots Available for 2025-26 Academic Session",
+    profit_title: "High-Profit Business Model",
+    profit_subtitle: "See how your investment grows with EduQuantum's proven academic system.",
+    comp_title: "Why EduQuantum?",
+    comp_subtitle: "The difference between a local center and a Kota-grade Institute.",
+    comp_trad_title: "Traditional Center",
+    comp_edu_title: "EduQuantum Partner",
+    comp_item1_trad: "Local, unverified faculty",
+    comp_item1_edu: "Kota's Top-Tier IITian Faculty",
+    comp_item2_trad: "Generic study material",
+    comp_item2_edu: "Kota-Standard Research Modules",
+    comp_item3_trad: "Manual management",
+    comp_item3_edu: "AI-Powered Center Management",
+    comp_item4_trad: "Low brand trust",
+    comp_item4_edu: "National Brand Recognition",
+    trust_bar_title: "Trusted by 500+ Educators Across India",
     success_udgir: "Udgir, Maharashtra",
     success_amravati: "Amravati, Maharashtra",
     success_mumbai: "Mumbai, Maharashtra",
@@ -164,6 +192,23 @@ const TRANSLATIONS: Record<string, any> = {
     footer_helpline: "डायरेक्ट हेल्पलाइन",
     footer_copyright: "प्रीमियम अकादमिक गठबंधन। अकादमिक उत्कृष्टता की आपकी यात्रा यहीं से शुरू होती है!",
     cta_floating: "हेड ऑफिस से बात करें",
+    cta_download_kit: "बिजनेस प्लान डाउनलोड करें",
+    urgency_bar: "2025-26 शैक्षणिक सत्र के लिए सीमित पार्टनरशिप स्लॉट उपलब्ध",
+    profit_title: "उच्च-लाभ बिजनेस मॉडल",
+    profit_subtitle: "देखें कि एडुकवांटम के प्रमाणित अकादमिक सिस्टम के साथ आपका निवेश कैसे बढ़ता है।",
+    comp_title: "एडुकवांटम ही क्यों?",
+    comp_subtitle: "एक स्थानीय केंद्र और कोटा-ग्रेड संस्थान के बीच का अंतर।",
+    comp_trad_title: "पारंपरिक केंद्र",
+    comp_edu_title: "एडुकवांटम पार्टनर",
+    comp_item1_trad: "स्थानीय, असत्यापित फैकल्टी",
+    comp_item1_edu: "कोटा की टॉप-टियर IITian फैकल्टी",
+    comp_item2_trad: "सामान्य अध्ययन सामग्री",
+    comp_item2_edu: "कोटा-मानक रिसर्च मॉड्यूल",
+    comp_item3_trad: "मैनुअल मैनेजमेंट",
+    comp_item3_edu: "AI-पावर्ड सेंटर मैनेजमेंट",
+    comp_item4_trad: "कम ब्रांड ट्रस्ट",
+    comp_item4_edu: "नेशनल ब्रांड पहचान",
+    trust_bar_title: "भारत भर के 500+ शिक्षकों द्वारा विश्वसनीय",
     success_udgir: "उदगीर, महाराष्ट्र",
     success_amravati: "अमरावती, महाराष्ट्र",
     success_mumbai: "मुंबई, महाराष्ट्र",
@@ -343,6 +388,18 @@ const App: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Investor' });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showLeadModal, setShowLeadModal] = useState(false);
+
+  useEffect(() => {
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !localStorage.getItem('modalShown')) {
+        setShowLeadModal(true);
+        localStorage.setItem('modalShown', 'true');
+      }
+    };
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = currentLang;
@@ -475,6 +532,14 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 selection:bg-[#D4AF37] selection:text-white" lang={currentLang}>
       
+      {/* Urgency Bar */}
+      <div className="bg-[#D4AF37] text-[#002D62] py-2 px-4 relative z-[60]">
+        <div className="container mx-auto flex justify-center items-center gap-3 text-[10px] md:text-xs font-black uppercase tracking-widest">
+          <Clock size={14} />
+          <span className="animate-pulse">{t.urgency_bar}</span>
+        </div>
+      </div>
+
       {/* Announcement */}
       <div className="bg-[#002D62] text-white py-1.5 px-4 border-b border-white/10 overflow-hidden">
         <div className="container mx-auto flex justify-between items-center text-[9px] md:text-xs font-bold uppercase tracking-widest">
@@ -495,6 +560,12 @@ const App: React.FC = () => {
             
             {/* Action Group */}
             <div className="flex items-center gap-2 md:gap-4 shrink-0">
+               <button 
+                 onClick={() => setShowLeadModal(true)}
+                 className="hidden md:flex items-center gap-2 text-[#002D62] font-black text-xs uppercase hover:text-[#D4AF37] transition"
+               >
+                 <Download size={16} /> Free Kit
+               </button>
                <button onClick={() => openWhatsApp(`Apply`)} className="bg-[#002D62] text-white px-5 md:px-8 py-2 md:py-3 rounded-full font-black text-[11px] md:text-sm hover:shadow-xl hover:-translate-y-0.5 transition active:scale-95 shadow-lg shadow-blue-900/20 whitespace-nowrap">
                  {t.nav_apply}
                </button>
@@ -522,13 +593,23 @@ const App: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-luxury text-white pt-16 pb-20 lg:pt-32 lg:pb-40 overflow-hidden">
+      <section className="bg-luxury text-white pt-16 pb-20 lg:pt-32 lg:pb-40 overflow-hidden relative">
+        {/* Abstract Background Graphics */}
+        <div className="absolute top-1/4 left-0 w-64 h-64 bg-[#D4AF37]/5 rounded-full blur-3xl -translate-x-1/2"></div>
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl translate-x-1/2"></div>
+        
         <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-7 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-lg px-6 py-2 rounded-full mb-8 border border-white/20">
               <Trophy size={14} className="text-[#D4AF37]" />
               <span className="text-[10px] font-black uppercase tracking-widest">{t.hero_badge}</span>
             </div>
+            
+            <div className="mb-4 flex items-center gap-2 text-[#D4AF37] font-black text-xs uppercase tracking-tighter">
+              <div className="w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
+              Only 3 Partnership Slots Left for Maharashtra
+            </div>
+
             <h1 className="text-4xl md:text-7xl lg:text-8xl font-brand font-black leading-[1.1] mb-6 md:mb-8">
               {t.hero_title_p1} <span className="text-[#D4AF37]">{BRAND_NAME}</span> {t.hero_title_p2}
             </h1>
@@ -536,6 +617,21 @@ const App: React.FC = () => {
               {t.hero_desc}
             </p>
             
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <button 
+                onClick={() => openWhatsApp(`I want to request the Partnership Kit.`)}
+                className="px-10 py-5 bg-[#D4AF37] text-[#002D62] rounded-2xl font-black shadow-2xl hover:shadow-[#D4AF37]/20 hover:-translate-y-1 transition-all flex items-center justify-center gap-3"
+              >
+                {t.form_submit} <ArrowRight size={20} />
+              </button>
+              <button 
+                onClick={() => setShowLeadModal(true)}
+                className="px-10 py-5 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-2xl font-black hover:bg-white/20 transition-all flex items-center justify-center gap-3"
+              >
+                <Download size={20} /> {t.cta_download_kit}
+              </button>
+            </div>
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
               <div className="space-y-1">
                 <div className="text-3xl md:text-4xl font-black text-[#D4AF37]">16+</div>
@@ -580,31 +676,134 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Partnership Facilities Section */}
-      <section className="py-20 md:py-24 bg-slate-50 relative overflow-hidden" id="facilities">
-        <div className="container mx-auto px-4 text-center">
-          <div className="mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-3">Facilities At Study Centre</h2>
-            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">Everything you need to run a successful Kota-grade coaching center.</p>
+      {/* Trust Bar */}
+      <div className="bg-white py-10 border-b border-slate-100">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 opacity-40 grayscale">
+            <div className="flex items-center gap-2 font-black text-xl text-[#002D62]"><ShieldCheck className="text-[#D4AF37]" /> ISO 9001:2015</div>
+            <div className="flex items-center gap-2 font-black text-xl text-[#002D62]"><Award className="text-[#D4AF37]" /> Startup India</div>
+            <div className="flex items-center gap-2 font-black text-xl text-[#002D62]"><Star className="text-[#D4AF37]" /> 4.9/5 Rating</div>
+            <div className="flex items-center gap-2 font-black text-xl text-[#002D62]"><Users className="text-[#D4AF37]" /> 500+ Partners</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Comparison Section */}
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-[#D4AF37]/10 px-6 py-2 rounded-full mb-6 text-[#002D62]">
+              <Sparkles size={16} className="text-[#D4AF37]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">The EduQuantum Edge</span>
+            </div>
+            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-6">{t.comp_title}</h2>
+            <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto italic">{t.comp_subtitle}</p>
           </div>
 
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {sipFeatures.map((feat, idx) => (
-                <div key={idx} className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center group">
-                  <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    {feat.icon}
-                  </div>
-                  <h3 className="text-lg font-black text-[#002D62] leading-tight">{feat.label}</h3>
-                </div>
-              ))}
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+            {/* Traditional */}
+            <div className="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-6 opacity-10"><AlertCircle size={80} /></div>
+              <h3 className="text-2xl font-black text-slate-400 mb-8 uppercase tracking-tighter">{t.comp_trad_title}</h3>
+              <ul className="space-y-6">
+                {[t.comp_item1_trad, t.comp_item2_trad, t.comp_item3_trad, t.comp_item4_trad].map((item, i) => (
+                  <li key={i} className="flex items-center gap-4 text-slate-500 font-bold">
+                    <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center shrink-0"><Minus size={12} /></div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* EduQuantum */}
+            <div className="bg-[#002D62] p-10 rounded-[3rem] shadow-2xl border-4 border-[#D4AF37] relative overflow-hidden text-white">
+              <div className="absolute top-0 right-0 p-6 opacity-10 text-[#D4AF37]"><Trophy size={80} /></div>
+              <h3 className="text-2xl font-black text-[#D4AF37] mb-8 uppercase tracking-tighter">{t.comp_edu_title}</h3>
+              <ul className="space-y-6">
+                {[t.comp_item1_edu, t.comp_item2_edu, t.comp_item3_edu, t.comp_item4_edu].map((item, i) => (
+                  <li key={i} className="flex items-center gap-4 text-white font-bold">
+                    <div className="w-6 h-6 rounded-full bg-[#D4AF37] flex items-center justify-center shrink-0 text-[#002D62]"><Check size={12} strokeWidth={4} /></div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-10 pt-10 border-t border-white/10">
+                <button onClick={() => setShowLeadModal(true)} className="w-full py-4 bg-[#D4AF37] text-[#002D62] rounded-2xl font-black shadow-xl hover:scale-105 transition-all">
+                  Switch to EduQuantum
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partnership Facilities Section */}
+      <section className="py-20 md:py-24 bg-white relative overflow-hidden" id="facilities">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-3">The Academic OS</h2>
+            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">A complete operating system for your coaching business.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
+            {/* Bento Grid Layout */}
+            <div className="md:col-span-2 lg:col-span-2 bg-[#002D62] p-8 rounded-[2.5rem] text-white flex flex-col justify-between group hover:shadow-2xl transition-all">
+               <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6"><Award className="text-[#D4AF37]" /></div>
+               <div>
+                 <h3 className="text-xl font-black mb-2">{t.feat_brand}</h3>
+                 <p className="text-xs text-slate-400 leading-relaxed">Leverage Kota's most trusted academic brand name in your city.</p>
+               </div>
             </div>
             
-            <div className="mt-16">
-              <button onClick={() => openWhatsApp(`Partnership Facility Inquiry`)} className="bg-[#002D62] text-white px-10 py-5 rounded-2xl font-black shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-3 mx-auto">
-                Get Partnership Kit <ArrowRight size={20} />
-              </button>
+            <div className="md:col-span-2 lg:col-span-2 bg-slate-50 p-8 rounded-[2.5rem] flex flex-col justify-between border border-slate-100 hover:bg-white hover:shadow-xl transition-all">
+               <div className="w-12 h-12 bg-[#002D62]/5 rounded-xl flex items-center justify-center mb-6"><Users className="text-[#002D62]" /></div>
+               <div>
+                 <h3 className="text-xl font-black text-[#002D62] mb-2">{t.feat_fac_rec}</h3>
+                 <p className="text-xs text-slate-500 leading-relaxed">We hire and train the best IITian faculty for your center.</p>
+               </div>
             </div>
+
+            <div className="md:col-span-2 lg:col-span-2 bg-[#D4AF37] p-8 rounded-[2.5rem] text-[#002D62] flex flex-col justify-between hover:shadow-xl transition-all">
+               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-6"><Layers size={24} /></div>
+               <div>
+                 <h3 className="text-xl font-black mb-2">{t.feat_study_mat}</h3>
+                 <p className="text-xs text-[#002D62]/70 leading-relaxed">Premium Kota-standard hard copy modules for every student.</p>
+               </div>
+            </div>
+
+            <div className="md:col-span-2 lg:col-span-3 bg-slate-50 p-8 rounded-[2.5rem] flex flex-col justify-between border border-slate-100 hover:bg-white hover:shadow-xl transition-all">
+               <div className="w-12 h-12 bg-[#002D62]/5 rounded-xl flex items-center justify-center mb-6"><Smartphone className="text-[#002D62]" /></div>
+               <div>
+                 <h3 className="text-xl font-black text-[#002D62] mb-2">{t.feat_app}</h3>
+                 <p className="text-xs text-slate-500 leading-relaxed">Your own white-labeled mobile app for testing and digital learning.</p>
+               </div>
+            </div>
+
+            <div className="md:col-span-2 lg:col-span-3 bg-[#002D62] p-8 rounded-[2.5rem] text-white flex flex-col justify-between hover:shadow-2xl transition-all">
+               <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6"><Target className="text-[#D4AF37]" /></div>
+               <div>
+                 <h3 className="text-xl font-black mb-2">{t.feat_test_gen}</h3>
+                 <p className="text-xs text-slate-400 leading-relaxed">Generate JEE/NEET level papers in seconds with our massive question bank.</p>
+               </div>
+            </div>
+          </div>
+          
+          <div className="mt-12 text-center">
+             <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-6">+ 10 more premium facilities included</p>
+             <button onClick={() => openWhatsApp(`Full Facility List Inquiry`)} className="text-[#002D62] font-black underline underline-offset-8 hover:text-[#D4AF37] transition-all">View All Features</button>
+          </div>
+        </div>
+      </section>
+
+      {/* Profit Estimator Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-4">{t.profit_title}</h2>
+            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">{t.profit_subtitle}</p>
+          </div>
+          <div className="max-w-5xl mx-auto">
+            <ProfitEstimator />
           </div>
         </div>
       </section>
@@ -753,6 +952,28 @@ const App: React.FC = () => {
           {t.cta_floating}
         </span>
       </button>
+
+      <SocialProofToast />
+
+      {/* Sticky Mobile Footer CTA */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[95] p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex gap-3">
+        <button 
+          onClick={() => openWhatsApp(`Hi, I want the Partnership Kit.`)}
+          className="flex-1 bg-[#002D62] text-white py-4 rounded-2xl font-black text-xs shadow-lg active:scale-95 transition"
+        >
+          {t.form_submit}
+        </button>
+        <button 
+          onClick={() => setShowLeadModal(true)}
+          className="bg-[#D4AF37] text-[#002D62] p-4 rounded-2xl shadow-lg active:scale-95 transition"
+        >
+          <Download size={20} />
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {showLeadModal && <LeadMagnetModal onClose={() => setShowLeadModal(false)} />}
+      </AnimatePresence>
 
       <style>{`
         .hide-scroll::-webkit-scrollbar { display: none; }
