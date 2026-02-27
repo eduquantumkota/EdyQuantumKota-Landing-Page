@@ -4,8 +4,6 @@ import {
   ArrowRight, 
   Trophy, 
   MapPin, 
-  CheckCircle2, 
-  XCircle,
   MessageCircle, 
   Smartphone,
   Star,
@@ -18,7 +16,6 @@ import {
   ChevronRight,
   Layers,
   Rocket,
-  Crown,
   Zap,
   Target,
   GraduationCap,
@@ -31,6 +28,9 @@ import {
   Map,
   X
 } from 'lucide-react';
+
+import { FacultyList } from './src/components/FacultyList';
+import { faculties, galleryImages, BRAND_NAME, FOUNDER_NAME, FOUNDER_NICKNAME, LOGO_URL, FOUNDER_IMAGE } from './src/constants/faculties';
 
 // Professional Translation Dictionary
 const TRANSLATIONS: Record<string, any> = {
@@ -93,12 +93,18 @@ const TRANSLATIONS: Record<string, any> = {
     cta_floating: "Speak with Head Office",
     success_udgir: "Udgir, Maharashtra",
     success_amravati: "Amravati, Maharashtra",
+    success_mumbai: "Mumbai, Maharashtra",
+    success_kinvat: "Kinvat, Maharashtra",
+    success_nandurbar: "Nandurbar, Maharashtra",
+    success_tirupati: "Tirupati, Andhra Pradesh",
+    success_hinganghat: "Hinganghat, Maharashtra",
     metric_students: "25 to 80+ Students",
     metric_profit: "30-40 Lakhs Profit",
     metric_hub: "Elite Learning Hub",
     metric_market: "Dominant Market Share",
     success_desc_udgir: "Achieved massive student growth and financial success in just one session.",
     success_desc_amravati: "Unprecedented launch success fueled by brand trust in Amravati.",
+    success_desc_generic: "Bringing Kota's elite coaching system and academic excellence to local students.",
     exp_text: "Years"
   },
   hi: {
@@ -160,12 +166,18 @@ const TRANSLATIONS: Record<string, any> = {
     cta_floating: "हेड ऑफिस से बात करें",
     success_udgir: "उदगीर, महाराष्ट्र",
     success_amravati: "अमरावती, महाराष्ट्र",
+    success_mumbai: "मुंबई, महाराष्ट्र",
+    success_kinvat: "किनवट, महाराष्ट्र",
+    success_nandurbar: "नंदुरबार, महाराष्ट्र",
+    success_tirupati: "तिरुपति, आंध्र प्रदेश",
+    success_hinganghat: "हिंगणघाट, महाराष्ट्र",
     metric_students: "25 से 80+ छात्र",
     metric_profit: "30-40 लाख मुनाफा",
     metric_hub: "उत्कृष्ट शिक्षण केंद्र",
     metric_market: "प्रभावी मार्केट शेयर",
     success_desc_udgir: "सिर्फ एक सेशन में भारी छात्र वृद्धि और वित्तीय सफलता हासिल की।",
     success_desc_amravati: "अमरावती में ब्रांड के भरोसे के साथ अभूतपूर्व लॉन्च सफलता।",
+    success_desc_generic: "कोटा के विशिष्ट कोचिंग सिस्टम और शैक्षणिक उत्कृष्टता को स्थानीय छात्रों तक पहुँचाना।",
     exp_text: "वर्ष"
   },
   mr: {
@@ -227,12 +239,18 @@ const TRANSLATIONS: Record<string, any> = {
     cta_floating: "हेड ऑफिसशी बोला",
     success_udgir: "उदगीर, महाराष्ट्र",
     success_amravati: "अमरावती, महाराष्ट्र",
+    success_mumbai: "मुंबई, महाराष्ट्र",
+    success_kinvat: "किनवट, महाराष्ट्र",
+    success_nandurbar: "नंदुरबार, महाराष्ट्र",
+    success_tirupati: "तिरुपती, आंध्र प्रदेश",
+    success_hinganghat: "हिंगणघाट, महाराष्ट्र",
     metric_students: "२५ ते ८०+ विद्यार्थी",
     metric_profit: "३०-४० लाख नफा",
     metric_hub: "उत्कृष्ट शिक्षण केंद्र",
     metric_market: "प्रभावी मार्केट शेअर",
     success_desc_udgir: "केवळ एका सत्रात प्रचंड विद्यार्थी वाढ आणि आर्थिक यश मिळवले.",
     success_desc_amravati: "अमरावतीमधील ब्रँडवरील विश्वासामुळे अभूतपूर्व लॉन्च यश.",
+    success_desc_generic: "कोटाची एलिट कोचिंग सिस्टम आणि शैक्षणिक उत्कृष्टता स्थानिक विद्यार्थ्यांपर्यंत पोहोचवणे.",
     exp_text: "वर्षे"
   },
   gu: {
@@ -294,12 +312,18 @@ const TRANSLATIONS: Record<string, any> = {
     cta_floating: "હેડ ઓફિસ સાથે વાત કરો",
     success_udgir: "ઉદગીર, મહારાષ્ટ્ર",
     success_amravati: "અમરાવતી, મહારાષ્ટ્ર",
+    success_mumbai: "મુંબઈ, મહારાષ્ટ્ર",
+    success_kinvat: "કિનવટ, મહારાષ્ટ્ર",
+    success_nandurbar: "નંદુરબાર, મહારાષ્ટ્ર",
+    success_tirupati: "તિરુપતિ, આંધ્રપ્રદેશ",
+    success_hinganghat: "હિંગણઘાટ, મહારાષ્ટ્ર",
     metric_students: "25 થી 80+ વિદ્યાર્થીઓ",
     metric_profit: "30-40 લાખ નફો",
     metric_hub: "શ્રેષ્ઠ શિક્ષણ કેન્દ્ર",
     metric_market: "પ્રભાવી માર્કેટ શેર",
     success_desc_udgir: "માત્ર એક સત્રમાં પ્રચંડ વિદ્યાર્થી વૃદ્ધિ અને નાણાકીય સફળતા હાંસલ કરી.",
     success_desc_amravati: "અમરાવતીમાં બ્રાન્ડના વિશ્વાસ સાથે અભૂતપૂર્વ લોન્ચ સફળતા.",
+    success_desc_generic: "કોટાની ભદ્ર કોચિંગ સિસ્ટમ અને શૈક્ષણિક શ્રેષ્ઠતા સ્થાનિક વિદ્યાર્થીઓ સુધી પહોંચાડવી.",
     exp_text: "વર્ષો"
   }
 };
@@ -313,59 +337,12 @@ const languages = [
 
 const PHONE_NUMBER = "+91 93510 99947";
 const WHATSAPP_RAW = "919351099947";
-const BRAND_NAME = "EduQuantum Kota";
-const FOUNDER_NAME = "Gorkey Godara";
-const FOUNDER_NICKNAME = "G.G. Sir";
-const LOGO_URL = "https://lh3.googleusercontent.com/d/1lv6QVksAjYZdSTpcTX6mxkCmOKZl85T_";
-
-const faculties = [
-  {
-    name: "Gorkey Godara",
-    subject_key: "Physics",
-    role_key: "Founder",
-    exp_val: "16+",
-    qualification_key: "IIT Guwahati Alumni • Specialist in JEE Advanced Physics",
-    image: "https://lh3.googleusercontent.com/d/1luFFC0j_NJ1YOoyvtQV-el09soK4t_gf"
-  },
-  {
-    name: "A. Vyas Sir",
-    subject_key: "Chemistry",
-    role_key: "Senior Faculty",
-    exp_val: "14+",
-    qualification_key: "BSc • MSc (Chemistry) • MSc (Botany) • B.Ed",
-    image: "https://lh3.googleusercontent.com/d/16nwRLzBrMGb8R1FRD9pZzFqyJZyshPb9"
-  },
-  {
-    name: "Alok Agrawal",
-    subject_key: "Mathematics",
-    role_key: "Senior Faculty",
-    exp_val: "10+",
-    qualification_key: "B.Tech in Mechanical from RTU, Kota (Raj.)",
-    image: "https://lh3.googleusercontent.com/d/16mhfEFnK5EyO2YBB6x97m946OFsoyGNO"
-  },
-  {
-    name: "Megha Ma'am",
-    subject_key: "Biology",
-    role_key: "Senior Faculty",
-    exp_val: "10+",
-    qualification_key: "BSc • MSc (Botany) • B.Ed (Biology) • GATE Qualify 2019",
-    image: "https://lh3.googleusercontent.com/d/1ur9mXf023Unx4mWI2QD_Gs37QBIfJ4Du"
-  }
-];
-
-const galleryImages = [
-  "https://lh3.googleusercontent.com/d/15_g06RoKEjDkn-yFAVUmOFT0hJlebYzv",
-  "https://lh3.googleusercontent.com/d/1AwyA6Ybs4DaB20IxzbRttPWjG6U4WMF1",
-  "https://lh3.googleusercontent.com/d/1Sgk9No6AHV1lLGPsYLiwCcAzeOYt4jhA",
-  "https://lh3.googleusercontent.com/d/1RmD51O3oQecwir7dikBaqwX_WRtM9G_x"
-];
 
 const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState(localStorage.getItem('preferredLang') || 'en');
   const [formData, setFormData] = useState({ name: '', city: '', phone: '', role: 'Investor' });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [activeModelTab, setActiveModelTab] = useState<'premium' | 'advance' | 'base'>('premium');
 
   useEffect(() => {
     document.documentElement.lang = currentLang;
@@ -374,6 +351,14 @@ const App: React.FC = () => {
   const t = useMemo(() => TRANSLATIONS[currentLang] || TRANSLATIONS.en, [currentLang]);
 
   const centers = useMemo(() => [
+    {
+      name: t.success_mumbai,
+      franchisee: "EduQuantum Mumbai",
+      metric1: t.metric_hub,
+      metric2: t.metric_market,
+      desc: t.success_desc_generic,
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
+    },
     {
       name: t.success_udgir,
       franchisee: "EduQuantum Udgir",
@@ -389,24 +374,56 @@ const App: React.FC = () => {
       metric2: t.metric_market,
       desc: t.success_desc_amravati,
       image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      name: t.success_kinvat,
+      franchisee: "EduQuantum Kinvat",
+      metric1: t.metric_hub,
+      metric2: t.metric_market,
+      desc: t.success_desc_generic,
+      image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      name: t.success_nandurbar,
+      franchisee: "EduQuantum Nandurbar",
+      metric1: t.metric_hub,
+      metric2: t.metric_market,
+      desc: t.success_desc_generic,
+      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      name: t.success_tirupati,
+      franchisee: "EduQuantum Tirupati",
+      metric1: t.metric_hub,
+      metric2: t.metric_market,
+      desc: t.success_desc_generic,
+      image: "https://images.unsplash.com/photo-1523050853064-8038a3f4405b?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      name: t.success_hinganghat,
+      franchisee: "EduQuantum Hinganghat",
+      metric1: t.metric_hub,
+      metric2: t.metric_market,
+      desc: t.success_desc_generic,
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop"
     }
   ], [t]);
 
   const sipFeatures = useMemo(() => [
-    { label: t.feat_brand, premium: true, advance: true, base: false },
-    { label: t.feat_fac_rec, premium: true, advance: true, base: false },
-    { label: t.feat_fac_rep, premium: true, advance: false, base: false },
-    { label: t.feat_dmg_ctrl, premium: true, advance: false, base: false },
-    { label: t.feat_app, premium: true, advance: true, base: true },
-    { label: t.feat_test_gen, premium: true, advance: false, base: false },
-    { label: t.feat_lib, premium: true, advance: true, base: true },
-    { label: t.feat_study_mat, premium: true, advance: true, base: true },
-    { label: t.feat_merch, premium: true, advance: true, base: true },
-    { label: t.feat_orient, premium: true, advance: true, base: false },
-    { label: t.feat_fac_train, premium: true, advance: true, base: true },
-    { label: t.feat_social, premium: true, advance: false, base: false },
-    { label: t.feat_leads, premium: true, advance: true, base: true },
-    { label: t.feat_promo, premium: true, advance: true, base: true },
+    { label: t.feat_brand, icon: <Award className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_fac_rec, icon: <Users className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_fac_rep, icon: <ShieldCheck className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_dmg_ctrl, icon: <Zap className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_app, icon: <Smartphone className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_test_gen, icon: <Target className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_lib, icon: <BookOpen className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_study_mat, icon: <Layers className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_merch, icon: <Star className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_orient, icon: <Rocket className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_fac_train, icon: <GraduationCap className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_social, icon: <Instagram className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_leads, icon: <Search className="text-[#D4AF37]" size={20} /> },
+    { label: t.feat_promo, icon: <ImageIcon className="text-[#D4AF37]" size={20} /> },
   ], [t]);
 
   const errors = useMemo(() => {
@@ -455,12 +472,6 @@ const App: React.FC = () => {
     return errors[field] ? 'border-red-500 bg-red-50/10' : 'border-green-500 bg-green-50/10';
   };
 
-  const StatusIcon = ({ check }: { check: boolean }) => (
-    check 
-      ? <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center mx-auto"><CheckCircle2 size={16} className="text-green-500" /></div>
-      : <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center mx-auto"><XCircle size={16} className="text-red-400" /></div>
-  );
-
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 selection:bg-[#D4AF37] selection:text-white" lang={currentLang}>
       
@@ -480,7 +491,7 @@ const App: React.FC = () => {
       <nav className="glass-header sticky top-0 z-50 border-b border-slate-100 py-3 md:py-4 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between gap-4">
-            <img src={LOGO_URL} alt={BRAND_NAME} className="h-8 md:h-14 hover:scale-105 transition duration-300 cursor-pointer object-contain" />
+            <img src={LOGO_URL} alt={BRAND_NAME} className="h-8 md:h-14 hover:scale-105 transition duration-300 cursor-pointer object-contain" referrerPolicy="no-referrer" />
             
             {/* Action Group */}
             <div className="flex items-center gap-2 md:gap-4 shrink-0">
@@ -569,90 +580,30 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Models Comparison Section */}
-      <section className="py-20 md:py-24 bg-slate-50 relative overflow-hidden" id="models">
+      {/* Partnership Facilities Section */}
+      <section className="py-20 md:py-24 bg-slate-50 relative overflow-hidden" id="facilities">
         <div className="container mx-auto px-4 text-center">
           <div className="mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-3">{t.models_title}</h2>
-            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">{t.models_subtitle}</p>
+            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-3">Facilities At Study Centre</h2>
+            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">Everything you need to run a successful Kota-grade coaching center.</p>
           </div>
 
-          {/* Tab Selection for Mobile/Desktop Control */}
-          <div className="lg:hidden flex bg-white p-2 rounded-3xl shadow-lg max-w-sm mx-auto mb-10 border border-slate-100">
-             <button onClick={() => setActiveModelTab('premium')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-tighter transition-all ${activeModelTab === 'premium' ? 'bg-[#002D62] text-white shadow-lg' : 'text-slate-400'}`}>Premium</button>
-             <button onClick={() => setActiveModelTab('advance')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-tighter transition-all ${activeModelTab === 'advance' ? 'bg-[#002D62] text-white shadow-lg' : 'text-slate-400'}`}>Advance</button>
-             <button onClick={() => setActiveModelTab('base')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-tighter transition-all ${activeModelTab === 'base' ? 'bg-[#002D62] text-white shadow-lg' : 'text-slate-400'}`}>Base</button>
-          </div>
-
-          <div className="max-w-7xl mx-auto">
-            {/* Desktop Full Table */}
-            <div className="hidden lg:block overflow-hidden rounded-[3.5rem] bg-white shadow-2xl border border-slate-100">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-[#002D62] text-white">
-                    <th className="p-8 text-xl font-brand font-black">Facilities At Study Centre</th>
-                    <th className="p-8 text-center bg-[#D4AF37]/10">
-                      <div className="flex flex-col items-center">
-                        <Crown className="text-[#D4AF37] mb-2" size={24} />
-                        <span className="block text-lg font-black">{t.model_premium_name}</span>
-                        <span className="text-[10px] opacity-60 font-bold uppercase tracking-widest">{t.model_recommended}</span>
-                      </div>
-                    </th>
-                    <th className="p-8 text-center">
-                      <div className="flex flex-col items-center">
-                        <Rocket className="text-slate-300 mb-2" size={24} />
-                        <span className="block text-lg font-black">{t.model_advance_name}</span>
-                      </div>
-                    </th>
-                    <th className="p-8 text-center">
-                      <div className="flex flex-col items-center">
-                        <Layers className="text-slate-300 mb-2" size={24} />
-                        <span className="block text-lg font-black">{t.model_base_name}</span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-50">
-                  {sipFeatures.map((feat, idx) => (
-                    <tr key={idx} className={`hover:bg-slate-50/50 transition ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/20'}`}>
-                      <td className="p-6 pl-10 font-bold text-slate-700 text-sm">{feat.label}</td>
-                      <td className="p-6 text-center bg-[#D4AF37]/5"><StatusIcon check={feat.premium} /></td>
-                      <td className="p-6 text-center"><StatusIcon check={feat.advance} /></td>
-                      <td className="p-6 text-center"><StatusIcon check={feat.base} /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {sipFeatures.map((feat, idx) => (
+                <div key={idx} className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center group">
+                  <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {feat.icon}
+                  </div>
+                  <h3 className="text-lg font-black text-[#002D62] leading-tight">{feat.label}</h3>
+                </div>
+              ))}
             </div>
-
-            {/* Mobile Tabbed Feature List - Fixed layout from screenshot */}
-            <div className="lg:hidden bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden text-left">
-               <div className="p-6 bg-[#002D62] text-white flex justify-between items-center">
-                  <div>
-                    <h3 className="text-xl font-black uppercase tracking-tight">
-                      {activeModelTab === 'premium' ? t.model_premium_name : activeModelTab === 'advance' ? t.model_advance_name : t.model_base_name}
-                    </h3>
-                    {activeModelTab === 'premium' && <span className="text-[10px] text-[#D4AF37] font-black uppercase">{t.model_recommended}</span>}
-                  </div>
-                  <div className="bg-white/10 p-2 rounded-xl">
-                    {activeModelTab === 'premium' ? <Crown className="text-[#D4AF37]" /> : activeModelTab === 'advance' ? <Rocket className="text-slate-300" /> : <Layers className="text-slate-300" />}
-                  </div>
-               </div>
-               <div className="p-4 space-y-3">
-                  {sipFeatures.map((feat, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 border-b border-slate-50 last:border-0 group transition-all">
-                       <span className="text-xs font-bold text-slate-600 group-hover:text-[#002D62]">{feat.label}</span>
-                       <div className="shrink-0 scale-90">
-                         <StatusIcon check={feat[activeModelTab]} />
-                       </div>
-                    </div>
-                  ))}
-               </div>
-               <div className="p-6 bg-slate-50">
-                 <button onClick={() => openWhatsApp(`${activeModelTab} Model Inquiry`)} className="w-full py-4 bg-[#002D62] text-white rounded-2xl font-black shadow-lg shadow-blue-900/10 active:scale-95 transition">
-                   Get Complete Kit
-                 </button>
-               </div>
+            
+            <div className="mt-16">
+              <button onClick={() => openWhatsApp(`Partnership Facility Inquiry`)} className="bg-[#002D62] text-white px-10 py-5 rounded-2xl font-black shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-3 mx-auto">
+                Get Partnership Kit <ArrowRight size={20} />
+              </button>
             </div>
           </div>
         </div>
@@ -671,7 +622,7 @@ const App: React.FC = () => {
               {centers.map((c, i) => (
                 <div key={i} className="min-w-full p-6 md:p-16 flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
                   <div className="w-full lg:w-1/2 aspect-video rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-xl shrink-0 border-4 border-white">
-                    <img src={c.image} alt={c.name} className="w-full h-full object-cover" />
+                    <img src={c.image} alt={c.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   </div>
                   <div className="w-full lg:w-1/2 text-left">
                     <div className="text-[10px] md:text-sm font-black uppercase text-[#D4AF37] mb-2">{c.franchisee}</div>
@@ -700,7 +651,7 @@ const App: React.FC = () => {
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16 md:gap-24">
           <div className="lg:w-1/2 relative w-full max-w-lg mx-auto lg:max-w-none">
              <div className="absolute inset-0 bg-[#D4AF37]/40 rounded-[2.5rem] md:rounded-[4rem] rotate-6 transform scale-105 blur-2xl"></div>
-             <img src="https://lh3.googleusercontent.com/d/1UykyRhRknVxLRI85iJW1AH6kC2h6yU7h" alt={FOUNDER_NAME} className="relative z-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl border-2 border-white/10 grayscale-[0.2]" />
+             <img src={FOUNDER_IMAGE} alt={FOUNDER_NAME} className="relative z-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl border-2 border-white/10 grayscale-[0.2]" referrerPolicy="no-referrer" />
              <div className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-white text-[#002D62] p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] shadow-2xl z-20 border-4 border-[#D4AF37]">
                 <div className="text-3xl md:text-5xl font-black mb-1">16+</div>
                 <div className="text-[8px] md:text-[10px] uppercase font-black text-slate-400">{t.exp_text}</div>
@@ -729,29 +680,7 @@ const App: React.FC = () => {
             <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto italic">"{t.faculty_desc}"</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {faculties.map((f, idx) => (
-              <div key={idx} className="group bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
-                <div className="relative aspect-[4/5] overflow-hidden shrink-0">
-                  <img src={f.image} alt={f.name} className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#002D62] via-transparent to-transparent opacity-70"></div>
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <div className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] mb-1">{f.role_key}</div>
-                    <div className="text-lg md:text-xl font-black">{f.name}</div>
-                  </div>
-                </div>
-                <div className="p-6 md:p-8 space-y-4 grow flex flex-col justify-between text-left">
-                  <div>
-                    <div className="flex items-center justify-between border-b border-slate-50 pb-4 mb-4">
-                      <div className="flex items-center gap-2"><BookOpen size={14} className="text-[#D4AF37]" /><span className="text-sm font-black text-[#002D62]">{f.subject_key}</span></div>
-                      <div className="bg-[#D4AF37]/10 px-3 py-1 rounded-full text-[9px] font-black text-[#002D62] uppercase shrink-0">{f.exp_val} {t.exp_text}</div>
-                    </div>
-                    <div className="flex items-start gap-2"><Award size={12} className="text-[#D4AF37] mt-1 shrink-0" /><p className="text-[11px] font-bold text-slate-600 leading-relaxed italic">{f.qualification_key}</p></div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <FacultyList expText={t.exp_text} />
         </div>
       </section>
 
@@ -765,7 +694,7 @@ const App: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
             {galleryImages.map((img, i) => (
               <div key={i} className="aspect-video rounded-[2rem] overflow-hidden shadow-xl border-4 border-white hover:border-[#D4AF37] transition-all duration-500 group">
-                <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+                <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" referrerPolicy="no-referrer" />
               </div>
             ))}
           </div>
@@ -777,7 +706,7 @@ const App: React.FC = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-4 gap-12 border-b border-white/5 pb-16 mb-12">
             <div className="col-span-1 md:col-span-2">
-              <img src={LOGO_URL} className="h-12 md:h-16 mb-8 filter brightness-0 invert" alt="Logo" />
+              <img src={LOGO_URL} className="h-12 md:h-16 mb-8 filter brightness-0 invert" alt="Logo" referrerPolicy="no-referrer" />
               <p className="text-lg italic leading-relaxed text-slate-400 max-w-sm mb-10">"{t.footer_quote}"</p>
               
               <div className="space-y-4">
