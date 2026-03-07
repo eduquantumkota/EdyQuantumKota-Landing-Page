@@ -4,9 +4,10 @@ import { X, FileText, Download, CheckCircle2 } from 'lucide-react';
 
 interface LeadMagnetModalProps {
   onClose: () => void;
+  downloadUrl?: string;
 }
 
-export const LeadMagnetModal: React.FC<LeadMagnetModalProps> = ({ onClose }) => {
+export const LeadMagnetModal: React.FC<LeadMagnetModalProps> = ({ onClose, downloadUrl }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -15,6 +16,9 @@ export const LeadMagnetModal: React.FC<LeadMagnetModalProps> = ({ onClose }) => 
     setSubmitted(true);
     // In a real app, you'd send this to your backend
     setTimeout(() => {
+      if (downloadUrl) {
+        window.open(downloadUrl, '_blank');
+      }
       window.open('https://wa.me/919351099947?text=I want the Free 2025 Franchise Business Blueprint.', '_blank');
       onClose();
     }, 2000);
@@ -49,7 +53,7 @@ export const LeadMagnetModal: React.FC<LeadMagnetModalProps> = ({ onClose }) => 
             <p className="font-bold opacity-80 leading-relaxed">Download our complete guide on how to build a ₹1Cr+ coaching center in your city.</p>
             
             <div className="mt-8 space-y-3">
-              {['Investment Breakdown', 'Faculty Hiring Guide', 'Marketing Strategy'].map((item, i) => (
+              {['12-Book Academic Architecture', 'Hybrid Testing Engine Access', '0% Royalty Business Plan'].map((item, i) => (
                 <div key={i} className="flex items-center gap-2 text-sm font-black">
                   <CheckCircle2 size={16} />
                   {item}

@@ -43,12 +43,16 @@ import { ProfitEstimator } from './src/components/ProfitEstimator';
 import { SocialProofToast } from './src/components/SocialProofToast';
 import { LeadMagnetModal } from './src/components/LeadMagnetModal';
 
+const PDF_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=1_B__lTFIa8ufFkW31c9JoKXOTKN1pVp_";
+const PDF_VIEW_URL = "https://drive.google.com/file/d/1_B__lTFIa8ufFkW31c9JoKXOTKN1pVp_/view?usp=sharing";
+
 // Professional Translation Dictionary
 const TRANSLATIONS: Record<string, any> = {
   en: {
     nav_announcement: "India's Most Result-Oriented Team",
     nav_estd: "ESTD 2012",
     nav_apply: "Apply Now",
+    nav_download: "Download Proposal",
     hero_badge: "Academic Excellence Partner 2025",
     hero_title_p1: "Launch Your ",
     hero_title_p2: " Franchise Center",
@@ -119,6 +123,25 @@ const TRANSLATIONS: Record<string, any> = {
     comp_item4_trad: "Low brand trust",
     comp_item4_edu: "National Brand Recognition",
     trust_bar_title: "Trusted by 500+ Educators Across India",
+    pillar_title: "The Three Pillars of Partnership",
+    pillar_subtitle: "A comprehensive ecosystem designed for institutional dominance.",
+    pillar1_name: "Physical & Digital Ecosystem",
+    pillar1_desc: "White-label kits, 12-book architecture, and proprietary hybrid testing engine.",
+    pillar2_name: "Elite Academic Delivery",
+    pillar2_desc: "Live Kota studios, recorded libraries, and physical faculty recruitment.",
+    pillar3_name: "Institutional Growth",
+    pillar3_desc: "Custom websites and targeted digital lead generation engines.",
+    sanctuary_title: "Beyond Mass Coaching",
+    sanctuary_subtitle: "The Scientific Sanctuary",
+    elite30_title: "Elite 30 Batch Focus",
+    elite30_desc: "Micro-batch excellence ensuring highly personalized care for every student.",
+    accountability_title: "Direct Accountability",
+    accountability_desc: "Daily physical notebook audits and side-by-side chair support.",
+    pedagogy_title: "AIR-1 Pedagogy",
+    pedagogy_desc: "Curriculum designed by ex-HODs and elite IITian faculty from Kota.",
+    royalty_title: "0% Royalty Advantage",
+    royalty_desc: "Initiate your brand with zero royalty fees in Year 1. All capital stays in your operations.",
+    baseline_text: "100-Student Baseline Scale",
     success_udgir: "Udgir, Maharashtra",
     success_amravati: "Amravati, Maharashtra",
     success_mumbai: "Mumbai, Maharashtra",
@@ -139,6 +162,7 @@ const TRANSLATIONS: Record<string, any> = {
     nav_announcement: "भारत की सबसे परिणाम-केंद्रित टीम",
     nav_estd: "2012 से स्थापित",
     nav_apply: "अभी आवेदन करें",
+    nav_download: "प्रस्ताव डाउनलोड करें",
     hero_badge: "अकादमिक उत्कृष्टता पार्टनर 2025",
     hero_title_p1: "अपना ",
     hero_title_p2: " फ्रैंचाइज़ी सेंटर शुरू करें",
@@ -209,6 +233,25 @@ const TRANSLATIONS: Record<string, any> = {
     comp_item4_trad: "कम ब्रांड ट्रस्ट",
     comp_item4_edu: "नेशनल ब्रांड पहचान",
     trust_bar_title: "भारत भर के 500+ शिक्षकों द्वारा विश्वसनीय",
+    pillar_title: "पार्टनरशिप के तीन स्तंभ",
+    pillar_subtitle: "संस्थागत प्रभुत्व के लिए डिज़ाइन किया गया एक व्यापक इकोसिस्टम।",
+    pillar1_name: "फिजिकल और डिजिटल इकोसिस्टम",
+    pillar1_desc: "व्हाइट-लेबल किट, 12-बुक आर्किटेक्चर और प्रोप्रायटरी हाइब्रिड टेस्टिंग इंजन।",
+    pillar2_name: "एलीट अकादमिक डिलीवरी",
+    pillar2_desc: "लाइव कोटा स्टूडियो, रिकॉर्डेड लाइब्रेरी और फिजिकल फैकल्टी भर्ती।",
+    pillar3_name: "संस्थागत विकास",
+    pillar3_desc: "कस्टम वेबसाइट और लक्षित डिजिटल लीड जनरेशन इंजन।",
+    sanctuary_title: "मास कोचिंग से परे",
+    sanctuary_subtitle: "द साइंटिफिक सैंक्चुअरी",
+    elite30_title: "एलीट 30 बैच फोकस",
+    elite30_desc: "हर छात्र के लिए अत्यधिक व्यक्तिगत देखभाल सुनिश्चित करने वाली माइक्रो-बैच उत्कृष्टता।",
+    accountability_title: "प्रत्यक्ष जवाबदेही",
+    accountability_desc: "दैनिक फिजिकल नोटबुक ऑडिट और साइड-बाय-साइड चेयर सपोर्ट।",
+    pedagogy_title: "AIR-1 पेडागोजी",
+    pedagogy_desc: "कोटा के पूर्व-HOD और एलीट IITian फैकल्टी द्वारा डिज़ाइन किया गया पाठ्यक्रम।",
+    royalty_title: "0% रॉयल्टी लाभ",
+    royalty_desc: "पहले वर्ष में शून्य रॉयल्टी शुल्क के साथ अपना ब्रांड शुरू करें। सारा पैसा आपके संचालन में रहता है।",
+    baseline_text: "100-छात्र बेसलाइन स्केल",
     success_udgir: "उदगीर, महाराष्ट्र",
     success_amravati: "अमरावती, महाराष्ट्र",
     success_mumbai: "मुंबई, महाराष्ट्र",
@@ -560,12 +603,14 @@ const App: React.FC = () => {
             
             {/* Action Group */}
             <div className="flex items-center gap-2 md:gap-4 shrink-0">
-               <button 
-                 onClick={() => setShowLeadModal(true)}
+               <a 
+                 href={PDF_DOWNLOAD_URL}
+                 target="_blank"
+                 rel="noopener noreferrer"
                  className="hidden md:flex items-center gap-2 text-[#002D62] font-black text-xs uppercase hover:text-[#D4AF37] transition"
                >
-                 <Download size={16} /> Free Kit
-               </button>
+                 <Download size={16} /> {t.nav_download}
+               </a>
                <button onClick={() => openWhatsApp(`Apply`)} className="bg-[#002D62] text-white px-5 md:px-8 py-2 md:py-3 rounded-full font-black text-[11px] md:text-sm hover:shadow-xl hover:-translate-y-0.5 transition active:scale-95 shadow-lg shadow-blue-900/20 whitespace-nowrap">
                  {t.nav_apply}
                </button>
@@ -737,60 +782,117 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Partnership Facilities Section */}
-      <section className="py-20 md:py-24 bg-white relative overflow-hidden" id="facilities">
+      {/* Scientific Sanctuary Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-3">The Academic OS</h2>
-            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">A complete operating system for your coaching business.</p>
+            <h2 className="text-lg md:text-xl font-black text-[#D4AF37] uppercase tracking-widest mb-4">{t.sanctuary_title}</h2>
+            <h3 className="text-3xl md:text-6xl font-brand font-black text-[#002D62]">{t.sanctuary_subtitle}</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
-            {/* Bento Grid Layout */}
-            <div className="md:col-span-2 lg:col-span-2 bg-[#002D62] p-8 rounded-[2.5rem] text-white flex flex-col justify-between group hover:shadow-2xl transition-all">
-               <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6"><Award className="text-[#D4AF37]" /></div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="p-10 bg-slate-50 rounded-[3rem] border border-slate-100 hover:shadow-2xl transition-all group">
+              <div className="w-16 h-16 bg-[#002D62] text-white rounded-2xl flex items-center justify-center mb-8 group-hover:rotate-6 transition-transform">
+                <Target size={32} />
+              </div>
+              <h4 className="text-2xl font-black text-[#002D62] mb-4">{t.elite30_title}</h4>
+              <p className="text-slate-500 leading-relaxed font-medium">{t.elite30_desc}</p>
+            </div>
+
+            <div className="p-10 bg-slate-50 rounded-[3rem] border border-slate-100 hover:shadow-2xl transition-all group">
+              <div className="w-16 h-16 bg-[#002D62] text-white rounded-2xl flex items-center justify-center mb-8 group-hover:rotate-6 transition-transform">
+                <ShieldCheck size={32} />
+              </div>
+              <h4 className="text-2xl font-black text-[#002D62] mb-4">{t.accountability_title}</h4>
+              <p className="text-slate-500 leading-relaxed font-medium">{t.accountability_desc}</p>
+            </div>
+
+            <div className="p-10 bg-slate-50 rounded-[3rem] border border-slate-100 hover:shadow-2xl transition-all group">
+              <div className="w-16 h-16 bg-[#002D62] text-white rounded-2xl flex items-center justify-center mb-8 group-hover:rotate-6 transition-transform">
+                <GraduationCap size={32} />
+              </div>
+              <h4 className="text-2xl font-black text-[#002D62] mb-4">{t.pedogy_title || t.pedagogy_title}</h4>
+              <p className="text-slate-500 leading-relaxed font-medium">{t.pedagogy_desc}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partnership Facilities Section (Restructured as Three Pillars) */}
+      <section className="py-20 md:py-24 bg-slate-50 relative overflow-hidden" id="facilities">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-6xl font-brand font-black text-[#002D62] mb-3">{t.pillar_title}</h2>
+            <p className="text-slate-500 text-sm md:text-lg italic max-w-2xl mx-auto">{t.pillar_subtitle}</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {/* Pillar 1 */}
+            <div className="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 flex flex-col justify-between hover:shadow-2xl transition-all relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full -mr-16 -mt-16"></div>
                <div>
-                 <h3 className="text-xl font-black mb-2">{t.feat_brand}</h3>
-                 <p className="text-xs text-slate-400 leading-relaxed">Leverage Kota's most trusted academic brand name in your city.</p>
+                 <div className="w-14 h-14 bg-red-500 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-red-500/20"><Layers size={28} /></div>
+                 <h3 className="text-2xl font-black text-[#002D62] mb-4">{t.pillar1_name}</h3>
+                 <p className="text-slate-500 font-medium leading-relaxed mb-8">{t.pillar1_desc}</p>
+                 <ul className="space-y-3">
+                   {['White-Label Integration', '12-Book Architecture', 'Hybrid Testing Engine'].map((item, i) => (
+                     <li key={i} className="flex items-center gap-2 text-xs font-black text-[#002D62]">
+                       <Check size={14} className="text-red-500" /> {item}
+                     </li>
+                   ))}
+                 </ul>
                </div>
             </div>
             
-            <div className="md:col-span-2 lg:col-span-2 bg-slate-50 p-8 rounded-[2.5rem] flex flex-col justify-between border border-slate-100 hover:bg-white hover:shadow-xl transition-all">
-               <div className="w-12 h-12 bg-[#002D62]/5 rounded-xl flex items-center justify-center mb-6"><Users className="text-[#002D62]" /></div>
+            {/* Pillar 2 */}
+            <div className="bg-[#002D62] p-10 rounded-[3rem] shadow-2xl text-white flex flex-col justify-between hover:scale-[1.02] transition-all relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
                <div>
-                 <h3 className="text-xl font-black text-[#002D62] mb-2">{t.feat_fac_rec}</h3>
-                 <p className="text-xs text-slate-500 leading-relaxed">We hire and train the best IITian faculty for your center.</p>
+                 <div className="w-14 h-14 bg-[#D4AF37] text-[#002D62] rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-[#D4AF37]/20"><Rocket size={28} /></div>
+                 <h3 className="text-2xl font-black text-white mb-4">{t.pillar2_name}</h3>
+                 <p className="text-slate-300 font-medium leading-relaxed mb-8">{t.pillar2_desc}</p>
+                 <ul className="space-y-3">
+                   {['Live Kota Studios', 'Lifetime Recorded Library', 'Physical Faculty Recruitment'].map((item, i) => (
+                     <li key={i} className="flex items-center gap-2 text-xs font-black text-white">
+                       <Check size={14} className="text-[#D4AF37]" /> {item}
+                     </li>
+                   ))}
+                 </ul>
                </div>
             </div>
 
-            <div className="md:col-span-2 lg:col-span-2 bg-[#D4AF37] p-8 rounded-[2.5rem] text-[#002D62] flex flex-col justify-between hover:shadow-xl transition-all">
-               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-6"><Layers size={24} /></div>
+            {/* Pillar 3 */}
+            <div className="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 flex flex-col justify-between hover:shadow-2xl transition-all relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full -mr-16 -mt-16"></div>
                <div>
-                 <h3 className="text-xl font-black mb-2">{t.feat_study_mat}</h3>
-                 <p className="text-xs text-[#002D62]/70 leading-relaxed">Premium Kota-standard hard copy modules for every student.</p>
-               </div>
-            </div>
-
-            <div className="md:col-span-2 lg:col-span-3 bg-slate-50 p-8 rounded-[2.5rem] flex flex-col justify-between border border-slate-100 hover:bg-white hover:shadow-xl transition-all">
-               <div className="w-12 h-12 bg-[#002D62]/5 rounded-xl flex items-center justify-center mb-6"><Smartphone className="text-[#002D62]" /></div>
-               <div>
-                 <h3 className="text-xl font-black text-[#002D62] mb-2">{t.feat_app}</h3>
-                 <p className="text-xs text-slate-500 leading-relaxed">Your own white-labeled mobile app for testing and digital learning.</p>
-               </div>
-            </div>
-
-            <div className="md:col-span-2 lg:col-span-3 bg-[#002D62] p-8 rounded-[2.5rem] text-white flex flex-col justify-between hover:shadow-2xl transition-all">
-               <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6"><Target className="text-[#D4AF37]" /></div>
-               <div>
-                 <h3 className="text-xl font-black mb-2">{t.feat_test_gen}</h3>
-                 <p className="text-xs text-slate-400 leading-relaxed">Generate JEE/NEET level papers in seconds with our massive question bank.</p>
+                 <div className="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-amber-500/20"><TrendingUp size={28} /></div>
+                 <h3 className="text-2xl font-black text-[#002D62] mb-4">{t.pillar3_name}</h3>
+                 <p className="text-slate-500 font-medium leading-relaxed mb-8">{t.pillar3_desc}</p>
+                 <ul className="space-y-3">
+                   {['Custom Website Development', 'Targeted Ad Deployments', 'Guaranteed Lead Pipeline'].map((item, i) => (
+                     <li key={i} className="flex items-center gap-2 text-xs font-black text-[#002D62]">
+                       <Check size={14} className="text-amber-500" /> {item}
+                     </li>
+                   ))}
+                 </ul>
                </div>
             </div>
           </div>
           
+          <div className="mt-16 bg-[#D4AF37] p-8 md:p-12 rounded-[3rem] max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="text-center md:text-left">
+              <h4 className="text-2xl md:text-3xl font-black text-[#002D62] mb-2">{t.royalty_title}</h4>
+              <p className="text-[#002D62]/80 font-bold max-w-xl">{t.royalty_desc}</p>
+            </div>
+            <button onClick={() => setShowLeadModal(true)} className="bg-[#002D62] text-white px-10 py-5 rounded-2xl font-black shadow-xl hover:scale-105 transition-all whitespace-nowrap">
+              Claim Year 1 Advantage
+            </button>
+          </div>
+
           <div className="mt-12 text-center">
-             <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-6">+ 10 more premium facilities included</p>
-             <button onClick={() => openWhatsApp(`Full Facility List Inquiry`)} className="text-[#002D62] font-black underline underline-offset-8 hover:text-[#D4AF37] transition-all">View All Features</button>
+             <div className="inline-flex items-center gap-2 bg-slate-100 px-6 py-2 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest">
+               <ShieldCheck size={14} /> {t.baseline_text}
+             </div>
           </div>
         </div>
       </section>
@@ -947,7 +1049,7 @@ const App: React.FC = () => {
         onClick={() => openWhatsApp(`Hi ${FOUNDER_NICKNAME}, I am interested in opening an EduQuantum center in my city. Please share business details.`)}
         className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] bg-green-500 text-white p-4 md:p-6 rounded-full shadow-2xl hover:scale-110 transition-all group animate-bounce"
       >
-        <MessageCircle size={24} md:size={32} fill="white" />
+        <MessageCircle className="w-6 h-6 md:w-8 md:h-8" fill="white" />
         <span className="hidden md:block absolute right-full mr-6 bg-white text-[#002D62] px-6 py-3 rounded-2xl text-[10px] font-black shadow-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap border-2 border-[#D4AF37]">
           {t.cta_floating}
         </span>
@@ -972,7 +1074,12 @@ const App: React.FC = () => {
       </div>
 
       <AnimatePresence>
-        {showLeadModal && <LeadMagnetModal onClose={() => setShowLeadModal(false)} />}
+        {showLeadModal && (
+          <LeadMagnetModal 
+            onClose={() => setShowLeadModal(false)} 
+            downloadUrl={PDF_DOWNLOAD_URL}
+          />
+        )}
       </AnimatePresence>
 
       <style>{`
